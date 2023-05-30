@@ -11,19 +11,19 @@ namespace TooltipSystem
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void SubscribeToEvents()
         {
-            ItemSlot.PointerEnter += ShowTooltip;
-            ItemSlot.PointerExit += HideTooltip;
-            ItemSlot.LeftClicked += HideTooltip;
-            ItemSlot.RightClicked += HideTooltip;
+            ItemEntryView.PointerEnter += ShowTooltip;
+            ItemEntryView.PointerExit += HideTooltip;
+            ItemEntryView.LeftClicked += HideTooltip;
+            ItemEntryView.RightClicked += HideTooltip;
         }
 
-        private static void ShowTooltip(ItemSlot slot)
+        private static void ShowTooltip(ItemEntryView slot)
         {
             if (slot.Item != null)
                 Tooltip.Instance.ShowTooltip(slot.Item);
         }
 
-        private static void HideTooltip(ItemSlot slot)
+        private static void HideTooltip(ItemEntryView slot)
         {
             Tooltip.Instance.HideTooltip();
         }

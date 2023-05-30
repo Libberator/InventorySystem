@@ -10,13 +10,13 @@ namespace InventorySystem
     {
         [Header("Settings")]
         [SerializeField] private int _inventorySize = 12;
-        [SerializeField] private List<SlotEntry> _startingItems = new();
+        [SerializeField] private List<ItemEntry> _startingItems = new();
         
         [Header("References")]
         [SerializeField] private PanelAnimator _panelAnimator;
-        [SerializeField] private ItemSlot _slotPrefab;
+        [SerializeField] private ItemEntryView _slotPrefab;
         [SerializeField] private RectTransform ItemSlotsParent;
-        [SerializeField] private ItemSlot[] _itemSlots;
+        [SerializeField] private ItemEntryView[] _itemSlots;
         
         public static event Action<Inventory> Closed;
 
@@ -33,11 +33,11 @@ namespace InventorySystem
         }
 
         public int AmountOf(Item item) => _itemSlots.Where(s => s.Item == item).Sum(s => s.Quantity);
-        public bool Contains(ItemSlot slot) => _itemSlots.Contains(slot);
+        public bool Contains(ItemEntryView slot) => _itemSlots.Contains(slot);
 
         #region Adding & Removing ItemSlots
 
-        public void InitializeInventory(int size, List<SlotEntry> startingEntries = null)
+        public void InitializeInventory(int size, List<ItemEntry> startingEntries = null)
         {
             MatchSize(size);
 
@@ -79,7 +79,7 @@ namespace InventorySystem
             }
         }
 
-        private void RefreshItemSlots() => _itemSlots = ItemSlotsParent.GetComponentsInChildren<ItemSlot>(includeInactive: true);
+        private void RefreshItemSlots() => _itemSlots = ItemSlotsParent.GetComponentsInChildren<ItemEntryView>(includeInactive: true);
 
         #endregion
 

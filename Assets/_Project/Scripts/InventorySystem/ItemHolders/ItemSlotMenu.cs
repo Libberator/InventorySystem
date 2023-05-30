@@ -9,7 +9,7 @@ namespace InventorySystem
 {
     public class ItemSlotMenu : MonoBehaviour
     {
-        public event Action<ItemSlot, int> SplitItems;
+        public event Action<ItemEntryView, int> SplitItems;
         //public event Action<ItemSlot> EquippedItem;
 
         [Header("Quantity Splitter")]
@@ -26,7 +26,7 @@ namespace InventorySystem
         [SerializeField] private PanelAnimator _toss;
 
         public bool MenuShown { get; private set; }
-        public ItemSlot FocusedSlot { get; private set; }
+        public ItemEntryView FocusedSlot { get; private set; }
 
         private void Start()
         {
@@ -45,7 +45,7 @@ namespace InventorySystem
 
         #region Show & Hide Menu
 
-        public void ShowMenu(ItemSlot slot)
+        public void ShowMenu(ItemEntryView slot)
         {
             FocusedSlot = slot;
             transform.position = slot.transform.position;

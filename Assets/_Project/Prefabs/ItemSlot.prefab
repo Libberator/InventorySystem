@@ -262,23 +262,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 5930910166036344319}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e07bf0b4b156fe4d93535180210fd49, type: 3}
+  m_Script: {fileID: 11500000, guid: 24e9bf3288e362c409e39e80e267f908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   _background: {fileID: 5930910166036344317}
   _frame: {fileID: 5930910166408903299}
   _icon: {fileID: 6149161197705815324}
   _qtyText: {fileID: 5930910164441326870}
   _default: {fileID: 11400000, guid: 0f473ebd0f3900e4982c858a8f0b5c03, type: 2}
+  _entry:
+    _item: {fileID: 0}
+    _quantity: 0
   _item: {fileID: 0}
   _quantity: 0
 --- !u!222 &5930910166036344316

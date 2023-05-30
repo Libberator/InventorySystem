@@ -8,15 +8,15 @@ using UnityEngine.UI;
 
 namespace InventorySystem
 {
-    public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler
+    public class ItemEntryView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler
     {
-        public static event Action<ItemSlot> PointerEnter;
-        public static event Action<ItemSlot> PointerExit;
-        public static event Action<ItemSlot> LeftClicked;
-        public static event Action<ItemSlot> RightClicked;
-        public static event Action<ItemSlot> BeginDrag;
-        public static event Action<ItemSlot> EndDrag;
-        public static event Action<ItemSlot> DroppedOn;
+        public static event Action<ItemEntryView> PointerEnter;
+        public static event Action<ItemEntryView> PointerExit;
+        public static event Action<ItemEntryView> LeftClicked;
+        public static event Action<ItemEntryView> RightClicked;
+        public static event Action<ItemEntryView> BeginDrag;
+        public static event Action<ItemEntryView> EndDrag;
+        public static event Action<ItemEntryView> DroppedOn;
 
         [Header("UI References")]
         [SerializeField] private Image _background;
@@ -31,6 +31,9 @@ namespace InventorySystem
         private Tween _placeItemTween;
 
         [Header("Internal Data")]
+        [SerializeField, ReadOnly] private ItemEntry _entry;
+        public ItemEntry Entry => _entry;
+
         [SerializeField, ReadOnly] private Item _item;
         public Item Item
         {
@@ -57,7 +60,7 @@ namespace InventorySystem
 
         protected virtual void Start() => RefreshUI();
 
-        public virtual void SetEntry(SlotEntry entry) => SetEntry(entry.Item, entry.Quantity);
+        public virtual void SetEntry(ItemEntry entry) => SetEntry(entry.Item, entry.Quantity);
 
         public virtual void SetEntry(Item item, int qty)
         {
@@ -67,7 +70,7 @@ namespace InventorySystem
 
         public virtual bool CanStackItem(Item item) => Item == item && Quantity < Item.MaxStack;
 
-        protected virtual bool CanSwapWith(ItemSlot other) => true;
+        protected virtual bool CanSwapWith(ItemEntryView other) => true;
         // TODO: make sure we don't lose important quest items or non-destructables
 
         #region Adding & Removing

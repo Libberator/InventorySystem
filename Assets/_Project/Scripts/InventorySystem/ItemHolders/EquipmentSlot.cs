@@ -1,6 +1,6 @@
 ﻿namespace InventorySystem
 {
-    public class EquipmentSlot : ItemSlot
+    public class EquipmentSlot : ItemEntryView
     {
         public EquipmentType SlotType;
 

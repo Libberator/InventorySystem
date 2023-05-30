@@ -27,7 +27,7 @@ namespace InventorySystem
         private Tween _pickupTween;
 
         private bool _isDragging = false;
-        private ItemSlot _source;
+        private ItemEntryView _source;
         private Item _draggedItem;
         private int _draggedQuantity;
 
@@ -39,22 +39,22 @@ namespace InventorySystem
 
         private void OnEnable()
         {
-            ItemSlot.BeginDrag += OnStartDragging;
-            ItemSlot.LeftClicked += OnLeftClicked;
-            ItemSlot.RightClicked += OnRightClicked;
-            ItemSlot.DroppedOn += OnDropped;
-            ItemSlot.EndDrag += OnEndDragging;
+            ItemEntryView.BeginDrag += OnStartDragging;
+            ItemEntryView.LeftClicked += OnLeftClicked;
+            ItemEntryView.RightClicked += OnRightClicked;
+            ItemEntryView.DroppedOn += OnDropped;
+            ItemEntryView.EndDrag += OnEndDragging;
             Inventory.Closed += OnInventoryClosed;
             _rightClickMenu.SplitItems += OnStartDragging;
         }
 
         private void OnDisable()
         {
-            ItemSlot.BeginDrag -= OnStartDragging;
-            ItemSlot.LeftClicked -= OnLeftClicked;
-            ItemSlot.RightClicked -= OnRightClicked;
-            ItemSlot.DroppedOn -= OnDropped;
-            ItemSlot.EndDrag -= OnEndDragging;
+            ItemEntryView.BeginDrag -= OnStartDragging;
+            ItemEntryView.LeftClicked -= OnLeftClicked;
+            ItemEntryView.RightClicked -= OnRightClicked;
+            ItemEntryView.DroppedOn -= OnDropped;
+            ItemEntryView.EndDrag -= OnEndDragging;
             Inventory.Closed -= OnInventoryClosed;
             _rightClickMenu.SplitItems -= OnStartDragging;
         }
@@ -68,7 +68,7 @@ namespace InventorySystem
 
         #region Dragging, Dropping, Stacking, Swapping
 
-        private void OnStartDragging(ItemSlot slot)
+        private void OnStartDragging(ItemEntryView slot)
         {
             if (slot.Item == null) return;
 
@@ -82,7 +82,7 @@ namespace InventorySystem
             _isDragging = true;
         }
 
-        private void OnStartDragging(ItemSlot slot, int partialQty)
+        private void OnStartDragging(ItemEntryView slot, int partialQty)
         {
             if (slot.Item == null) return;
 
@@ -95,7 +95,7 @@ namespace InventorySystem
             _isDragging = true;
         }
 
-        private void OnLeftClicked(ItemSlot slot)
+        private void OnLeftClicked(ItemEntryView slot)
         {
             if (!_isDragging)
             {
@@ -141,7 +141,7 @@ namespace InventorySystem
                 _rightClickMenu.HideMenu();
         }
 
-        private void OnRightClicked(ItemSlot slot)
+        private void OnRightClicked(ItemEntryView slot)
         {
             if (_isDragging) return;
 
@@ -151,13 +151,13 @@ namespace InventorySystem
                 _rightClickMenu.ShowMenu(slot);
         }
 
-        private void OnDropped(ItemSlot slot)
+        private void OnDropped(ItemEntryView slot)
         {
             if (_isDragging)
                 OnLeftClicked(slot);
         }
 
-        private void OnEndDragging(ItemSlot slot)
+        private void OnEndDragging(ItemEntryView slot)
         {
             if (_isDragging)
                 StopDragging();
