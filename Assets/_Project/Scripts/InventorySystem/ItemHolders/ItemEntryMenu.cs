@@ -7,9 +7,9 @@ using TMPro;
 
 namespace InventorySystem
 {
-    public class ItemSlotMenu : MonoBehaviour
+    public class ItemEntryMenu : MonoBehaviour
     {
-        public event Action<ItemEntryView, int> SplitItems;
+        public event Action<ItemEntryView, int> BeginPartialDrag;
         //public event Action<ItemSlot> EquippedItem;
 
         [Header("Quantity Splitter")]
@@ -27,6 +27,7 @@ namespace InventorySystem
 
         public bool MenuShown { get; private set; }
         public ItemEntryView FocusedSlot { get; private set; }
+        private ItemEntry Entry => FocusedSlot.Entry;
 
         private void Start()
         {
@@ -35,7 +36,7 @@ namespace InventorySystem
 
         private void Update()
         {
-            if (!MenuShown || FocusedSlot == null || FocusedSlot.Item == null || !FocusedSlot.Item.IsStackable) return;
+            if (!MenuShown || FocusedSlot == null || Entry.Item == null || !Entry.Item.IsStackable) return;
             if (Input.mouseScrollDelta.y != 0)
             {
                 _splitterTween?.Kill();
@@ -50,19 +51,19 @@ namespace InventorySystem
             FocusedSlot = slot;
             transform.position = slot.transform.position;
 
-            if (slot.Quantity > 1)
+            if (Entry.Quantity > 1)
                 ShowQtySelector();
             else
                 HideQtySelector();
             
             // consider interfaces
-            if (slot.Item is Equipment)
+            if (Entry.Item is Equipment)
                 _equip.Show(restart: true);
             else if (_equip.isActiveAndEnabled)
                 _equip.Hide(instant: true);
 
             // consider interfaces
-            if (slot.Item is Consumable)
+            if (Entry.Item is Consumable)
                 _use.Show(restart: true);
             else if (_use.isActiveAndEnabled)
                 _use.Hide(instant: true);
@@ -92,14 +93,14 @@ namespace InventorySystem
             _splitterTween?.Kill();
             _splittingSelector.gameObject.SetActive(true);
 
-            var max = FocusedSlot.Quantity;
+            var max = Entry.Quantity;
 
             _splitterTween = DOVirtual.Int(0, max / 2, _fillDuration, UpdateQuantity).SetEase(Ease.OutBack);
         }
         
         private void UpdateQuantity(int qty)
         {
-            int max = FocusedSlot.Quantity;
+            int max = Entry.Quantity;
             if (max == 0)
             {
                 HideMenu();
@@ -130,16 +131,16 @@ namespace InventorySystem
 
         public void SplitItemPressed()
         {
-            SplitItems?.Invoke(FocusedSlot, _quantity);
+            BeginPartialDrag?.Invoke(FocusedSlot, _quantity);
             //Debug.Log($"Split pressed. Chose {_quantity} / {_source.Quantity}");
             HideMenu();
         }
 
         public void UseButtonPressed()
         {
-            var consumable = FocusedSlot.Item as Consumable;
-
-            if (FocusedSlot.TryRemoveItem(1, out _))
+            var consumable = Entry.Item as Consumable;
+            
+            if (Entry.RemoveQuantity(1) == 0)
             {
                 UpdateQuantity(_quantity);
                 consumable.Use();

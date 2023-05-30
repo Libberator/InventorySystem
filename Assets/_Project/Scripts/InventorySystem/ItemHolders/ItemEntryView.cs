@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace InventorySystem
 {
-    public class ItemEntryView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler
+    public class ItemEntryView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IDropHandler, IEndDragHandler
     {
         public static event Action<ItemEntryView> PointerEnter;
         public static event Action<ItemEntryView> PointerExit;
@@ -31,121 +31,31 @@ namespace InventorySystem
         private Tween _placeItemTween;
 
         [Header("Internal Data")]
-        [SerializeField, ReadOnly] private ItemEntry _entry;
+        [SerializeField, ReadOnly] private ItemEntry _entry = new();
         public ItemEntry Entry => _entry;
+        public Item Item => _entry.Item;
+        public int Quantity => _entry.Quantity;
 
-        [SerializeField, ReadOnly] private Item _item;
-        public Item Item
+        private void OnEnable()
         {
-            get => _item;
-            protected set
-            {
-                _item = value;
-                ShowItem(_item);
-            }
+            _entry.ItemChanged += OnItemChanged;
+            _entry.QuantityChanged += OnQuantityChanged;
+            OnItemChanged(_entry.Item);
+            OnQuantityChanged(_entry.Quantity);
         }
 
-        [SerializeField, ReadOnly] private int _quantity;
-        public int Quantity
+        private void OnDisable()
         {
-            get => _quantity;
-            protected set
-            {
-                _quantity = value;
-                if (_quantity == 0)
-                    Item = null;
-                ShowQuantity(_quantity);
-            }
+            _entry.ItemChanged -= OnItemChanged;
+            _entry.QuantityChanged -= OnQuantityChanged;
         }
 
-        protected virtual void Start() => RefreshUI();
-
-        public virtual void SetEntry(ItemEntry entry) => SetEntry(entry.Item, entry.Quantity);
-
-        public virtual void SetEntry(Item item, int qty)
-        {
-            Item = item;
-            Quantity = qty;
-        }
-
-        public virtual bool CanStackItem(Item item) => Item == item && Quantity < Item.MaxStack;
-
-        protected virtual bool CanSwapWith(ItemEntryView other) => true;
-        // TODO: make sure we don't lose important quest items or non-destructables
-
-        #region Adding & Removing
-
-        public virtual bool TryAddItem(Item item, int qty, out int remainder)
-        {
-            remainder = 0;
-            if (Item == null)
-            {
-                Item = item;
-                Quantity = qty;
-                return true;
-            }
-
-            if (Item == item)
-            {
-                var toAdd = Math.Min(item.MaxStack - Quantity, qty);
-                remainder = qty - toAdd;
-                Quantity += toAdd;
-            }
-
-            return remainder == 0; // was able to add ALL of it
-        }
-
-        /// <summary>
-        /// The out remainder parameter is the remainder of the requested quantity, not ItemSlot qty
-        /// </summary>
-        public virtual bool TryRemoveItem(int qty, out int remainder)
-        {
-            var toRemove = Math.Min(Quantity, qty);
-            remainder = qty - toRemove;
-            Quantity -= toRemove;
-
-            return remainder == 0; // was able to remove ALL of requested qty
-        }
-
-        //public virtual void StackOnto(ItemSlot other)
-        //{
-        //    if (!other.CanStackItem(Item)) return;
-
-        //    var toAdd = Math.Min(Item.MaxStack - other.Quantity, Quantity);
-        //    other.Quantity += toAdd;
-        //    Quantity -= toAdd;
-        //}
-
-        //public virtual void SwapWith(ItemSlot other)
-        //{
-        //    (_item, other.Item) = (other.Item, _item);
-        //    (_quantity, other.Quantity) = (other.Quantity, _quantity);
-        //}
-
-        #endregion
+        public virtual void SetEntry(ItemEntry entry) => _entry.Set(entry);
+        public virtual void SetEntry(Item item, int qty) => _entry.Set(item, qty);
 
         #region Updating UI
 
-        public virtual void RefreshUI()
-        {
-            ShowItem(_item);
-            ShowQuantity(_quantity);
-        }
-
-        public virtual void ShowQuantity(int qty)
-        {
-            if (qty > 1)
-            {
-                _qtyText.SetText(qty.ToString());
-                _qtyText.enabled = true;
-            }
-            else
-            {
-                _qtyText.enabled = false;
-            }
-        }
-
-        public virtual void ShowItem(Item item)
+        private void OnItemChanged(Item item)
         {
             if (item != null)
             {
@@ -161,6 +71,21 @@ namespace InventorySystem
                 _background.color = _default.PrimaryColor;
                 _frame.color = _default.SecondaryColor;
                 _icon.enabled = false;
+            }
+        }
+
+        private void OnQuantityChanged(int qty)
+        {
+            if (qty > 1)
+            {
+                _qtyText.SetText(qty.ToString());
+                _qtyText.enabled = true;
+                _placeItemTween?.Complete();
+                _placeItemTween = _icon.transform.DOPunchScale(_punchStrength * Vector3.one, _punchDuration);
+            }
+            else
+            {
+                _qtyText.enabled = false;
             }
         }
 
@@ -190,15 +115,23 @@ namespace InventorySystem
 
         public virtual void OnBeginDrag(PointerEventData eventData)
         {
-            if (eventData.button == PointerEventData.InputButton.Left)
+            if (eventData.button == PointerEventData.InputButton.Left && _entry.Item != null)
                 BeginDrag?.Invoke(this);
         }
 
-        public virtual void OnEndDrag(PointerEventData eventData) => EndDrag?.Invoke(this);
-
         public virtual void OnDrag(PointerEventData eventData) { } // unusued, but required for other things to work
 
-        public virtual void OnDrop(PointerEventData eventData) => DroppedOn?.Invoke(this);
+        public virtual void OnDrop(PointerEventData eventData)
+        {
+            if (eventData.button == PointerEventData.InputButton.Left)
+                DroppedOn?.Invoke(this);
+        }
+
+        public virtual void OnEndDrag(PointerEventData eventData)
+        {
+            if (eventData.button == PointerEventData.InputButton.Left)
+                EndDrag?.Invoke(this);
+        }
 
         #endregion
     }

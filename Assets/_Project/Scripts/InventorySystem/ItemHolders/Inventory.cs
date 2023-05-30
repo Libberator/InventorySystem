@@ -64,7 +64,13 @@ namespace InventorySystem
         private void AddItemSlots(int qty = 1)
         {
             for (int i = 0; i < qty; i++)
+            {
+#if UNITY_EDITOR
+                UnityEditor.PrefabUtility.InstantiatePrefab(_slotPrefab, ItemSlotsParent);
+#else
                 Instantiate(_slotPrefab, ItemSlotsParent);
+#endif
+            }
         }
 
         private void RemoveItemSlots(int qty = 1)
@@ -72,16 +78,21 @@ namespace InventorySystem
             int lowestIndex = Mathf.Max(0, ItemSlotsParent.childCount - qty);
             for (int i = ItemSlotsParent.childCount - 1; i >= lowestIndex; i--)
             {
+                var childObject = ItemSlotsParent.GetChild(i).gameObject;
+#if UNITY_EDITOR
                 if (Application.isPlaying)
-                    Destroy(ItemSlotsParent.GetChild(i).gameObject);
+                    Destroy(childObject);
                 else
-                    DestroyImmediate(ItemSlotsParent.GetChild(i).gameObject);
+                    DestroyImmediate(childObject);
+#else
+                Destroy(childObject);
+#endif
             }
         }
 
         private void RefreshItemSlots() => _itemSlots = ItemSlotsParent.GetComponentsInChildren<ItemEntryView>(includeInactive: true);
 
-        #endregion
+#endregion
 
         #region Adding & Removing Items
 
@@ -92,18 +103,24 @@ namespace InventorySystem
             // first try stacking
             if (item.IsStackable)
             {
-                foreach (var slot in _itemSlots.Where(s => s.CanStackItem(item)).OrderByDescending(s => s.Quantity))
+                foreach (var slot in _itemSlots.Where(s => s.Item == item && s.Quantity < item.MaxStack).OrderByDescending(s => s.Quantity))
                 {
-                    if (slot.TryAddItem(item, qty, out remainder))
+                    remainder = slot.Entry.AddQuantity(qty);
+                    if (remainder == 0)
                         return true;
                     qty = remainder;
                 }
             }
 
-            // find empty slot
-            var emptySlot = _itemSlots.FirstOrDefault(s => s.Item == null);
-            if (emptySlot != null && emptySlot.TryAddItem(item, qty, out remainder))
-                return true;
+            // find empty slots to add to
+            foreach (var emptySlot in _itemSlots.Where(s => s.Item == null))
+            {
+                var toAdd = Math.Min(remainder, item.MaxStack);
+                emptySlot.SetEntry(item, toAdd);
+                remainder -= toAdd;
+                if (remainder == 0)
+                    return true;
+            }
 
             // inventory is full. no room left
             return false;
@@ -115,7 +132,8 @@ namespace InventorySystem
 
             foreach (var slot in _itemSlots.Where(s => s.Item == item).OrderBy(s => s.Quantity))
             {
-                if (slot.TryRemoveItem(qty, out remainder))
+                remainder = slot.Entry.RemoveQuantity(qty);
+                if (remainder == 0) 
                     return true;
                 qty = remainder;
             }
