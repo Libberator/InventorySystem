@@ -2,7 +2,7 @@
 using Sirenix.OdinInspector;
 using System;
 using TMPro;
-using TooltipSystem;
+using UI;
 using UnityEngine;
 using UnityEngine.UI;
 using Utilities;
@@ -14,7 +14,7 @@ namespace InventorySystem
     /// Depends on ItemEntryView events for left-clicks and dragging, ItemEntryMenu for right-clicking, and
     /// Inventory for when they close and shift-click bulk-adding (inventory won't need to be open)
     /// </summary>
-    public class ItemEntryController : Singleton<ItemEntryController>, IHaveTooltip
+    public class ItemEntryController : Singleton<ItemEntryController>
     {
         public static event Action<bool> IsDraggingChanged;
         public static event Action<ItemEntry> DisposedEntry;
@@ -58,7 +58,6 @@ namespace InventorySystem
         protected override void Awake()
         {
             base.Awake();
-            LinkLookup.AddAsTooltipProvider(this, "Item");
             _draggedTransform = _icon.transform;
             _entry.ItemChanged += OnItemChanged;
             _entry.QuantityChanged += OnQuantityChanged;
@@ -258,13 +257,6 @@ namespace InventorySystem
             }
             else
                 _qtyText.enabled = false;
-        }
-
-        public string GetTooltipText()
-        {
-            if (DraggedItem != null)
-                return DraggedItem.GetTooltipText();
-            return string.Empty;
         }
 
         #endregion

@@ -78,6 +78,12 @@ namespace TooltipSystem
                 Instance.ShowTooltipText(tip.GetTooltipText());
         }
 
+        public static void ShowTooltip(string text)
+        {
+            if (Instance != null)
+                Instance.ShowTooltipText(text);
+        }
+
         private void ShowTooltipText(string text)
         {
             if (!gameObject.activeInHierarchy) gameObject.SetActive(true);

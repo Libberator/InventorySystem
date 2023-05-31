@@ -10,12 +10,13 @@ namespace InventorySystem
     public static class ItemTooltipBootstrapper
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        private static void SubscribeToEvents()
+        private static void BootstrapInitialization()
         {
             ItemEntryView.PointerEnter += ShowTooltip;
             ItemEntryView.PointerExit += HideTooltip;
             ItemEntryView.LeftClicked += HideTooltip;
             ItemEntryView.RightClicked += HideTooltip;
+            LinkLookup.AddAsTooltipProvider(new ItemTooltipProvider(), "Item");
         }
 
         private static void ShowTooltip(ItemEntryView slot)
@@ -27,6 +28,15 @@ namespace InventorySystem
         private static void HideTooltip(ItemEntryView slot)
         {
             Tooltip.HideTooltip();
+        }
+    }
+
+    // Relies on the ItemEntryController Singleton to provide the Item Tooltip info
+    public class ItemTooltipProvider : IHaveTooltip
+    {
+        public string GetTooltipText()
+        {
+            return ItemEntryController.Instance.DraggedItem.GetTooltipText();
         }
     }
 }

@@ -12,15 +12,15 @@ namespace TooltipSystem
 
         public static IHaveTooltip GetProviderForLink(string linkID)
         {
-            if (_tooltipProviders.ContainsKey(linkID))
-                return _tooltipProviders[linkID];
+            if (_tooltipProviders.TryGetValue(linkID, out var provider))
+                return provider;
             return null;
         }
 
         public static string GetTooltipFor(string linkID)
         {
-            if (_tooltipProviders.TryGetValue(linkID, out var tooltipProvider))
-                return tooltipProvider.GetTooltipText();
+            if (_tooltipProviders.TryGetValue(linkID, out var provider))
+                return provider.GetTooltipText();
             return string.Empty;
         }
     }
