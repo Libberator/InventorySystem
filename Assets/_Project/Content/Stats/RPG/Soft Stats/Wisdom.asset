@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 995f103612822834cb1a5c11384e1454, type: 3}
   m_Name: Wisdom
   m_EditorClassIdentifier: 
+  _nameOverride: 
+  _abbreviation: WIS
   BaseValue: 0

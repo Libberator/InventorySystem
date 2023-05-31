@@ -8,8 +8,10 @@ namespace StatSystem
     public class Stat : ScriptableObject
     {
         [SerializeField] private string _nameOverride;
+        [SerializeField] private string _abbreviation;
         public string Name => string.IsNullOrEmpty(_nameOverride) ? name : _nameOverride;
-        
+        public string Abbreviation => _abbreviation;
+
         public float BaseValue;
 
         protected bool _isDirty = true;
