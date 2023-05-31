@@ -15,8 +15,8 @@ namespace InventorySystem
         [Header("Quantity Splitter")]
         [SerializeField] private Image _splittingSelector;
         [SerializeField] private TMP_Text _qtyText;
-        [SerializeField] private int _quantity;
         [SerializeField] private float _fillDuration = 0.75f;
+        private int _partialQuantity;
         private Tween _splitterTween;
 
         [Header("Button Animators")]
@@ -40,7 +40,7 @@ namespace InventorySystem
             if (Input.mouseScrollDelta.y != 0)
             {
                 _splitterTween?.Kill();
-                UpdateQuantity(_quantity + (int)Input.mouseScrollDelta.y);
+                UpdateQuantity(_partialQuantity + (int)Input.mouseScrollDelta.y);
             }
         }
 
@@ -116,7 +116,7 @@ namespace InventorySystem
             _splittingSelector.fillAmount = (float)qty / max;
             _qtyText.SetText(QtyText(qty, max));
 
-            _quantity = qty;
+            _partialQuantity = qty;
         }
 
         private void HideQtySelector()
@@ -131,8 +131,7 @@ namespace InventorySystem
 
         public void SplitItemPressed()
         {
-            BeginPartialDrag?.Invoke(FocusedSlot, _quantity);
-            //Debug.Log($"Split pressed. Chose {_quantity} / {_source.Quantity}");
+            BeginPartialDrag?.Invoke(FocusedSlot, _partialQuantity);
             HideMenu();
         }
 
@@ -142,10 +141,9 @@ namespace InventorySystem
             
             if (Entry.RemoveQuantity(1) == 0)
             {
-                UpdateQuantity(_quantity);
+                UpdateQuantity(_partialQuantity);
                 consumable.Use();
             }
-            //HideMenu();
         }
 
         public void EquipButtonPressed()

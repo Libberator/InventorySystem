@@ -1,12 +1,13 @@
-﻿using InventorySystem;
+﻿using TooltipSystem;
 using UnityEngine;
 
-namespace TooltipSystem
+namespace InventorySystem
 {
     /// <summary>
-    /// This class handles the connections between the TooltipSystem and the InventorySystem
+    /// This class handles the connections between the TooltipSystem and the InventorySystem.
+    /// The Item class also has an IHaveTooltip interface, so these are the only cross-dependencies
     /// </summary>
-    public static class ItemTooltipController
+    public static class ItemTooltipBootstrapper
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void SubscribeToEvents()
@@ -20,12 +21,12 @@ namespace TooltipSystem
         private static void ShowTooltip(ItemEntryView slot)
         {
             if (slot.Item != null)
-                Tooltip.Instance.ShowTooltip(slot.Item);
+                Tooltip.ShowTooltip(slot.Item);
         }
 
         private static void HideTooltip(ItemEntryView slot)
         {
-            Tooltip.Instance.HideTooltip();
+            Tooltip.HideTooltip();
         }
     }
 }

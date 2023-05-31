@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace TooltipSystem
 {
+    [RequireComponent(typeof(CanvasGroup))]
     public class Tooltip : Singleton<Tooltip>
     {
         [FoldoutGroup("References")]
@@ -42,7 +43,7 @@ namespace TooltipSystem
         [SerializeField] private bool _followCursor = true;
 
 #if UNITY_EDITOR
-#pragma warning disable 0414
+#pragma warning disable 0414 // annoying "unused variable" warning
         [TextArea(2, 5)]
         [FoldoutGroup("Settings"), OnValueChanged(nameof(SetText))]
         [SerializeField] private string _testYourMessagesHere = "<color=\"green\">Hello!</color>\nThis is a <u>Tooltip</u>.\n<i>Neat</i>, huh?";
@@ -55,7 +56,7 @@ namespace TooltipSystem
         {
             base.Awake();
             ResetAnchors();
-            HideTooltip(instant: true);
+            HideTooltipText(instant: true);
         }
 
         private void Update()
@@ -71,9 +72,13 @@ namespace TooltipSystem
             Refresh();
         }
 
-        public void ShowTooltip(IHaveTooltip tip) => ShowTooltip(tip.GetTooltipText());
-        
-        public void ShowTooltip(string text)
+        public static void ShowTooltip(IHaveTooltip tip)
+        {
+            if (Instance != null)
+                Instance.ShowTooltipText(tip.GetTooltipText());
+        }
+
+        private void ShowTooltipText(string text)
         {
             if (!gameObject.activeInHierarchy) gameObject.SetActive(true);
             _tween?.Kill();
@@ -82,7 +87,13 @@ namespace TooltipSystem
                 .SetDelay(_canvasGroup.alpha == 0f ? _hoverDelay : 0f);
         }
 
-        public void HideTooltip(bool instant = false)
+        public static void HideTooltip(bool instant = false)
+        {
+            if (Instance != null)
+                Instance.HideTooltipText(instant);
+        }
+
+        private void HideTooltipText(bool instant = false)
         {
             _tween?.Kill();
             if (instant)
@@ -225,7 +236,7 @@ namespace TooltipSystem
             if (_horizontalAlignment == HorizontalAlignmentOptions.Flush)
             {
                 Debug.LogWarning("Don't pick Flush for Horizontal Alignment!");
-                _horizontalAlignment = HorizontalAlignmentOptions.Center;
+                _horizontalAlignment = HorizontalAlignmentOptions.Left;
             }
         }
 

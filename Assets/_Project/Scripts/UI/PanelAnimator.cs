@@ -17,7 +17,7 @@ namespace InventorySystem
         [SerializeField, FoldoutGroup("Show Settings")] protected Vector2 _shownPosition;
         [SerializeField, FoldoutGroup("Show Settings")] protected Ease _showEase = Ease.OutBack;
         [SerializeField, FoldoutGroup("Show Settings")] protected float _showDuration = 0.5f;
-        [SerializeField, FoldoutGroup("Show Settings")] private bool _startShown = false;
+        [SerializeField, FoldoutGroup("Show Settings")] protected bool _startShown = false;
         [SerializeField, FoldoutGroup("Show Settings")] protected UnityEvent _onStartShowing;
         [SerializeField, FoldoutGroup("Show Settings")] protected UnityEvent _onShowComplete;
 

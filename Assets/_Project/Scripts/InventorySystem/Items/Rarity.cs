@@ -17,11 +17,5 @@ namespace InventorySystem
         public Color TextColor => _textColor;
         public Color PrimaryColor => _primaryColor;
         public Color SecondaryColor => _secondaryColor;
-
-        public string ApplyColor(string text)
-        {
-            var hexColor = ColorUtility.ToHtmlStringRGB(TextColor);
-            return $"<color=#{hexColor}>{text}</color>";
-        }
     }
 }

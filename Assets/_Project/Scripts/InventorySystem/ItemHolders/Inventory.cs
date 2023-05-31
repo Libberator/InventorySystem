@@ -11,7 +11,7 @@ namespace InventorySystem
         [Header("Settings")]
         [SerializeField] private int _inventorySize = 12;
         [SerializeField] private List<ItemEntry> _startingItems = new();
-        
+
         [Header("References")]
         [SerializeField] private PanelAnimator _panelAnimator;
         [SerializeField] private ItemEntryView _slotPrefab;
@@ -19,16 +19,31 @@ namespace InventorySystem
         [SerializeField] private ItemEntryView[] _itemSlots;
         
         public static event Action<Inventory> Closed;
+        private bool _isOpen = false;
 
         private void Awake() => InitializeInventory(_inventorySize, _startingItems);
 
         [Button]
-        public void OpenInventory() => _panelAnimator.Show();
+        public void ToggleInventory()
+        {
+            if (_isOpen)
+                CloseInventory();
+            else
+                OpenInventory();
+        }
+
+        [Button]
+        public void OpenInventory()
+        {
+            _panelAnimator.Show();
+            _isOpen = true;
+        }
 
         [Button]
         public void CloseInventory()
         {
             _panelAnimator.Hide();
+            _isOpen = false;
             Closed?.Invoke(this);
         }
 

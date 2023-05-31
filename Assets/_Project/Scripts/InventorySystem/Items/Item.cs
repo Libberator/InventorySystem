@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Sirenix.OdinInspector;
 using TooltipSystem;
+using Utilities;
 
 namespace InventorySystem
 {
@@ -22,7 +23,7 @@ namespace InventorySystem
         public int MaxStack = 1;
 
         public virtual string Name => string.IsNullOrEmpty(_nameOverride) ? name : _nameOverride;
-        public virtual string ColoredName => Rarity.ApplyColor(Name);
+        public virtual string ColoredName => Name.WithColor(Rarity.TextColor);
         public virtual string GetTooltipText() => $"{ColoredName}\n\n<i>{Description}</i>";
         public virtual bool IsStackable => MaxStack > 1;
     }
