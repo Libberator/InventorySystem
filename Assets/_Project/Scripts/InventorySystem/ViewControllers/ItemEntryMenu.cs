@@ -1,9 +1,9 @@
-using System;
-using UnityEngine;
-using UnityEngine.UI;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using System;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace InventorySystem
 {
@@ -55,7 +55,7 @@ namespace InventorySystem
                 ShowQtySelector();
             else
                 HideQtySelector();
-            
+
             // consider interfaces
             if (Entry.Item is Equipment)
                 _equip.Show(restart: true);
@@ -97,7 +97,7 @@ namespace InventorySystem
 
             _splitterTween = DOVirtual.Int(0, max / 2, _fillDuration, UpdateQuantity).SetEase(Ease.OutBack);
         }
-        
+
         private void UpdateQuantity(int qty)
         {
             int max = Entry.Quantity;
@@ -138,7 +138,7 @@ namespace InventorySystem
         public void UseButtonPressed()
         {
             var consumable = Entry.Item as Consumable;
-            
+
             if (Entry.RemoveQuantity(1) == 0)
             {
                 UpdateQuantity(_partialQuantity);

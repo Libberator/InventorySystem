@@ -12,7 +12,7 @@ namespace Utilities
         public static string WithColor(this string text, Color color, bool includeAlpha = false) =>
             $"<color={color.ToHex(includeAlpha)}>{text}</color>";
 
-        public static string WithLink(this string text, string link) => 
+        public static string WithLink(this string text, string link) =>
             $"<link=\"{link}\">{text}</link>";
 
         public static string ToHex(this Color color, bool includeAlpha = false) =>

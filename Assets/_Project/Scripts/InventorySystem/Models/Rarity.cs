@@ -7,7 +7,7 @@ namespace InventorySystem
     {
         [SerializeField]
         private Color _textColor = Color.white;
-        
+
         [SerializeField, Tooltip("Used for things like an ItemSlot Background")]
         private Color _primaryColor = Color.white;
 

@@ -1,8 +1,8 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
-using TMPro;
 
-namespace InventorySystem
+namespace UI
 {
     public class InverseMaskText : TextMeshProUGUI
     {

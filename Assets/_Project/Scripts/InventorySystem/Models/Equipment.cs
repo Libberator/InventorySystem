@@ -1,7 +1,13 @@
+
+/* Unmerged change from project 'Assembly-CSharp.Player'
+Before:
 using UnityEngine;
-using StatSystem;
+After:
 using Sirenix.OdinInspector;
+*/
+using StatSystem;
 using System.Text;
+using UnityEngine;
 
 namespace InventorySystem
 {
@@ -65,7 +71,7 @@ namespace InventorySystem
                 mod.Source = this;
         }
     }
- 
+
     public static class EquipmentTypeExtension
     {
         public static string EnumToString(this EquipmentType type)

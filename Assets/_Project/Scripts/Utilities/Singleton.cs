@@ -56,7 +56,7 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
 
     // Object exists independent of Scene lifecycle, assume that means it has DontDestroyOnLoad set
     private static bool IsDontDestroyOnLoad => (_instance.gameObject.hideFlags & HideFlags.DontSave) == HideFlags.DontSave;
-    
+
     // Could potentially use OnApplicationQuit() instead
 
     public void OnDestroy()

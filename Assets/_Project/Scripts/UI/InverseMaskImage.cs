@@ -1,8 +1,8 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
-namespace InventorySystem
+namespace UI
 {
     public class InverseMaskImage : Image
     {

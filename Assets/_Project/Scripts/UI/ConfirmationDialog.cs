@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Utilities
+namespace UI
 {
     public class ConfirmationDialog : Singleton<ConfirmationDialog>
     {
@@ -47,7 +47,7 @@ namespace Utilities
             _messageText.SetText(message);
             _confirmCallback = onConfirm;
             _cancelCallback = onCancel;
-            
+
             ShowDialog(withBypass: true);
         }
 
@@ -59,7 +59,7 @@ namespace Utilities
             _messageText.SetText(message);
             _confirmCallback = onConfirm;
             _cancelCallback = onCancel;
-            
+
             ShowDialog(withBypass: false);
         }
 
@@ -70,7 +70,7 @@ namespace Utilities
         {
             _confirmButton.interactable = true;
             _cancelButton.interactable = true;
-            
+
             _bypassDisplayed = withBypass;
             _toggleContainer.SetActive(withBypass);
             _bypassToggle.isOn = false;
@@ -80,10 +80,10 @@ namespace Utilities
 
             _dialogBox.DOScale(Vector3.one, _tweenDuration).SetEase(Ease.OutBack);
             _canvasGroup.DOFade(1f, _tweenDuration);
-            
+
             IsActive = true;
         }
-        
+
         [Button]
         private void CloseDialog()
         {

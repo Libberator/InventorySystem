@@ -1,5 +1,5 @@
-using System;
 using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,7 +17,7 @@ namespace InventorySystem
         [SerializeField] private ItemEntryView _slotPrefab;
         [SerializeField] private RectTransform _itemSlotsParent;
         [SerializeField] private ItemEntryView[] _itemSlots;
-        
+
         public static event Action<Inventory> Closed;
         private bool _isOpen = false;
         public bool IsOpen => _isOpen;
@@ -96,7 +96,7 @@ namespace InventorySystem
             foreach (var slot in _itemSlots.Where(s => s.Item == item).OrderBy(s => s.Quantity))
             {
                 remainder = slot.Entry.RemoveQuantity(qty);
-                if (remainder == 0) 
+                if (remainder == 0)
                     return true;
                 qty = remainder;
             }
@@ -137,7 +137,7 @@ namespace InventorySystem
                 AddItemSlots(size - currentCount);
             else if (currentCount > size)
                 RemoveItemSlots(currentCount - size);
-            
+
             RefreshItemSlots();
         }
 
@@ -172,7 +172,7 @@ namespace InventorySystem
 
         private void RefreshItemSlots() => _itemSlots = _itemSlotsParent.GetComponentsInChildren<ItemEntryView>(includeInactive: true);
 
-#endregion
+        #endregion
 
         private void OnValidate()
         {

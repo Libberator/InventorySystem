@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Sirenix.OdinInspector;
+using System;
 using UnityEngine;
-using Sirenix.OdinInspector;
 
 namespace InventorySystem
 {

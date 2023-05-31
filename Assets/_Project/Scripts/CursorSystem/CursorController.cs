@@ -42,7 +42,7 @@ namespace InventorySystem
         public void ResetCursor()
         {
             //if (isCursorOverriden)
-                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
             //isCursorOverriden = false;
         }
     }
