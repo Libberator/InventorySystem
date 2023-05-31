@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UI;
+using Utilities.UI;
 
 namespace InventorySystem
 {

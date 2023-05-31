@@ -4,7 +4,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UI;
+using Utilities.UI;
 
 namespace InventorySystem
 {

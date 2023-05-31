@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace Utilities.UI
 {
     public class ConfirmationDialog : Singleton<ConfirmationDialog>
     {

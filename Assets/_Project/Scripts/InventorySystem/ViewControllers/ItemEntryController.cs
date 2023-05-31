@@ -2,10 +2,10 @@
 using Sirenix.OdinInspector;
 using System;
 using TMPro;
-using UI;
 using UnityEngine;
 using UnityEngine.UI;
 using Utilities;
+using Utilities.UI;
 
 namespace InventorySystem
 {

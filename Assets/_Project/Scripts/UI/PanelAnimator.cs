@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace UI
+namespace Utilities.UI
 {
     public class PanelAnimator : MonoBehaviour
     {

@@ -1,5 +1,5 @@
-using UI;
 using UnityEngine;
+using Utilities.UI;
 
 namespace InventorySystem
 {
