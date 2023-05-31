@@ -32,7 +32,16 @@ namespace InventorySystem
         [SerializeField] private float _punchDuration = 0.25f;
         private Tween _pickupTween;
 
+        [Header("What's In Hand")]
+        [SerializeField, ReadOnly]
+        private ItemEntry _entry = new();
+        private ItemEntryView _returnSlot;
+        private bool _isPartialDrag = false;
         private bool _isDragging = false;
+
+        public Item DraggedItem => _entry.Item;
+        public int DraggedQuantity => _entry.Quantity;
+
         public bool IsDragging
         {
             get => _isDragging;
@@ -45,15 +54,6 @@ namespace InventorySystem
                 }
             }
         }
-
-        private bool _isPartialDrag = false;
-        private ItemEntryView _returnSlot;
-
-        [Header("What's In Hand")]
-        [SerializeField, ReadOnly]
-        private ItemEntry _entry = new();
-        public Item DraggedItem => _entry.Item;
-        public int DraggedQuantity => _entry.Quantity;
 
         protected override void Awake()
         {
@@ -96,8 +96,12 @@ namespace InventorySystem
 
         private void OnStartDragging(ItemEntryView slot)
         {
+            if (_isPartialDrag)
+                ReturnItemsToStart();
+
             _entry.SwapWith(slot.Entry);
-            _returnSlot = slot;
+            if (_returnSlot == null)
+                _returnSlot = slot;
             IsDragging = true;
             _isPartialDrag = false;
         }
@@ -112,50 +116,65 @@ namespace InventorySystem
             }
 
             slot.Entry.TransferTo(_entry, partialQty);
-            _returnSlot = slot;
+            if (_returnSlot == null)
+                _returnSlot = slot;
             IsDragging = true;
             _isPartialDrag = true;
         }
 
-        private void OnLeftClicked(ItemEntryView slot)
+        private void OnShiftLeftClicked(ItemEntryView slot)
         {
-            if (!_isDragging)
-            {
-                // check if Shift is being Held
-                // check if source of slot is NOT main inventory
-                // Then try to transfer as many things over via inventory.T
-                // on second though: make OnShiftLeftClicked a separate method
-                if (slot.Item != null)
-                    OnStartDragging(slot);
-            }
-            else if (_isDragging)
-            {
-                // moving to empty slot or stacking on similar one
-                if (_entry.CanTransferTo(slot.Entry))
-                {
-                    _entry.TransferTo(slot.Entry);
-                    if (DraggedQuantity == 0)
-                        StopDragging();
-                }
-                // swapping
-                else if (slot.Item != DraggedItem)
-                {
-                    // carrying a partial quantity - return to home
-                    if (_isPartialDrag)
-                    {
-                        ReturnItemsToStart();
-                        OnStartDragging(slot);
-                    }
-                    // swap with what's in hand
-                    else
-                    {
-                        _entry.SwapWith(slot.Entry);
-                        //_returnSlot = slot;
-                    }
-                }
-            }
             if (_rightClickMenu.MenuShown)
                 _rightClickMenu.HideMenu();
+
+            if (_isDragging)
+            {
+                // nothing implemented yet for dragging + shift-click
+                return;
+            }
+            // below here, _isDragging is false
+
+            // check if Shift is being Held
+            // check if source of slot is NOT main inventory
+            // Then try to transfer as many things over via inventory.T
+
+        }
+
+        private void OnLeftClicked(ItemEntryView slot)
+        {
+            if (_rightClickMenu.MenuShown)
+                _rightClickMenu.HideMenu();
+
+            if (!_isDragging)
+            {
+                if (slot.Item != null)
+                    OnStartDragging(slot);
+                return;
+            }
+            // below here, _isDragging is true
+
+            // moving to empty slot or stacking on similar one
+            if (_entry.CanTransferTo(slot.Entry))
+            {
+                _entry.TransferTo(slot.Entry);
+                if (DraggedQuantity == 0)
+                    StopDragging();
+            }
+            // swapping
+            else if (slot.Item != DraggedItem)
+            {
+                // carrying a partial quantity - return to home
+                if (_isPartialDrag)
+                {
+                    ReturnItemsToStart();
+                    OnStartDragging(slot);
+                }
+                // swap with what's in hand
+                else
+                {
+                    _entry.SwapWith(slot.Entry);
+                }
+            }
         }
 
         private void OnRightClicked(ItemEntryView slot)
