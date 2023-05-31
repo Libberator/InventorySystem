@@ -37,7 +37,7 @@ namespace TooltipSystem
         [SerializeField] private float _fadeIn = 0.15f;
 
         [FoldoutGroup("Settings")]
-        [SerializeField] private float _fadeOut = 0.1f;
+        [SerializeField] private float _fadeOut = 0.15f;
 
         [FoldoutGroup("Settings")]
         [SerializeField] private bool _followCursor = true;

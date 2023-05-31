@@ -1,21 +1,26 @@
 ﻿using DG.Tweening;
 using Sirenix.OdinInspector;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities;
 
 namespace InventorySystem
 {
     /// <summary>
-    /// Acts as the Hand/Liaison to manage the moving, stacking, swapping, etc.
+    /// Acts as the Hand/Liaison to manage the moving, stacking, swapping, disposing, etc.
     /// Depends on ItemEntryView events for left-clicks and dragging, ItemEntryMenu for right-clicking, and
     /// Inventory for when they close and shift-click bulk-adding (inventory won't need to be open)
     /// </summary>
     public class ItemEntryController : Singleton<ItemEntryController>
     {
+        public static event Action<bool> IsDraggingChanged;
+        public static event Action<ItemEntry> DisposedEntry;
+
         [Header("Dragging References")]
         [SerializeField, Required] private Image _icon;
-        [SerializeField, Required] private TMP_Text _qtyText;
+        [SerializeField, Required] private TextMeshProUGUI _qtyText;
         private Transform _draggedTransform;
 
         [Header("Right-Click Menu References")]
@@ -27,14 +32,27 @@ namespace InventorySystem
         private Tween _pickupTween;
 
         private bool _isDragging = false;
+        public bool IsDragging 
+        { 
+            get => _isDragging; 
+            private set
+            {
+                if (_isDragging != value)
+                {
+                    _isDragging = value;
+                    IsDraggingChanged?.Invoke(_isDragging);
+                }
+            } 
+        }
+
         private bool _isPartialDrag = false;
         private ItemEntryView _returnSlot;
 
         [Header("What's In Hand")]
         [SerializeField, ReadOnly]
         private ItemEntry _entry = new();
-        private Item DraggedItem => _entry.Item;
-        private int DraggedQuantity => _entry.Quantity;
+        public Item DraggedItem => _entry.Item;
+        public int DraggedQuantity => _entry.Quantity;
 
         protected override void Awake()
         {
@@ -79,7 +97,7 @@ namespace InventorySystem
         {
             _entry.SwapWith(slot.Entry);
             _returnSlot = slot;
-            _isDragging = true;
+            IsDragging = true;
             _isPartialDrag = false;
         }
 
@@ -94,7 +112,7 @@ namespace InventorySystem
 
             slot.Entry.TransferTo(_entry, partialQty);
             _returnSlot = slot;
-            _isDragging = true;
+            IsDragging = true;
             _isPartialDrag = true;
         }
 
@@ -106,8 +124,8 @@ namespace InventorySystem
                 // check if source of slot is NOT main inventory
                 // Then try to transfer as many things over via inventory.T
                 // on second though: make OnShiftLeftClicked a separate method
-
-                OnStartDragging(slot);
+                if (slot.Item != null)
+                    OnStartDragging(slot);
             }
             else if (_isDragging)
             {
@@ -184,9 +202,31 @@ namespace InventorySystem
         private void StopDragging()
         {
             _returnSlot = null;
-            _isDragging = false;
             _isPartialDrag = false;
+            IsDragging = false;
         }
+
+        #endregion
+        
+        #region Disposal
+
+        public void Dispose()
+        {
+            if (!_isDragging) return;
+            _isDragging = false;
+            var msg = $"Dispose of\n{DraggedItem.ColoredName.WithLink("Item")} ({DraggedQuantity})?";
+            ConfirmationDialog.Instance.AskWithBypass("Dispose Item", msg, ConfirmDisposal, CancelDisposal);
+        }
+
+        private void ConfirmDisposal()
+        {
+            DisposedEntry?.Invoke(_entry);
+            _entry.Set(null, 0);
+            _isDragging = true;
+            StopDragging();
+        }
+
+        private void CancelDisposal() => _isDragging = true;
 
         #endregion
 

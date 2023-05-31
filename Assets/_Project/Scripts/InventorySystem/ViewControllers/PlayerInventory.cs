@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utilities;
 
 namespace InventorySystem
 {
@@ -6,7 +7,7 @@ namespace InventorySystem
     {
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.I))
+            if (Input.GetKeyDown(KeyCode.I) && !ConfirmationDialog.IsActive)
             {
                 ToggleInventory();
             }
