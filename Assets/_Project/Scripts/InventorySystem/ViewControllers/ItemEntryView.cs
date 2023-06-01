@@ -8,11 +8,13 @@ using UnityEngine.UI;
 
 namespace InventorySystem
 {
+    // Relies on the legacy Input system for holding down Left Shift
     public class ItemEntryView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IDropHandler, IEndDragHandler
     {
         public static event Action<ItemEntryView> PointerEnter;
         public static event Action<ItemEntryView> PointerExit;
         public static event Action<ItemEntryView> LeftClicked;
+        public static event Action<ItemEntryView> LeftShiftClicked;
         public static event Action<ItemEntryView> RightClicked;
         public static event Action<ItemEntryView> BeginDrag;
         public static event Action<ItemEntryView> EndDrag;
@@ -96,7 +98,12 @@ namespace InventorySystem
         public virtual void OnPointerClick(PointerEventData eventData)
         {
             if (eventData.button == PointerEventData.InputButton.Left)
-                LeftClicked?.Invoke(this);
+            {
+                if (Input.GetKey(KeyCode.LeftShift))
+                    LeftShiftClicked?.Invoke(this);
+                else
+                    LeftClicked?.Invoke(this);
+            }
             else if (eventData.button == PointerEventData.InputButton.Right)
                 RightClicked?.Invoke(this);
         }

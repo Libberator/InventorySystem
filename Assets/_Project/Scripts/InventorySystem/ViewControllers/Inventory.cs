@@ -23,7 +23,7 @@ namespace InventorySystem
         private bool _isOpen = false;
         public bool IsOpen => _isOpen;
 
-        private void Awake() => InitializeInventory(_inventorySize, _startingItems);
+        protected virtual void Awake() => InitializeInventory(_inventorySize, _startingItems);
 
         [Button]
         public void ToggleInventory()
@@ -57,8 +57,18 @@ namespace InventorySystem
         // move to a Chest/Loot child class?
         public void CollectAll()
         {
+            var playerInventory = ServiceLocator.Get<Inventory>();
+            if (playerInventory == this) return;
 
+            foreach (var slot in _itemSlots)
+            {
+                if (slot.Item == null) continue;
+                playerInventory.TryAddItem(slot.Entry, out int remainder);
+                slot.Entry.RemoveQuantity(slot.Quantity - remainder);
+            }
         }
+
+        public bool TryAddItem(ItemEntry entry, out int remainder) => TryAddItem(entry.Item, entry.Quantity, out remainder);
 
         public bool TryAddItem(Item item, int qty, out int remainder)
         {
@@ -109,16 +119,45 @@ namespace InventorySystem
 
         #region Sorting
 
-        public void AutoSort()
+        public void CombineLikeItems(Item item)
         {
+            if (!item.IsStackable) return;
 
+            // for my implementation, it's important to sort from small to large
+            var likeItemSlots = _itemSlots.Where(s => s.Item == item && s.Quantity != item.MaxStack).OrderBy(s => s.Quantity).ToArray();
+
+            for (var i = 0; i < likeItemSlots.Length - 1; i++)
+            {
+                // start with the smallest slots
+                var current = likeItemSlots[i];
+                if (current.Quantity == item.MaxStack) continue;
+                
+                // fill from the largest to the smallest that's available
+                for (int j = likeItemSlots.Length - 1; j > i; j--)
+                {
+                    var target = likeItemSlots[j];
+                    if (target.Quantity == item.MaxStack) continue;
+
+                    current.Entry.TransferTo(target.Entry);
+                    if (current.Quantity == 0) break;
+                }
+            }
+        }
+
+        public void AutoSort() // Equipment first, then Rarity, then by something else other than Name, then naturally descending quantity
+        {
+            // SortedSet of just Items,
+            // combine like items (will only apply to non-stackable ones ofc)
+            // now for the important part: how do we re-arrange without losing anything in the process?
+            // do we just have a dictionary (SortedList?) with Item & Qty, then just refresh everything to it?
+            // it should ignore whatever we're dragging, if anything, by default
         }
 
         #endregion
 
         #region Adding & Removing ItemSlots
 
-        public void InitializeInventory(int size, List<ItemEntry> startingEntries = null)
+        protected void InitializeInventory(int size, List<ItemEntry> startingEntries = null)
         {
             MatchSize(size);
 
@@ -131,7 +170,7 @@ namespace InventorySystem
             }
         }
 
-        private void MatchSize(int size)
+        protected void MatchSize(int size)
         {
             var currentCount = _itemSlotsParent.childCount;
             if (currentCount < size)
@@ -142,7 +181,7 @@ namespace InventorySystem
             RefreshItemSlots();
         }
 
-        private void AddItemSlots(int qty = 1)
+        protected void AddItemSlots(int qty = 1)
         {
             for (int i = 0; i < qty; i++)
             {
@@ -154,7 +193,7 @@ namespace InventorySystem
             }
         }
 
-        private void RemoveItemSlots(int qty = 1)
+        protected void RemoveItemSlots(int qty = 1)
         {
             int lowestIndex = Mathf.Max(0, _itemSlotsParent.childCount - qty);
             for (int i = _itemSlotsParent.childCount - 1; i >= lowestIndex; i--)
@@ -175,7 +214,7 @@ namespace InventorySystem
 
         #endregion
 
-        private void OnValidate()
+        protected virtual void OnValidate()
         {
             if (_itemSlotsParent == null)
             {

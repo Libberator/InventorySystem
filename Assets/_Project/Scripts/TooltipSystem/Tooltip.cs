@@ -6,7 +6,7 @@ using UnityEngine;
 namespace TooltipSystem
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class Tooltip : Singleton<Tooltip>
+    public class Tooltip : MonoBehaviour
     {
         [FoldoutGroup("References")]
         [SerializeField] private RectTransform _rootCanvas;
@@ -52,11 +52,11 @@ namespace TooltipSystem
 
         private Tween _tween;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
+            ServiceLocator.Register(this);
             ResetAnchors();
-            HideTooltipText(instant: true);
+            HideTooltip(instant: true);
         }
 
         private void Update()
@@ -66,25 +66,9 @@ namespace TooltipSystem
 
         #region Update Text, Show & Hide
 
-        public void SetText(string text)
-        {
-            _text.SetText(text);
-            Refresh();
-        }
+        public void ShowTooltip(IHaveTooltip tip) => ShowTooltip(tip.GetTooltipText());
 
-        public static void ShowTooltip(IHaveTooltip tip)
-        {
-            if (Instance != null)
-                Instance.ShowTooltipText(tip.GetTooltipText());
-        }
-
-        public static void ShowTooltip(string text)
-        {
-            if (Instance != null)
-                Instance.ShowTooltipText(text);
-        }
-
-        private void ShowTooltipText(string text)
+        private void ShowTooltip(string text)
         {
             if (!gameObject.activeInHierarchy) gameObject.SetActive(true);
             _tween?.Kill();
@@ -93,13 +77,7 @@ namespace TooltipSystem
                 .SetDelay(_canvasGroup.alpha == 0f ? _hoverDelay : 0f);
         }
 
-        public static void HideTooltip(bool instant = false)
-        {
-            if (Instance != null)
-                Instance.HideTooltipText(instant);
-        }
-
-        private void HideTooltipText(bool instant = false)
+        public void HideTooltip(bool instant = false)
         {
             _tween?.Kill();
             if (instant)
@@ -112,6 +90,12 @@ namespace TooltipSystem
                 _tween = _canvasGroup.DOFade(0f, _fadeOut)
                     .OnComplete(() => gameObject.SetActive(false));
             }
+        }
+        
+        private void SetText(string text)
+        {
+            _text.SetText(text);
+            Refresh();
         }
 
         #endregion

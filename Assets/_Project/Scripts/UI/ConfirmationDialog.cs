@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Utilities.UI
 {
-    public class ConfirmationDialog : Singleton<ConfirmationDialog>
+    public class ConfirmationDialog : MonoBehaviour
     {
         [Header("Mandatory References")]
         [SerializeField] private TMP_Text _messageText;
@@ -31,7 +31,11 @@ namespace Utilities.UI
         private string _currentBypassGroup;
         private bool _bypassDisplayed;
 
-        public static bool IsActive { get; private set; }
+        private void Awake() => ServiceLocator.Register(this);
+
+        #region Public Methods & Properties
+
+        public bool IsActive { get; private set; }
 
         /// <summary>
         /// Give similar requests the same "<paramref name="bypassGroup"/> title" to check if we've chosen to automatically accept for the day.
@@ -62,6 +66,8 @@ namespace Utilities.UI
 
             ShowDialog(withBypass: false);
         }
+
+        #endregion
 
         #region Animations
 

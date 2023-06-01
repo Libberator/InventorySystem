@@ -16,7 +16,7 @@ namespace InventorySystem
             ItemEntryController.DisposedEntry += OnDisposed;
         }
 
-        private void Start() => _dragger = ItemEntryController.Instance;
+        private void Start() => _dragger = ServiceLocator.Get<ItemEntryController>();
 
         private void OnDraggingChanged(bool isDragging)
         {

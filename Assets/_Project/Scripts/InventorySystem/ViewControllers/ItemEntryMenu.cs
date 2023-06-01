@@ -8,6 +8,7 @@ using Utilities.UI;
 
 namespace InventorySystem
 {
+    // Relies on the legacy Input system for the mouse scrolling
     public class ItemEntryMenu : MonoBehaviour
     {
         public event Action<ItemEntryView, int> BeginPartialDrag;
@@ -16,7 +17,8 @@ namespace InventorySystem
         [Header("Quantity Splitter")]
         [SerializeField] private Image _splittingSelector;
         [SerializeField] private TMP_Text _qtyText;
-        [SerializeField] private float _fillDuration = 0.75f;
+        [SerializeField] private float _fillDuration = 0.5f;
+        [SerializeField] private Ease _fillEase = Ease.OutQuint;
         private int _partialQuantity;
         private Tween _splitterTween;
 
@@ -30,10 +32,7 @@ namespace InventorySystem
         public ItemEntryView FocusedSlot { get; private set; }
         private ItemEntry Entry => FocusedSlot.Entry;
 
-        private void Start()
-        {
-            HideQtySelector();
-        }
+        private void Start() => HideQtySelector();
 
         private void Update()
         {
@@ -96,7 +95,7 @@ namespace InventorySystem
 
             var max = Entry.Quantity;
 
-            _splitterTween = DOVirtual.Int(0, max / 2, _fillDuration, UpdateQuantity).SetEase(Ease.OutBack);
+            _splitterTween = DOVirtual.Int(0, max / 2, _fillDuration, UpdateQuantity).SetEase(_fillEase);
         }
 
         private void UpdateQuantity(int qty)

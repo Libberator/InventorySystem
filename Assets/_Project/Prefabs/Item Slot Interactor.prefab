@@ -300,7 +300,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _splittingSelector: {fileID: 4114231156169744070}
   _qtyText: {fileID: 4114231156686509970}
-  _fillDuration: 0.75
+  _fillDuration: 0.5
+  _fillEase: 15
   _use: {fileID: 4114231156712014272}
   _equip: {fileID: 4114231156887145000}
   _sell: {fileID: 4114231155475972010}

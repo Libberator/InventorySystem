@@ -14,7 +14,7 @@ namespace InventorySystem
     /// Depends on ItemEntryView events for left-clicks and dragging, ItemEntryMenu for right-clicking, and
     /// Inventory for when they close and shift-click bulk-adding (inventory won't need to be open)
     /// </summary>
-    public class ItemEntryController : Singleton<ItemEntryController>
+    public class ItemEntryController : MonoBehaviour
     {
         public static event Action<bool> IsDraggingChanged;
         public static event Action<ItemEntry> DisposedEntry;
@@ -32,6 +32,10 @@ namespace InventorySystem
         [SerializeField] private float _punchDuration = 0.25f;
         private Tween _pickupTween;
 
+        // Dependencies retrieved via ServiceLocator
+        private Inventory _playerInventory;
+        private ConfirmationDialog _confirmationDialog;
+        
         [Header("What's In Hand")]
         [SerializeField, ReadOnly]
         private ItemEntry _entry = new();
@@ -55,18 +59,25 @@ namespace InventorySystem
             }
         }
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
+            ServiceLocator.Register(this);
             _draggedTransform = _icon.transform;
             _entry.ItemChanged += OnItemChanged;
             _entry.QuantityChanged += OnQuantityChanged;
+        }
+
+        private void Start()
+        {
+            _playerInventory = ServiceLocator.Get<Inventory>();
+            _confirmationDialog = ServiceLocator.Get<ConfirmationDialog>();
         }
 
         private void OnEnable()
         {
             ItemEntryView.BeginDrag += OnStartDragging;
             ItemEntryView.LeftClicked += OnLeftClicked;
+            ItemEntryView.LeftShiftClicked += OnLeftShiftClicked;
             ItemEntryView.RightClicked += OnRightClicked;
             ItemEntryView.DroppedOn += OnDropped;
             ItemEntryView.EndDrag += OnEndDragging;
@@ -78,6 +89,7 @@ namespace InventorySystem
         {
             ItemEntryView.BeginDrag -= OnStartDragging;
             ItemEntryView.LeftClicked -= OnLeftClicked;
+            ItemEntryView.LeftShiftClicked -= OnLeftShiftClicked;
             ItemEntryView.RightClicked -= OnRightClicked;
             ItemEntryView.DroppedOn -= OnDropped;
             ItemEntryView.EndDrag -= OnEndDragging;
@@ -96,6 +108,9 @@ namespace InventorySystem
 
         private void OnStartDragging(ItemEntryView slot)
         {
+            if (_rightClickMenu.MenuShown)
+                _rightClickMenu.HideMenu();
+
             if (_isPartialDrag)
                 ReturnItemsToStart();
 
@@ -122,22 +137,37 @@ namespace InventorySystem
             _isPartialDrag = true;
         }
 
-        private void OnShiftLeftClicked(ItemEntryView slot)
+        private void OnLeftShiftClicked(ItemEntryView slot)
         {
             if (_rightClickMenu.MenuShown)
                 _rightClickMenu.HideMenu();
 
+            // nothing implemented yet for shift-click while dragging
             if (_isDragging)
-            {
-                // nothing implemented yet for dragging + shift-click
                 return;
-            }
             // below here, _isDragging is false
-
-            // check if Shift is being Held
-            // check if source of slot is NOT main inventory
-            // Then try to transfer as many things over via inventory.T
-
+            
+            if (slot.Item != null)
+            {
+                // shift-clicked in the player inventory - try to do stacking
+                if (_playerInventory.Contains(slot))
+                {
+                    _playerInventory.CombineLikeItems(slot.Item);
+                }
+                // shift-clicked in an external inventory - collect into player inventory
+                else
+                {
+                    // TODO: add a way to display messages on picking items up, and errors notifications too
+                    if (!_playerInventory.TryAddItem(slot.Entry, out int remainder))
+                    {
+                        Debug.Log($"Inventory is too full to add {slot.Item} ({remainder})");
+                    }
+                    var qtyAdded = slot.Quantity - remainder;
+                    if (qtyAdded > 0)
+                        Debug.Log($"Added {qtyAdded} {slot.Item}");
+                    slot.Entry.RemoveQuantity(qtyAdded);
+                }
+            }
         }
 
         private void OnLeftClicked(ItemEntryView slot)
@@ -217,6 +247,7 @@ namespace InventorySystem
         {
             if (_returnSlot != null)
                 _entry.TransferTo(_returnSlot.Entry);
+            _returnSlot = null;
         }
 
         private void StopDragging()
@@ -235,7 +266,7 @@ namespace InventorySystem
             if (!_isDragging) return;
             _isDragging = false;
             var msg = $"Dispose of\n{DraggedItem.ColoredName.WithLink("Item")} ({DraggedQuantity})?";
-            ConfirmationDialog.Instance.AskWithBypass("Dispose Item", msg, ConfirmDisposal, CancelDisposal);
+            _confirmationDialog.AskWithBypass("Dispose Item", msg, ConfirmDisposal, CancelDisposal);
         }
 
         private void ConfirmDisposal()
