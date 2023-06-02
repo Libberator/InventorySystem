@@ -14,8 +14,5 @@ namespace Utilities
 
         public static string WithLink(this string text, string link) =>
             $"<link=\"{link}\">{text}</link>";
-
-        public static string ToHex(this Color color, bool includeAlpha = false) =>
-           $"#{(includeAlpha ? ColorUtility.ToHtmlStringRGBA(color) : ColorUtility.ToHtmlStringRGB(color))}";
     }
 }
