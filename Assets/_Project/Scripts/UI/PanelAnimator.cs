@@ -36,7 +36,8 @@ namespace Utilities.UI
         private IEnumerator Start()
         {
             yield return null;
-            // why wait a frame? because https://docs.unity3d.com/ScriptReference/Canvas.ForceUpdateCanvases.html
+            // why wait a frame? Because the things that are using this have conflicting LayoutGroups w/ Content Size Fitter on children
+            // For more info: https://docs.unity3d.com/ScriptReference/Canvas.ForceUpdateCanvases.html
             gameObject.SetActive(_startShown);
         }
 

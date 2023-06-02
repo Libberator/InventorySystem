@@ -44,6 +44,6 @@ namespace InventorySystem
 
         public ItemTooltipProvider(ItemEntryController dragger) => _dragger = dragger;
 
-        public string GetTooltipText() => _dragger.DraggedItem.GetTooltipText();
+        public string GetTooltipText() => _dragger.Entry.Item.GetTooltipText();
     }
 }

@@ -37,15 +37,13 @@ namespace InventorySystem
         private ConfirmationDialog _confirmationDialog;
         
         [Header("What's In Hand")]
-        [SerializeField, ReadOnly]
-        private ItemEntry _entry = new();
+        [SerializeField, ReadOnly] private ItemEntry _entry = new();
+        public ItemEntry Entry => _entry;
+
         private ItemEntryView _returnSlot;
         private bool _isPartialDrag = false;
+        
         private bool _isDragging = false;
-
-        public Item DraggedItem => _entry.Item;
-        public int DraggedQuantity => _entry.Quantity;
-
         public bool IsDragging
         {
             get => _isDragging;
@@ -187,11 +185,11 @@ namespace InventorySystem
             if (_entry.CanTransferTo(slot.Entry))
             {
                 _entry.TransferTo(slot.Entry);
-                if (DraggedQuantity == 0)
+                if (_entry.Quantity == 0)
                     StopDragging();
             }
             // swapping
-            else if (slot.Item != DraggedItem)
+            else if (slot.Item != _entry.Item)
             {
                 // carrying a partial quantity - return to home
                 if (_isPartialDrag)
@@ -265,7 +263,7 @@ namespace InventorySystem
         {
             if (!_isDragging) return;
             _isDragging = false;
-            var msg = $"Dispose of\n{DraggedItem.ColoredName.WithLink("Item")} ({DraggedQuantity})?";
+            var msg = $"Dispose of\n{_entry.Item.ColoredName.WithLink("Item")} ({_entry.Quantity})?";
             _confirmationDialog.AskWithBypass("Dispose Item", msg, ConfirmDisposal, CancelDisposal);
         }
 
