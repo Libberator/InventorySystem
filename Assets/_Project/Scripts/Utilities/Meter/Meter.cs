@@ -68,6 +68,9 @@ namespace Utilities.Meter
 
         public float PercentageFilled => (float)Value / Maximum * 100;
 
+        /// <summary>
+        /// Returns any amount over the maximum that didn't get fully applied.
+        /// </summary>
         public int Increase(int amount)
         {
             if (amount < 0)
@@ -86,6 +89,9 @@ namespace Utilities.Meter
             return 0;
         }
 
+        /// <summary>
+        /// Returns any amount beyond 0 (the lower bound) that didn't get fully subtracted.
+        /// </summary>
         public int Decrease(int amount)
         {
             if (amount < 0)
@@ -115,6 +121,9 @@ namespace Utilities.Meter
             return amountToDeplete;
         }
 
+        /// <summary>
+        /// Returns the amount that Value gets adjusted by, positive or negative
+        /// </summary>
         public int FillToPercent(float percent)
         {
             if (percent < 0)
@@ -123,7 +132,7 @@ namespace Utilities.Meter
             if (percent > 100)
                 throw new ArgumentOutOfRangeException(nameof(percent),
                     $"Cannot fill Meter over 100%. Cannot fill to {percent}% ");
-            var desiredValue = (int)((float)Maximum / 100 * percent);
+            var desiredValue = (int)(percent * Maximum);
 
             if (desiredValue > Value)
             {

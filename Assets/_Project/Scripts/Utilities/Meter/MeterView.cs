@@ -1,16 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Sirenix.OdinInspector;
 
 namespace Utilities.Meter
 {
     /// <summary>
-    /// This is the UI that listens to changes from Meter. A Health Bar, Mana Bar, Stamina, etc.
+    /// This is the UI that listens to changes from Meter. A Health Bar, Mana Bar, XP, Stamina, etc.
     /// </summary>
-    public class MeterView : MonoBehaviour
+    public class MeterView : SerializedMonoBehaviour
     {
         [Header("Target")]
-        [SerializeField] private MeterController _source;
+        [SerializeField] private IHaveMeter _source;
         protected Meter _meter;
 
         [Header("UI References")]
@@ -19,27 +20,28 @@ namespace Utilities.Meter
 
         protected virtual void Start()
         {
-            // if we assigned in the inspector beforehand
+            _source ??= GetComponentInParent<IHaveMeter>();
             if (_source != null)
-                BindTo(_source);
-            // in case we Instantiate at runtime as a child
-            else
-            {
-                var source = GetComponentInParent<IHaveMeter>();
-                if (source != null)
-                    BindTo(source);
-            }
+                BindTo(_source.Meter);
         }
 
-        public virtual void BindTo(IHaveMeter source)
+        public virtual void BindTo(Meter meter)
         {
-            _meter = source.GetMeter();
-            _meter.Refilled += OnRefilled;
-            _meter.Depleted += OnDepleted;
+            if (_meter != null)
+            {
+                _meter.ValueChanged -= OnValueChanged;
+                _meter.MaxChanged -= OnMaxChanged;
+            }
+
+            _meter = meter;
+            UpdateUI();
+
             _meter.ValueChanged += OnValueChanged;
             _meter.MaxChanged += OnMaxChanged;
-            UpdateUI();
         }
+
+        protected virtual void OnValueChanged(Meter.MeterEventArgs args) => UpdateUI();
+        protected virtual void OnMaxChanged(Meter.MeterEventArgs args) => UpdateUI();
 
         protected virtual void UpdateUI()
         {
@@ -47,28 +49,16 @@ namespace Utilities.Meter
             RefreshText();
         }
 
-        protected virtual void OnRefilled()
-        {
-            Debug.Log("We're full!");
-        }
-
-        protected virtual void OnDepleted()
-        {
-            Debug.Log("We're empty!");
-        }
-
-        protected virtual void OnValueChanged(Meter.MeterEventArgs args) => UpdateUI();
-
-        protected virtual void OnMaxChanged(Meter.MeterEventArgs args) => UpdateUI();
-
         protected virtual void RefreshSlider()
         {
             _slider.maxValue = _meter.Maximum;
             _slider.value = _meter.Value;
         }
 
-        protected virtual void RefreshText() => SetText(_meter.Value, _meter.Maximum);
-
-        protected virtual void SetText(int value, int max) => _text.SetText($"{value}/{max}");
+        protected virtual void RefreshText()
+        {
+            if (_text != null)
+                _text.SetText($"{_meter.Value}/{_meter.Maximum}");
+        }
     }
 }

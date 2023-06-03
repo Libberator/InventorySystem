@@ -152,9 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 051cc76dcc1c1de4189b0f0b4adfbf10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meter:
-    _value: 51
-    _maximum: 100
+  <Meter>k__BackingField:
+    _value: 0
+    _maximum: 0
 --- !u!4 &29910503
 Transform:
   m_ObjectHideFlags: 0
@@ -224,19 +224,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inventorySize: 8
   _startingItems:
-  - _item: {fileID: 11400000, guid: 80171b8f15a1d9f4e8ff4b49ebc9a46b, type: 2}
+  - _item: {fileID: 0}
     _quantity: 1
-  - _item: {fileID: 11400000, guid: 1efa4ec7c82bf3f44bc143a27a1ac8cd, type: 2}
+  - _item: {fileID: 0}
     _quantity: 1
-  - _item: {fileID: 11400000, guid: c4eb431d888c3d640bce1c385240e997, type: 2}
+  - _item: {fileID: 0}
     _quantity: 14
-  - _item: {fileID: 11400000, guid: f63204a26f7864b4b83cba7af834e933, type: 2}
+  - _item: {fileID: 0}
     _quantity: 20
-  - _item: {fileID: 11400000, guid: 2b8cee2c5a4449948bc0d75c5fa63ce5, type: 2}
+  - _item: {fileID: 0}
     _quantity: 8
-  - _item: {fileID: 11400000, guid: 976ee028c048bcd44b6ce49a229cfd8f, type: 2}
+  - _item: {fileID: 0}
     _quantity: 12
-  - _item: {fileID: 11400000, guid: 9c534ed0a0c42b4458b13d85cc7a275a, type: 2}
+  - _item: {fileID: 0}
     _quantity: 6
   _panelAnimator: {fileID: 605753061}
   _slotPrefab: {fileID: 5930910166036344315, guid: ae0e53b29041d924c81ce13a19892949, type: 3}
@@ -586,23 +586,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _inventorySize: 25
   _startingItems:
-  - _item: {fileID: 11400000, guid: caee688664e41df4b8442d6e3832b92e, type: 2}
+  - _item: {fileID: 0}
     _quantity: 1
-  - _item: {fileID: 11400000, guid: a4b633200723cda44a42cd279c6607ee, type: 2}
+  - _item: {fileID: 0}
     _quantity: 1
-  - _item: {fileID: 11400000, guid: 320f203dd3393bc4c8ed26cb9826bd95, type: 2}
+  - _item: {fileID: 0}
     _quantity: 1
-  - _item: {fileID: 11400000, guid: 5cc6cfde492b0334389f14f39a0d7b86, type: 2}
+  - _item: {fileID: 0}
     _quantity: 4
   - _item: {fileID: 0}
     _quantity: 0
-  - _item: {fileID: 11400000, guid: 9c534ed0a0c42b4458b13d85cc7a275a, type: 2}
+  - _item: {fileID: 0}
     _quantity: 7
-  - _item: {fileID: 11400000, guid: 976ee028c048bcd44b6ce49a229cfd8f, type: 2}
+  - _item: {fileID: 0}
     _quantity: 20
-  - _item: {fileID: 11400000, guid: 976ee028c048bcd44b6ce49a229cfd8f, type: 2}
+  - _item: {fileID: 0}
     _quantity: 17
-  - _item: {fileID: 11400000, guid: 976ee028c048bcd44b6ce49a229cfd8f, type: 2}
+  - _item: {fileID: 0}
     _quantity: 9
   _panelAnimator: {fileID: 1586231383}
   _slotPrefab: {fileID: 5930910166036344315, guid: ae0e53b29041d924c81ce13a19892949, type: 3}
@@ -13467,9 +13467,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c52cb45c6e67db4c8ab1d1ef53d506f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _meter:
-    _value: 69
-    _maximum: 100
+  <Meter>k__BackingField:
+    _value: 0
+    _maximum: 0
 --- !u!4 &2076900845
 Transform:
   m_ObjectHideFlags: 0
@@ -14161,7 +14161,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 296b5829e72cc8e48bd1806f9f19dcc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _source: {fileID: 29910502}
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 29910502}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: _source
+      Entry: 10
+      Data: 0
   _slider: {fileID: 4610055095093450916}
   _text: {fileID: 1802783883}
 --- !u!224 &4610055095298842352
@@ -14386,7 +14398,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 296b5829e72cc8e48bd1806f9f19dcc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _source: {fileID: 2076900844}
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 2076900844}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: _source
+      Entry: 10
+      Data: 0
   _slider: {fileID: 4610055095410204383}
   _text: {fileID: 382583797}
 --- !u!114 &4610055095914734384
@@ -14402,7 +14426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.085776515, g: 0.754717, b: 0.0747597, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

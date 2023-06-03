@@ -2,6 +2,6 @@ namespace Utilities.Meter
 {
     public interface IHaveMeter
     {
-        public Meter GetMeter();
+        public Meter Meter { get; }
     }
 }

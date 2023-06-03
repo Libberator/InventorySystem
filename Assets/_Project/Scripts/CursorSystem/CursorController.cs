@@ -44,10 +44,6 @@ namespace CursorSystem
             if (_animation != null) StopCoroutine(_animation);
             Cursor.SetCursor(null, _defaultHotspot, CursorMode.Auto);
             _currentCursorType = CursorType.Default;
-
-            //Texture2D blankCursor = new Texture2D(1, 1, TextureFormat.ARGB32, false);
-            //blankCursor.SetPixel(0, 0, Color.clear);
-            //Cursor.SetCursor(blankCursor, Vector2.zero, CursorMode.ForceSoftware);
         }
 
         [ButtonGroup, HideIf("_isVisible")]
@@ -55,6 +51,10 @@ namespace CursorSystem
 
         [ButtonGroup, ShowIf("_isVisible")]
         public void HideCursor() => _isVisible = Cursor.visible = false;
+        
+        //Texture2D blankCursor = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+        //blankCursor.SetPixel(0, 0, Color.clear);
+        //Cursor.SetCursor(blankCursor, Vector2.zero, CursorMode.ForceSoftware);
 
         #endregion
 

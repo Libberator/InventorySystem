@@ -43,12 +43,7 @@ namespace InventorySystem
             }
         }
 
-        public ItemEntry()
-        {
-            Item = null;
-            Quantity = 0;
-        }
-
+        public ItemEntry() : this(null, 0) { }
         public ItemEntry(Item item, int quantity = 1)
         {
             Item = item;
@@ -117,6 +112,5 @@ namespace InventorySystem
             Quantity -= toRemove;
             return remainder;
         }
-
     }
 }
