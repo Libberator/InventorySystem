@@ -65,6 +65,9 @@ namespace InventorySystem
         {
             entry.ItemChanged -= OnItemChanged;
             entry.QuantityChanged -= OnQuantityChanged;
+
+            //OnItemChanged(null); // might need this later at some point
+            //OnQuantityChanged(0);
             _entry = null;
         }
 
