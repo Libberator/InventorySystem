@@ -91,7 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc37b958ecd20bc429acce5e582a4318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rootCanvas: {fileID: 8143081643602792999}
   _canvasGroup: {fileID: 8143081643602793002}
   _background: {fileID: 8143081643602792999}
   _text: {fileID: 8143081643750285480}
@@ -100,7 +99,7 @@ MonoBehaviour:
   _anchor: 6
   _hoverDelay: 0.4
   _fadeIn: 0.15
-  _fadeOut: 0.1
+  _fadeOut: 0.15
   _followCursor: 1
   _testYourMessagesHere: '<color="green">Hello!</color>
 

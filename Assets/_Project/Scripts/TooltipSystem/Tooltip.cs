@@ -9,9 +9,6 @@ namespace TooltipSystem
     public class Tooltip : MonoBehaviour
     {
         [FoldoutGroup("References")]
-        [SerializeField] private RectTransform _rootCanvas;
-
-        [FoldoutGroup("References")]
         [SerializeField] private CanvasGroup _canvasGroup;
 
         [FoldoutGroup("References")]
@@ -51,9 +48,11 @@ namespace TooltipSystem
 #endif
 
         private Tween _tween;
+        private RectTransform _rootCanvas;
 
         private void Awake()
         {
+            _rootCanvas = transform.root.GetComponentInChildren<RectTransform>();
             ServiceLocator.Register(this);
             ResetAnchors();
             HideTooltip(instant: true);
@@ -203,9 +202,6 @@ namespace TooltipSystem
 
         private void ValidateReferences()
         {
-            if (_rootCanvas == null && !transform.root.TryGetComponent(out _rootCanvas))
-                Debug.LogWarning("The root-most object should be a Canvas", this);
-
             if (_background == null && !TryGetComponent(out _background))
                 Debug.LogWarning("Does the ToolTip not have a RectTransform?", this);
 

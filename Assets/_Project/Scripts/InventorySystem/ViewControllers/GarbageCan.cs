@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Utilities;
@@ -8,8 +7,6 @@ namespace InventorySystem
 {
     public class GarbageCan : MonoBehaviour, IPointerClickHandler, IDropHandler
     {
-        public event Action<ItemEntry> DisposedEntry;
-
         [SerializeField] private PanelAnimator _animator;
         [SerializeField] private ParticleSystem _particle;
         private ItemEntryDragger _dragger;
@@ -52,7 +49,6 @@ namespace InventorySystem
         {
             _dragger.DisposeEntry();
             _particle.Play();
-            DisposedEntry?.Invoke(_dragger.Entry);
         }
 
         private void CancelDisposal() => Debug.Log("Disposal Cancelled"); // do nothing
