@@ -11,17 +11,22 @@ namespace InventorySystem
     {
         public event Action<float> ValueChanged;
 
-        // buffs, debuffs, equipment, etc.
-        protected readonly List<StatModifier> _statModifiers = new();
-        protected bool _isDirty = true;
-
         [HorizontalGroup, HideLabel]
         [SerializeField] private Stat _stat;
-        public Stat Stat => _stat;
-
+        
         // intrinsic value, level-based typically
         [HorizontalGroup(40), HideLabel]
         [SerializeField] private float _baseValue;
+        
+        // buffs, debuffs, equipment, etc.
+        [ReadOnly]
+        [SerializeField] protected List<StatModifier> _statModifiers = new();
+        
+        protected bool _isDirty = true;
+        private float _finalValue;
+
+        public Stat Stat => _stat;
+
         public float BaseValue
         {
             get => _baseValue;
@@ -32,23 +37,20 @@ namespace InventorySystem
             }
         }
 
-        [HorizontalGroup(40), HideLabel]
-        [SerializeField] private float _value;
-        public float Value
+        public float FinalValue
         {
-            get
+            get // may fire event when polled
             {
                 if (_isDirty)
-                    _value = CalculateFinalValue();
-                return _value;
+                    FinalValue = CalculateFinalValue();
+                return _finalValue;
             }
-
             set
             {
-                if (_value != value)
+                if (_finalValue != value)
                 {
-                    _value = value;
-                    ValueChanged?.Invoke(_value);
+                    _finalValue = value;
+                    ValueChanged?.Invoke(_finalValue);
                 }
             }
         }
@@ -80,9 +82,9 @@ namespace InventorySystem
 
         public virtual bool RemoveAllModifiersFromSource(object source)
         {
-            int numRemovals = _statModifiers.RemoveAll(mod => mod.Source == source);
+            int qtyRemoved = _statModifiers.RemoveAll(mod => mod.Source == source);
 
-            if (numRemovals > 0)
+            if (qtyRemoved > 0)
             {
                 _isDirty = true;
                 return true;

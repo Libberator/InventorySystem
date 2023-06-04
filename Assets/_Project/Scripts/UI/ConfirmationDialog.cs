@@ -10,6 +10,8 @@ namespace Utilities.UI
 {
     public class ConfirmationDialog : MonoBehaviour
     {
+        public event Action<bool> DialogActiveChanged;
+
         [Header("Mandatory References")]
         [SerializeField] private TMP_Text _messageText;
         [SerializeField] private Button _confirmButton;
@@ -35,7 +37,15 @@ namespace Utilities.UI
 
         #region Public Methods & Properties
 
-        public bool IsActive { get; private set; }
+        private bool _isActive;
+        public bool IsActive { 
+            get => _isActive; 
+            private set
+            {
+                _isActive = value;
+                DialogActiveChanged?.Invoke(_isActive);
+            }
+        }
 
         /// <summary>
         /// Give similar requests the same "<paramref name="bypassGroup"/> title" to check if we've chosen to automatically accept for the day.

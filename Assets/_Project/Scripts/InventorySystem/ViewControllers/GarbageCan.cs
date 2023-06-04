@@ -1,22 +1,26 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Utilities;
 using Utilities.UI;
 
 namespace InventorySystem
 {
     public class GarbageCan : MonoBehaviour, IPointerClickHandler, IDropHandler
     {
+        public event Action<ItemEntry> DisposedEntry;
+
         [SerializeField] private PanelAnimator _animator;
         [SerializeField] private ParticleSystem _particle;
-        private ItemEntryController _dragger;
+        private ItemEntryDragger _dragger;
+        private ConfirmationDialog _confirmationDialog;
 
-        private void Awake()
+        private void Start()
         {
-            ItemEntryController.IsDraggingChanged += OnDraggingChanged;
-            ItemEntryController.DisposedEntry += OnDisposed;
+            _dragger = ServiceLocator.Get<ItemEntryDragger>();
+            _confirmationDialog = ServiceLocator.Get<ConfirmationDialog>();
+            ItemEntryDragger.IsDraggingChanged += OnDraggingChanged;
         }
-
-        private void Start() => _dragger = ServiceLocator.Get<ItemEntryController>();
 
         private void OnDraggingChanged(bool isDragging)
         {
@@ -26,18 +30,31 @@ namespace InventorySystem
                 _animator.Hide();
         }
 
-        private void OnDisposed(ItemEntry entry) => _particle.Play();
-
         public void OnDrop(PointerEventData eventData)
         {
             if (eventData.button == PointerEventData.InputButton.Left)
-                _dragger.Dispose();
+                StartDisposal(_dragger.Entry);
         }
 
         public void OnPointerClick(PointerEventData eventData)
         {
             if (eventData.button == PointerEventData.InputButton.Left)
-                _dragger.Dispose();
+                StartDisposal(_dragger.Entry);
         }
+
+        private void StartDisposal(ItemEntry entry)
+        {
+            var msg = $"Dispose of\n{entry.Item.ColoredName.WithLink("Item")} ({entry.Quantity})?";
+            _confirmationDialog.AskWithBypass("Dispose Item", msg, ConfirmDisposal, CancelDisposal);
+        }
+
+        private void ConfirmDisposal()
+        {
+            _dragger.DisposeEntry();
+            _particle.Play();
+            DisposedEntry?.Invoke(_dragger.Entry);
+        }
+
+        private void CancelDisposal() => Debug.Log("Disposal Cancelled"); // do nothing
     }
 }

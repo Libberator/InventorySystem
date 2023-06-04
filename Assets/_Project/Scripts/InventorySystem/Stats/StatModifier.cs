@@ -15,9 +15,9 @@ namespace InventorySystem
     [InlineProperty]
     public class StatModifier
     {
-        [HorizontalGroup(width: 160), HideLabel]
+        [HorizontalGroup(140), HideLabel]
         [SerializeField] private Stat _stat;
-        [HorizontalGroup(width: 40), HideLabel]
+        [HorizontalGroup(40), HideLabel]
         [SerializeField] private float _value;
         [HorizontalGroup, HideLabel]
         [SerializeField] private StatModType _modType;

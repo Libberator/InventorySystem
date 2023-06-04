@@ -4,7 +4,6 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Utilities;
 using Utilities.UI;
 
 namespace InventorySystem
@@ -14,18 +13,15 @@ namespace InventorySystem
     /// Depends on ItemEntryView events for left-clicks and dragging, ItemEntryMenu for right-clicking, and
     /// Inventory for when they close and shift-click bulk-adding (inventory won't need to be open)
     /// </summary>
-    public class ItemEntryController : MonoBehaviour
+    public class ItemEntryDragger : MonoBehaviour
     {
+        // garbage can is only thing listening to these events
         public static event Action<bool> IsDraggingChanged;
-        public static event Action<ItemEntry> DisposedEntry;
 
         [Header("Dragging References")]
         [SerializeField, Required] private Image _icon;
         [SerializeField, Required] private TextMeshProUGUI _qtyText;
         private Transform _draggedTransform;
-
-        [Header("Right-Click Menu References")]
-        [SerializeField] private ItemEntryMenu _rightClickMenu;
 
         [Header("Juice")]
         [SerializeField] private float _punchStrength = 0.75f;
@@ -65,22 +61,18 @@ namespace InventorySystem
             _entry.QuantityChanged += OnQuantityChanged;
         }
 
-        private void Start()
-        {
-            _playerInventory = ServiceLocator.Get<Inventory>();
-            _confirmationDialog = ServiceLocator.Get<ConfirmationDialog>();
-        }
-
         private void OnEnable()
         {
             ItemEntryView.BeginDrag += OnStartDragging;
             ItemEntryView.LeftClicked += OnLeftClicked;
             ItemEntryView.LeftShiftClicked += OnLeftShiftClicked;
-            ItemEntryView.RightClicked += OnRightClicked;
+            ItemEntryView.DoubleClicked += OnDoubleClicked;
             ItemEntryView.DroppedOn += OnDropped;
             ItemEntryView.EndDrag += OnEndDragging;
-            Inventory.Closed += OnInventoryClosed;
-            _rightClickMenu.BeginPartialDrag += OnStartPartialDragging;
+            
+            InventoryView.Closed += OnInventoryClosed;
+            
+            ItemEntryMenu.BeginPartialDrag += OnStartPartialDragging;
         }
 
         private void OnDisable()
@@ -88,16 +80,24 @@ namespace InventorySystem
             ItemEntryView.BeginDrag -= OnStartDragging;
             ItemEntryView.LeftClicked -= OnLeftClicked;
             ItemEntryView.LeftShiftClicked -= OnLeftShiftClicked;
-            ItemEntryView.RightClicked -= OnRightClicked;
+            ItemEntryView.DoubleClicked -= OnDoubleClicked;
             ItemEntryView.DroppedOn -= OnDropped;
             ItemEntryView.EndDrag -= OnEndDragging;
-            Inventory.Closed -= OnInventoryClosed;
-            _rightClickMenu.BeginPartialDrag -= OnStartPartialDragging;
+            
+            InventoryView.Closed -= OnInventoryClosed;
+            
+            ItemEntryMenu.BeginPartialDrag -= OnStartPartialDragging;
+        }
+
+        private void Start()
+        {
+            _playerInventory = ServiceLocator.Get<Inventory>();
+            _confirmationDialog = ServiceLocator.Get<ConfirmationDialog>();
         }
 
         private void Update()
         {
-            if (!_isDragging) return;
+            if (!_isDragging || _confirmationDialog.IsActive) return;
             // TODO: consider if the dragged icon needs to be offset. Update when we add custom Cursor
             _draggedTransform.position = Input.mousePosition;
         }
@@ -106,9 +106,6 @@ namespace InventorySystem
 
         private void OnStartDragging(ItemEntryView slot)
         {
-            if (_rightClickMenu.MenuShown)
-                _rightClickMenu.HideMenu();
-
             if (_isPartialDrag)
                 ReturnItemsToStart();
 
@@ -135,44 +132,9 @@ namespace InventorySystem
             _isPartialDrag = true;
         }
 
-        private void OnLeftShiftClicked(ItemEntryView slot)
-        {
-            if (_rightClickMenu.MenuShown)
-                _rightClickMenu.HideMenu();
-
-            // nothing implemented yet for shift-click while dragging
-            if (_isDragging)
-                return;
-            // below here, _isDragging is false
-            
-            if (slot.Item != null)
-            {
-                // shift-clicked in the player inventory - try to do stacking
-                if (_playerInventory.Contains(slot))
-                {
-                    _playerInventory.CombineLikeItems(slot.Item);
-                }
-                // shift-clicked in an external inventory - collect into player inventory
-                else
-                {
-                    // TODO: add a way to display messages on picking items up, and errors notifications too
-                    if (!_playerInventory.TryAddItem(slot.Entry, out int remainder))
-                    {
-                        Debug.Log($"Inventory is too full to add {slot.Item} ({remainder})");
-                    }
-                    var qtyAdded = slot.Quantity - remainder;
-                    if (qtyAdded > 0)
-                        Debug.Log($"Added {qtyAdded} {slot.Item}");
-                    slot.Entry.RemoveQuantity(qtyAdded);
-                }
-            }
-        }
-
+        // pick up, drop, stack, drop
         private void OnLeftClicked(ItemEntryView slot)
         {
-            if (_rightClickMenu.MenuShown)
-                _rightClickMenu.HideMenu();
-
             if (!_isDragging)
             {
                 if (slot.Item != null)
@@ -205,14 +167,48 @@ namespace InventorySystem
             }
         }
 
-        private void OnRightClicked(ItemEntryView slot)
+        // swap to other open inventory (or "quick-collect" if from non-Player inventory)
+        private void OnLeftShiftClicked(ItemEntryView slot)
         {
-            if (_isDragging) return;
+            // nothing implemented yet for shift-click while dragging
+            if (_isDragging)
+                return;
+            // below here, _isDragging is false
 
-            if (slot.Item == null || _rightClickMenu.MenuShown && _rightClickMenu.FocusedSlot == slot)
-                _rightClickMenu.HideMenu();
-            else
-                _rightClickMenu.ShowMenu(slot);
+            if (slot.Item != null)
+            {
+                // TODO: Handle swapping from inventory to other open inventory
+                // if Player Inventory is not open, try adding anyways
+
+                // shift-clicked in the player inventory - try to do stacking
+                if (_playerInventory.Contains(slot.Entry))
+                {
+                    _playerInventory.CombineLikeItems(slot.Item);
+                }
+                // shift-clicked in an external inventory - collect into player inventory
+                else
+                {
+                    // TODO: add a way to display messages on picking items up, and errors notifications too
+                    if (!_playerInventory.TryAddItem(slot.Entry, out int remainder))
+                    {
+                        Debug.Log($"Inventory is too full to add {slot.Item} ({remainder})");
+                    }
+                    var qtyAdded = slot.Quantity - remainder;
+                    if (qtyAdded > 0)
+                        Debug.Log($"Added {qtyAdded} {slot.Item}");
+                    slot.Entry.RemoveQuantity(qtyAdded);
+                }
+            }
+        }
+
+        private void OnDoubleClicked(ItemEntryView slot)
+        {
+            // TODO: get the inventory that this slot belongs to
+            // then call CombineLikeItems(slot.Item);
+            if (_playerInventory.Contains(slot.Entry))
+            {
+                _playerInventory.CombineLikeItems(slot.Item);
+            }
         }
 
         // called in conjunction with OnEndDragging
@@ -232,9 +228,9 @@ namespace InventorySystem
             // maybe if we drag out into the void (non-UI world), like for dropping items in minecraft
         }
 
-        private void OnInventoryClosed(Inventory inventory)
+        private void OnInventoryClosed(InventoryView panel)
         {
-            if (_isDragging && inventory.Contains(_returnSlot))
+            if (_isDragging && panel.Contains(_returnSlot))
             {
                 ReturnItemsToStart();
                 StopDragging();
@@ -259,23 +255,11 @@ namespace InventorySystem
 
         #region Disposal
 
-        public void Dispose()
+        public void DisposeEntry()
         {
-            if (!_isDragging) return;
-            _isDragging = false;
-            var msg = $"Dispose of\n{_entry.Item.ColoredName.WithLink("Item")} ({_entry.Quantity})?";
-            _confirmationDialog.AskWithBypass("Dispose Item", msg, ConfirmDisposal, CancelDisposal);
-        }
-
-        private void ConfirmDisposal()
-        {
-            DisposedEntry?.Invoke(_entry);
             _entry.Set(null, 0);
-            _isDragging = true;
             StopDragging();
         }
-
-        private void CancelDisposal() => _isDragging = true;
 
         #endregion
 

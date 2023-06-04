@@ -16,7 +16,7 @@ namespace InventorySystem
         private static void BootstrapInitialization()
         {
             _tooltip = ServiceLocator.Get<Tooltip>();
-            _tooltipProvider = new ItemTooltipProvider(ServiceLocator.Get<ItemEntryController>());
+            _tooltipProvider = new ItemTooltipProvider(ServiceLocator.Get<ItemEntryDragger>());
             LinkLookup.AddAsTooltipProvider(_tooltipProvider, "Item");
             
             ItemEntryView.PointerEnter += ShowTooltip;
@@ -40,9 +40,9 @@ namespace InventorySystem
     // Relies on the ItemEntryController Singleton to provide the Item Tooltip info
     public class ItemTooltipProvider : IHaveTooltip
     {
-        private readonly ItemEntryController _dragger;
+        private readonly ItemEntryDragger _dragger;
 
-        public ItemTooltipProvider(ItemEntryController dragger) => _dragger = dragger;
+        public ItemTooltipProvider(ItemEntryDragger dragger) => _dragger = dragger;
 
         public string GetTooltipText() => _dragger.Entry.Item.GetTooltipText();
     }

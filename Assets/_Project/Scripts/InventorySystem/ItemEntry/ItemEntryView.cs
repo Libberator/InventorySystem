@@ -15,6 +15,7 @@ namespace InventorySystem
         public static event Action<ItemEntryView> PointerExit;
         public static event Action<ItemEntryView> LeftClicked;
         public static event Action<ItemEntryView> LeftShiftClicked;
+        public static event Action<ItemEntryView> DoubleClicked;
         public static event Action<ItemEntryView> RightClicked;
         public static event Action<ItemEntryView> BeginDrag;
         public static event Action<ItemEntryView> EndDrag;
@@ -33,27 +34,39 @@ namespace InventorySystem
         private Tween _placeItemTween;
 
         [Header("Internal Data")]
-        [SerializeField, ReadOnly] private ItemEntry _entry = new();
+        [SerializeField, ReadOnly] private ItemEntry _entry;
         public ItemEntry Entry => _entry;
         public Item Item => _entry.Item;
         public int Quantity => _entry.Quantity;
 
-        private void OnEnable()
+        private void OnDestroy()
         {
-            _entry.ItemChanged += OnItemChanged;
-            _entry.QuantityChanged += OnQuantityChanged;
-            OnItemChanged(_entry.Item);
-            OnQuantityChanged(_entry.Quantity);
-        }
-
-        private void OnDisable()
-        {
-            _entry.ItemChanged -= OnItemChanged;
-            _entry.QuantityChanged -= OnQuantityChanged;
+            if (_entry != null ) UnbindFrom(_entry); 
         }
 
         public virtual void SetEntry(ItemEntry entry) => _entry.Set(entry);
         public virtual void SetEntry(Item item, int qty) => _entry.Set(item, qty);
+
+        public virtual void BindTo(ItemEntry entry)
+        {
+            if (_entry == entry) return;
+            if (_entry != null) UnbindFrom(_entry);
+            if (entry == null) return;
+            
+            _entry = entry;
+            _entry.ItemChanged += OnItemChanged;
+            _entry.QuantityChanged += OnQuantityChanged;
+            
+            OnItemChanged(_entry.Item);
+            OnQuantityChanged(_entry.Quantity);
+        }
+
+        private void UnbindFrom(ItemEntry entry)
+        {
+            entry.ItemChanged -= OnItemChanged;
+            entry.QuantityChanged -= OnQuantityChanged;
+            _entry = null;
+        }
 
         #region Updating UI
 
@@ -103,6 +116,9 @@ namespace InventorySystem
                     LeftShiftClicked?.Invoke(this);
                 else
                     LeftClicked?.Invoke(this);
+                
+                if (eventData.clickCount == 2 && Item != null) // or just clickCount > 1 ?
+                    DoubleClicked?.Invoke(this);
             }
             else if (eventData.button == PointerEventData.InputButton.Right)
                 RightClicked?.Invoke(this);
@@ -122,6 +138,8 @@ namespace InventorySystem
 
         public virtual void OnBeginDrag(PointerEventData eventData)
         {
+            if (_entry.Item == null)
+                eventData.pointerDrag = null; // prevents OnDrop from being called
             if (eventData.button == PointerEventData.InputButton.Left && _entry.Item != null)
                 BeginDrag?.Invoke(this);
         }

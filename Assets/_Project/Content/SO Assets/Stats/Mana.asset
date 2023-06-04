@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Mana
   m_EditorClassIdentifier: 
   _nameOverride: 
-  _abbreviation: HP
+  _abbreviation: MP
+  _description: 
