@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace InventorySystem
+namespace AbilitySystem
 {
     public class AbilityHotbar : MonoBehaviour
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace InventorySystem
+namespace AbilitySystem
 {
     public class AbilitySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IHaveTooltip
     {
@@ -15,10 +15,11 @@ namespace InventorySystem
         [SerializeField] private KeyCode _key;
 
         [Header("UI References")]
-        [SerializeField] private Image _image;
+        [SerializeField] private Image _icon;
         [SerializeField] private Image _radialFill;
         [SerializeField] private TextMeshProUGUI _keyText;
         [SerializeField] private TextMeshProUGUI _timerText;
+        private Cooldown _cooldownTimer;
 
         private void Start()
         {
@@ -31,43 +32,54 @@ namespace InventorySystem
         private void Update()
         {
             if (Input.GetKeyDown(_key))
-                ActivateAbility();
+                AbilityPressed();
         }
 
         public void BindTo(Ability ability)
         {
-            if (_ability == ability) return;
             if (_ability != null) UnbindFrom(_ability);
             if (ability == null) return;
 
             _ability = ability;
-            // subscribe to any cooldown-related events
+
             OnAbilityChanged(_ability);
-            OnCooldownChanged(0);
+
+            // TODO: Avoid divide-by-zero. Handle what to do in case Cooldown Duration is 0
+            _cooldownTimer = Cooldown.Get(ability);
+            _cooldownTimer.Started += OnCooldownStarted;
+            _cooldownTimer.Updated += OnCooldownUpdated;
+            _cooldownTimer.Completed += OnCooldownCompleted;
+            if (_cooldownTimer.IsActive) OnCooldownStarted(_cooldownTimer.Remaining);
+            else OnCooldownCompleted();
         }
 
         private void UnbindFrom(Ability ability)
         {
-            // unsubscribe from any cooldown listening
+            if (_cooldownTimer != null)
+            {
+                _cooldownTimer.Started -= OnCooldownStarted;
+                _cooldownTimer.Updated -= OnCooldownUpdated;
+                _cooldownTimer.Completed -= OnCooldownCompleted;
+            }
 
             //OnAbilityChanged(null); // might need this later
-            OnCooldownChanged(0);
+            //OnCooldownChanged(0);
             _ability = null;
         }
 
-
         #region Ability Usage
-
-        public bool CanActivateAbility => _ability != null;
 
         public void AbilityPressed()
         {
-            // if we're on cooldown, give reject reason
-
+            if (_cooldownTimer.IsActive)
+            {
+                Debug.LogWarning($"Timer for {_ability.Name} is still active!");
+                return;
+            }
             // if we don't have enough mana, give reject reason
+
             ActivateAbility();
         }
-
 
         private void ActivateAbility()
         {
@@ -78,31 +90,40 @@ namespace InventorySystem
 
         #region Updating UI
 
-        // Make a Cooldown class, with a static Dictionary lookup for shared Cooldowns
-        // BindTo Ability for keeping track of cooldown value
-
         private void OnAbilityChanged(Ability ability)
         {
             if (ability != null)
             {
-                _image.sprite = ability.Icon;
-                _image.enabled = true;
+                _icon.sprite = ability.Icon;
+                _icon.enabled = true;
             }
             else
             {
-                _image.enabled = false;
-                //_radialFill.fillAmount = 0;
+                _icon.enabled = false;
             }
-        }
-
-        private void OnCooldownChanged(float percent)
-        {
-            _radialFill.fillAmount = percent;
         }
 
         private void OnKeyCodeChanged(KeyCode keyCode)
         {
             _keyText.SetText(keyCode.ToString());
+        }
+
+        private void OnCooldownStarted(float remaining)
+        {
+            OnCooldownUpdated(remaining);
+            _timerText.enabled = true;
+        }
+
+        private void OnCooldownUpdated(float remaining)
+        {
+            _radialFill.fillAmount = remaining / _ability.Cooldown;
+            _timerText.SetText(remaining.ToString());
+        }
+
+        private void OnCooldownCompleted()
+        {
+            _radialFill.fillAmount = 0f;
+            _timerText.enabled = false;
         }
 
         #endregion

@@ -2,10 +2,10 @@ using Sirenix.OdinInspector;
 using TooltipSystem;
 using UnityEngine;
 
-namespace InventorySystem
+namespace AbilitySystem
 {
     [CreateAssetMenu(fileName = "New Ability", menuName = "Ability System/Ability")]
-    public class Ability : ScriptableObject, IHaveTooltip
+    public class Ability : ScriptableObject, IHaveCooldown, IHaveTooltip
     {
         [PreviewField(Alignment = ObjectFieldAlignment.Center, Height = 120f)]
         public Sprite Icon;
@@ -17,7 +17,7 @@ namespace InventorySystem
         [Multiline]
         public string Description;
 
-        public float Cooldown;
+        [field: SerializeField] public float Cooldown { get; private set; }
         
         [Min(0)] public int Cost;
 
