@@ -92,7 +92,7 @@ namespace TooltipSystem
                     .OnComplete(() => gameObject.SetActive(false));
             }
         }
-        
+
         private void SetText(string text)
         {
             _text.SetText(text);
