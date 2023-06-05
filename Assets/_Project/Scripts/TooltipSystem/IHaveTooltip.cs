@@ -2,6 +2,6 @@
 {
     public interface IHaveTooltip
     {
-        public string GetTooltipText();
+        public Tooltip GetTooltip();
     }
 }

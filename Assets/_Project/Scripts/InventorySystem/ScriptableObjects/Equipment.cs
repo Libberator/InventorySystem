@@ -1,4 +1,5 @@
 using System.Text;
+using TooltipSystem;
 using UnityEngine;
 
 namespace InventorySystem
@@ -34,7 +35,7 @@ namespace InventorySystem
             throw new System.NotImplementedException();
         }
 
-        public override string GetTooltipText()
+        public override Tooltip GetTooltip()
         {
             _sb.Clear();
             _sb.Append($"{ColoredName} - {EquipmentType.EnumToString()}");

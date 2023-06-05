@@ -13,7 +13,7 @@ namespace InventorySystem
         public StatModifier[] StatModifiers;
 
 
-        public void Use()
+        public virtual void Use() // IStatHolder, IHaveStats, ICharacter, I..
         {
             Debug.Log($"Used {Name}");
         }

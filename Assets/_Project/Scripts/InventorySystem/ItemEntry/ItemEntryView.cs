@@ -11,8 +11,6 @@ namespace InventorySystem
     // Relies on the legacy Input system for holding down Left Shift
     public class ItemEntryView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IDropHandler, IEndDragHandler
     {
-        public static event Action<ItemEntryView> PointerEnter;
-        public static event Action<ItemEntryView> PointerExit;
         public static event Action<ItemEntryView> LeftClicked;
         public static event Action<ItemEntryView> LeftShiftClicked;
         public static event Action<ItemEntryView> DoubleClicked;
@@ -43,9 +41,6 @@ namespace InventorySystem
         {
             if (_entry != null ) UnbindFrom(_entry); 
         }
-
-        public virtual void SetEntry(ItemEntry entry) => _entry.Set(entry);
-        public virtual void SetEntry(Item item, int qty) => _entry.Set(item, qty);
 
         public virtual void BindTo(ItemEntry entry)
         {
@@ -130,13 +125,11 @@ namespace InventorySystem
         public virtual void OnPointerEnter(PointerEventData eventData)
         {
             _background.DOFade(1f, 0.2f);
-            PointerEnter?.Invoke(this);
         }
 
         public virtual void OnPointerExit(PointerEventData eventData)
         {
             _background.DOFade(0.5f, 0.2f);
-            PointerExit?.Invoke(this);
         }
 
         public virtual void OnBeginDrag(PointerEventData eventData)

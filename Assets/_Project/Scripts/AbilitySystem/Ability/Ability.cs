@@ -22,6 +22,6 @@ namespace AbilitySystem
         [Min(0)] public int Cost;
 
         public virtual string Name => string.IsNullOrEmpty(_nameOverride) ? name : _nameOverride;
-        public virtual string GetTooltipText() => Description;
+        public virtual Tooltip GetTooltip() => new(Description);
     }
 }

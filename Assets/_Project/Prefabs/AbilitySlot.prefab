@@ -264,8 +264,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ability: {fileID: 11400000, guid: 3c227689b1a51904c9481dfa564e097c, type: 2}
   _key: 113
-  _image: {fileID: 939965665950601874}
-  _radialFill: {fileID: 0}
+  _icon: {fileID: 939965665950601874}
+  _radialFill: {fileID: 3479181170821350770}
   _keyText: {fileID: 726076881234104984}
   _timerText: {fileID: 4738243521295921106}
 --- !u!1 &807080493448253366
@@ -760,7 +760,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -60}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &608090918922936797

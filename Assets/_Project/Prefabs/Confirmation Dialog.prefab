@@ -1490,3 +1490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b96865d73a1a9749a79390d0531ef49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onPointerEnter: 0
+  _onPointerMove: 1
+  _onPointerExit: 2
+  _onPointerClick: 1

@@ -87,6 +87,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4114231156817265277}
   - component: {fileID: 4114231156817265274}
+  - component: {fileID: 5340284477204847095}
   m_Layer: 5
   m_Name: Item Slot Dragger
   m_TagString: Untagged
@@ -134,6 +135,20 @@ MonoBehaviour:
   _entry:
     _item: {fileID: 0}
     _quantity: 0
+--- !u!114 &5340284477204847095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4114231156817265276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc79cc9e091ae2e49bf536538f4e707d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _richTextLinkID: Item
+  _provider: {fileID: 4114231156817265274}
 --- !u!1 &4114231157059122461
 GameObject:
   m_ObjectHideFlags: 0

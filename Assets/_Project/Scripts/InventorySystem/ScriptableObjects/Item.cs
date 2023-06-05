@@ -24,7 +24,7 @@ namespace InventorySystem
 
         public virtual string Name => string.IsNullOrEmpty(_nameOverride) ? name : _nameOverride;
         public virtual string ColoredName => Name.WithColor(Rarity.TextColor);
-        public virtual string GetTooltipText() => $"{ColoredName}\n\n<i>{Description}</i>";
+        public virtual Tooltip GetTooltip() => $"{ColoredName}\n\n<i>{Description}</i>";
         public virtual bool IsStackable => MaxStack > 1;
     }
 }

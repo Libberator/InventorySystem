@@ -26,7 +26,7 @@ namespace AbilitySystem
             // TODO: Grab a reference to the Player(?) for access to Stats, Mana, etc.
             // Or have the AbilityHotbar grab them, and route ability usage through that...
             // What's the purpose of the Hotbar? I think just handle the skill-ups...
-            if (_ability != null) BindTo(_ability);
+            BindTo(_ability);
         }
 
         private void Update()
@@ -166,10 +166,7 @@ namespace AbilitySystem
             Debug.Log("End Drag");
         }
 
-        public string GetTooltipText()
-        {
-            return _ability.GetTooltipText();
-        }
+        public Tooltip GetTooltip() => _ability.GetTooltip();
 
         #endregion
     }

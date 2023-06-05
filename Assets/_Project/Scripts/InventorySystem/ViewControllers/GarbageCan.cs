@@ -9,6 +9,7 @@ namespace InventorySystem
     {
         [SerializeField] private PanelAnimator _animator;
         [SerializeField] private ParticleSystem _particle;
+        [SerializeField] private string _richTextLinkID = "Item";
         private ItemEntryDragger _dragger;
         private ConfirmationDialog _confirmationDialog;
 
@@ -41,7 +42,7 @@ namespace InventorySystem
 
         private void StartDisposal(ItemEntry entry)
         {
-            var msg = $"Dispose of\n{entry.Item.ColoredName.WithLink("Item")} ({entry.Quantity})?";
+            var msg = $"Dispose of\n{entry.Item.ColoredName.WithLink(_richTextLinkID)} ({entry.Quantity})?";
             _confirmationDialog.AskWithBypass("Dispose Item", msg, ConfirmDisposal, CancelDisposal);
         }
 
