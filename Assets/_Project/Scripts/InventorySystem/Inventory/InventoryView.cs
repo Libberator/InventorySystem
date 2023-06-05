@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Utilities.UI;
@@ -13,12 +14,26 @@ namespace InventorySystem
 
         [Header("Settings")]
         [SerializeField, ReadOnly] private Inventory _inventory;
+        public bool IsPlayerInventory => _inventory.IsPlayerInventory;
 
         [Header("References")]
         [SerializeField] private PanelAnimator _panelAnimator;
         [SerializeField] private ItemEntryView _slotPrefab;
         [SerializeField] private RectTransform _itemSlotsParent;
         [SerializeField, HideInInspector] private ItemEntryView[] _itemSlots;
+        private ConfirmationDialog _confirmationDialog;
+
+        private static readonly List<InventoryView> _openInventoryViews = new();
+
+        public static Inventory GetOtherOpenInventory(ItemEntryView slot)
+        {
+            var openView = _openInventoryViews.Find(i => !i.Contains(slot));
+            if (openView == null) return null;
+            return openView._inventory;
+        }
+
+        public static Inventory GetInventoryFromItemEntry(ItemEntryView entry) =>
+            _openInventoryViews.Find(v => v.Contains(entry))._inventory;
 
         public bool Contains(ItemEntryView slot) => Array.Exists(_itemSlots, s => s == slot);
 
@@ -39,19 +54,20 @@ namespace InventorySystem
 
         protected virtual void Start()
         {
+            _confirmationDialog = ServiceLocator.Get<ConfirmationDialog>();
             if (_inventory != null)
                 BindTo(_inventory);
         }
 
-        [Button]
         public void BindTo(Inventory inventory)
         {
             AdjustSize(inventory.Size);
 
-            for (int i = 0; i < inventory.Size; i++)
-                _itemSlots[i].BindTo(inventory.Items[i]);
-
             _inventory = inventory;
+
+            SyncItems();
+            //for (int i = 0; i < inventory.Size; i++)
+            //    _itemSlots[i].BindTo(inventory.Items[i]);
         }
 
         #region Adding & Removing ItemSlots
@@ -59,6 +75,13 @@ namespace InventorySystem
         [Button]
         protected void AdjustSize(int size)
         {
+#if UNITY_EDITOR
+            if (!Application.isPlaying && UnityEditor.PrefabUtility.IsPartOfPrefabInstance(_itemSlotsParent))
+            {
+                Debug.LogWarning("Can't adjust item count if we're both part of a Prefab Instance and not in Play Mode.", this);
+                return;
+            }
+#endif
             var currentCount = _itemSlotsParent.childCount;
             if (size > currentCount)
                 AddItemSlots(size - currentCount);
@@ -66,6 +89,14 @@ namespace InventorySystem
                 RemoveItemSlots(currentCount - size);
 
             GetItemSlots();
+        }
+
+        [Button]
+        private void SyncItems()
+        {
+            var count = Mathf.Min(_inventory.Size, _itemSlots.Length);
+            for (int i = 0; i < count; i++)
+                _itemSlots[i].BindTo(_inventory.Items[i]);
         }
 
         protected void AddItemSlots(int qty = 1)
@@ -87,10 +118,7 @@ namespace InventorySystem
             {
                 var childObject = _itemSlotsParent.GetChild(i).gameObject;
 #if UNITY_EDITOR
-                if (Application.isPlaying)
-                    Destroy(childObject);
-                else
-                    DestroyImmediate(childObject);
+                DestroyImmediate(childObject);
 #else
                 Destroy(childObject);
 #endif
@@ -99,7 +127,7 @@ namespace InventorySystem
 
         private void GetItemSlots() => _itemSlots = _itemSlotsParent.GetComponentsInChildren<ItemEntryView>(includeInactive: true);
 
-        #endregion
+#endregion
 
         #region Toggling View
 
@@ -111,18 +139,34 @@ namespace InventorySystem
                 OpenInventory();
         }
 
-        [Button]
+        [ButtonGroup]
         public void OpenInventory()
         {
+            if (_confirmationDialog.IsActive) return;
+            if (!IsPlayerInventory)
+                CloseAllNonPlayerInventories();
+            _openInventoryViews.Add(this);
             _panelAnimator.Show();
             IsOpen = true;
         }
 
-        [Button]
+        [ButtonGroup]
         public void CloseInventory()
         {
+            if (_confirmationDialog.IsActive) return;
+            _openInventoryViews.Remove(this);
             _panelAnimator.Hide();
             IsOpen = false;
+        }
+
+        private void CloseAllNonPlayerInventories()
+        {
+            for (int i = _openInventoryViews.Count - 1; i >= 0; i--)
+            {
+                var view = _openInventoryViews[i];
+                if (!view.IsPlayerInventory)
+                    view.CloseInventory();
+            }
         }
 
         #endregion
@@ -150,12 +194,6 @@ namespace InventorySystem
 
             if (_slotPrefab == null)
                 Debug.LogWarning("Please assign an ItemSlot prefab", _slotPrefab);
-
-            //if (_inventorySize != _itemSlotsParent.childCount)
-            //{
-            //    MatchSize(_inventorySize);
-            //    RefreshItemSlots();
-            //}
         }
     }
 }

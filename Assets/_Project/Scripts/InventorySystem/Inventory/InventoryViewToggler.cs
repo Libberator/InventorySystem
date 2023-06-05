@@ -10,17 +10,17 @@ namespace InventorySystem
 
         private void OnEnable()
         {
-            InventoryView.Opened += OnInvetoryOpened;
+            InventoryView.Opened += OnInventoryOpened;
             InventoryView.Closed += OnInventoryClosed;
         }
 
         private void OnDisable()
         {
-            InventoryView.Opened -= OnInvetoryOpened;
+            InventoryView.Opened -= OnInventoryOpened;
             InventoryView.Closed -= OnInventoryClosed;
         }
 
-        private void OnInvetoryOpened(InventoryView view)
+        private void OnInventoryOpened(InventoryView view)
         {
             if (view != _view) return;
             _closed.SetActive(false);
@@ -32,6 +32,12 @@ namespace InventorySystem
             if (view != _view) return;
             _open.SetActive(false);
             _closed.SetActive(true);
+        }
+
+        private void OnValidate()
+        {
+            if (_view == null)
+                _view = transform.root.GetComponentInChildren<InventoryView>();
         }
     }
 }

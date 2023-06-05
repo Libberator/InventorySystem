@@ -171,44 +171,36 @@ namespace InventorySystem
         private void OnLeftShiftClicked(ItemEntryView slot)
         {
             // nothing implemented yet for shift-click while dragging
-            if (_isDragging)
+            if (_isDragging || slot.Item == null)
                 return;
-            // below here, _isDragging is false
+            // below here, _isDragging is false and we double clicked a valid item
 
-            if (slot.Item != null)
+            var source = InventoryView.GetInventoryFromItemEntry(slot);
+
+            Inventory target = source != _playerInventory ? _playerInventory : InventoryView.GetOtherOpenInventory(slot);
+
+            // TODO: add a Notification System for any Errors
+            if (target == null)
             {
-                // TODO: Handle swapping from inventory to other open inventory
-                // if Player Inventory is not open, try adding anyways
-
-                // shift-clicked in the player inventory - try to do stacking
-                if (_playerInventory.Contains(slot.Entry))
-                {
-                    _playerInventory.CombineLikeItems(slot.Item);
-                }
-                // shift-clicked in an external inventory - collect into player inventory
-                else
-                {
-                    // TODO: add a way to display messages on picking items up, and errors notifications too
-                    if (!_playerInventory.TryAddItem(slot.Entry, out int remainder))
-                    {
-                        Debug.Log($"Inventory is too full to add {slot.Item} ({remainder})");
-                    }
-                    var qtyAdded = slot.Quantity - remainder;
-                    if (qtyAdded > 0)
-                        Debug.Log($"Added {qtyAdded} {slot.Item}");
-                    slot.Entry.RemoveQuantity(qtyAdded);
-                }
+                Debug.Log("Double-clicked on Item in Player Inventory with no other open Inventory");
+                return;
             }
+
+            if (!target.TryAddItem(slot.Entry, out int remainder))
+            {
+                Debug.Log($"Inventory is too full to add {slot.Item} ({remainder})");
+            }
+            var qtyAdded = slot.Quantity - remainder;
+            if (qtyAdded > 0)
+                Debug.Log($"Added {qtyAdded} {slot.Item}");
+            slot.Entry.RemoveQuantity(qtyAdded);
         }
 
         private void OnDoubleClicked(ItemEntryView slot)
         {
-            // TODO: get the inventory that this slot belongs to
-            // then call CombineLikeItems(slot.Item);
+            // stack like items - only within the Player Inventory (I guess. Don't ask me why)
             if (_playerInventory.Contains(slot.Entry))
-            {
                 _playerInventory.CombineLikeItems(slot.Item);
-            }
         }
 
         // called in conjunction with OnEndDragging

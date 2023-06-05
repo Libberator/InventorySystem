@@ -167,8 +167,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6216229247962318038}
   - {fileID: 6216229247610194426}
+  - {fileID: 6216229247962318038}
   m_Father: {fileID: 6216229247428024855}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -671,7 +671,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6216229247428024854}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -911,7 +911,7 @@ RectTransform:
   - {fileID: 6216229246761436914}
   - {fileID: 6216229247233645909}
   m_Father: {fileID: 6216229246634641127}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
@@ -941,7 +941,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: -800, y: 0}
-  _hideEase: 26
+  _hideEase: 15
   _hideDuration: 0.5
   _setInactiveWhenHidden: 1
   _onStartHiding:
@@ -1128,6 +1128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animator: {fileID: 6216229247767729730}
   _particle: {fileID: 0}
+  _richTextLinkID: Item
 --- !u!114 &6216229247767729730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1223,7 +1224,7 @@ RectTransform:
   m_Children:
   - {fileID: 6216229246615791915}
   m_Father: {fileID: 6216229246634641127}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1704,15 +1705,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 607149577269410570, guid: ae0e53b29041d924c81ce13a19892949, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.99999964
+      value: 0.9999996
       objectReference: {fileID: 0}
     - target: {fileID: 607149577269410570, guid: ae0e53b29041d924c81ce13a19892949, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.99999964
+      value: 0.9999996
       objectReference: {fileID: 0}
     - target: {fileID: 607149577269410570, guid: ae0e53b29041d924c81ce13a19892949, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.99999964
+      value: 0.9999996
       objectReference: {fileID: 0}
     - target: {fileID: 5930910166036344318, guid: ae0e53b29041d924c81ce13a19892949, type: 3}
       propertyPath: m_Pivot.x
@@ -2805,15 +2806,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 607149577269410570, guid: ae0e53b29041d924c81ce13a19892949, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.99999964
+      value: 0.9999996
       objectReference: {fileID: 0}
     - target: {fileID: 607149577269410570, guid: ae0e53b29041d924c81ce13a19892949, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.99999964
+      value: 0.9999996
       objectReference: {fileID: 0}
     - target: {fileID: 607149577269410570, guid: ae0e53b29041d924c81ce13a19892949, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.99999964
+      value: 0.9999996
       objectReference: {fileID: 0}
     - target: {fileID: 5930910166036344318, guid: ae0e53b29041d924c81ce13a19892949, type: 3}
       propertyPath: m_Pivot.x

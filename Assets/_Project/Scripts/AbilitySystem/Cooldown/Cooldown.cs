@@ -5,6 +5,8 @@ namespace AbilitySystem
 {
     public class Cooldown
     {
+        #region Instance Details
+
         public event Action<float> Started;
         public event Action<float> Updated;
         public event Action Completed;
@@ -42,6 +44,8 @@ namespace AbilitySystem
             Completed?.Invoke();
         }
 
+        #endregion
+
         #region Static Helpers
 
         private static readonly Dictionary<IHaveCooldown, Cooldown> _lookup = new();
@@ -61,8 +65,8 @@ namespace AbilitySystem
 
         // Call this method periodically from 1 source to decrement cooldowns.
         // Just make sure we're consistent *when* this is called:
-        // before any Updates, or after, just not in-between other stuff (i.e. "up to the engine")
-        // LateUpdate seems like an okay option. Perhaps w/ unscaledDeltaTime if pauses shouldn't affect it
+        // before any Updates, or after, just not in-between other stuff (i.e. "up to the engine").
+        // LateUpdate seems like an okay option. Perhaps w/ unscaledDeltaTime if pauses shouldn't affect cooldowns
         public static void UpdateCooldowns(float deltaTime)
         {
             for (int i = _activeCooldowns.Count - 1; i >= 0; i--)

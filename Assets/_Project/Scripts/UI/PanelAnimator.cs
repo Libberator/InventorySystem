@@ -15,7 +15,7 @@ namespace Utilities.UI
         [InlineButton(nameof(MoveToShownPosition), "Move To")]
         [InlineButton(nameof(SetShownPositionToCurrent), "Set")]
         [SerializeField, FoldoutGroup("Show Settings")] protected Vector2 _shownPosition;
-        [SerializeField, FoldoutGroup("Show Settings")] protected Ease _showEase = Ease.OutBack;
+        [SerializeField, FoldoutGroup("Show Settings")] protected Ease _showEase = Ease.OutQuint;
         [SerializeField, FoldoutGroup("Show Settings")] protected float _showDuration = 0.5f;
         [SerializeField, FoldoutGroup("Show Settings")] protected bool _startShown = false;
         [SerializeField, FoldoutGroup("Show Settings")] protected UnityEvent _onStartShowing;
@@ -25,7 +25,7 @@ namespace Utilities.UI
         [InlineButton(nameof(MoveToHiddenPosition), "Move To")]
         [InlineButton(nameof(SetHiddenPositionToCurrent), "Set")]
         [SerializeField, FoldoutGroup("Hide Settings")] protected Vector2 _hiddenPosition;
-        [SerializeField, FoldoutGroup("Hide Settings")] protected Ease _hideEase = Ease.InBack;
+        [SerializeField, FoldoutGroup("Hide Settings")] protected Ease _hideEase = Ease.OutQuint;
         [SerializeField, FoldoutGroup("Hide Settings")] protected float _hideDuration = 0.5f;
         [SerializeField, FoldoutGroup("Hide Settings")] protected bool _setInactiveWhenHidden = true;
         [SerializeField, FoldoutGroup("Hide Settings")] protected UnityEvent _onStartHiding;

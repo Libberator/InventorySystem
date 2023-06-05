@@ -14,6 +14,7 @@ namespace InventorySystem
         [SerializeField, ReadOnly] private int _inventorySize = 15;
         [SerializeField, ReadOnly, ListDrawerSettings(NumberOfItemsPerPage = 5)] private ItemEntry[] _items;
 
+        public bool IsPlayerInventory => _isPlayerInventory;
         public int Size => _inventorySize;
         public ItemEntry[] Items => _items;
 
