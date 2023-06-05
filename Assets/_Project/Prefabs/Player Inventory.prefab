@@ -1127,7 +1127,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 6216229247767729730}
-  _particle: {fileID: 0}
   _richTextLinkID: Item
 --- !u!114 &6216229247767729730
 MonoBehaviour:

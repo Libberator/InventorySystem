@@ -17,6 +17,7 @@ namespace InventorySystem
     {
         // garbage can is only thing listening to these events
         public static event Action<bool> IsDraggingChanged;
+        public static event EventHandler<ItemEntry> ItemDisposed;
 
         [Header("Dragging References")]
         [SerializeField, Required] private Image _icon;
@@ -71,7 +72,7 @@ namespace InventorySystem
             ItemEntryView.EndDrag += OnEndDragging;
             
             InventoryView.Closed += OnInventoryClosed;
-            
+
             ItemEntryMenu.BeginPartialDrag += OnStartPartialDragging;
         }
 
@@ -85,7 +86,7 @@ namespace InventorySystem
             ItemEntryView.EndDrag -= OnEndDragging;
             
             InventoryView.Closed -= OnInventoryClosed;
-            
+
             ItemEntryMenu.BeginPartialDrag -= OnStartPartialDragging;
         }
 
@@ -249,6 +250,7 @@ namespace InventorySystem
 
         public void DisposeEntry()
         {
+            ItemDisposed?.Invoke(_draggedTransform, Entry);
             _entry.Set(null, 0);
             StopDragging();
         }

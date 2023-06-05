@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: 9fa9c65efc05b6948a139d2cf4404a10, type: 3}
   _nameOverride: 
-  Description: Swings an Axe in a circular arc in front of you, knocking back enemies
-    and dealing 30 DMG
-  Cooldown: 2.5
+  Description: 'Swings an Axe in a circular arc in front of you,
+
+    knocking back
+    enemies and dealing 30 DMG'
+  <Cooldown>k__BackingField: 0
   Cost: 10

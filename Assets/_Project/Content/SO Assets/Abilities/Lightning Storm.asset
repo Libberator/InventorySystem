@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: 07fae79011cf6b24980d91ef29239aff, type: 3}
   _nameOverride: 
-  Description: Summon a looming cloud that follows you for 20 seconds, dealing 50
-    DMG to nearby enemies sporadically
-  Cooldown: 55
+  Description: "Summon a looming cloud that follows you for 20 seconds, \ndealing
+    50 DMG to nearby enemies sporadically"
+  <Cooldown>k__BackingField: 0
   Cost: 60

@@ -20,7 +20,7 @@ namespace Utilities.Meter
         }
 
         [HorizontalGroup, PropertyRange(0, "@_maximum"), HideLabel, LabelWidth(50)]
-        [SerializeField] private int _value;
+        [SerializeField] private int _value = 100;
         public int Value
         {
             get => _value;
@@ -45,7 +45,7 @@ namespace Utilities.Meter
         }
 
         [HorizontalGroup(60), LabelText("/"), LabelWidth(8)]
-        [SerializeField, Min(1)] private int _maximum;
+        [SerializeField, Min(1)] private int _maximum = 100;
         public int Maximum
         {
             get => _maximum;

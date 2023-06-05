@@ -221,6 +221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 726076882860841584}
   - component: {fileID: 3183548756195372926}
+  - component: {fileID: 3590657060165499295}
   m_Layer: 5
   m_Name: AbilitySlot
   m_TagString: Untagged
@@ -268,6 +269,22 @@ MonoBehaviour:
   _radialFill: {fileID: 3479181170821350770}
   _keyText: {fileID: 726076881234104984}
   _timerText: {fileID: 4738243521295921106}
+--- !u!114 &3590657060165499295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726076882860841585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9a47e5893829fe4a91e800ab1fca919, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onPointerEnter: 1
+  _onPointerMove: 0
+  _onPointerExit: 2
+  _onPointerClick: 2
 --- !u!1 &807080493448253366
 GameObject:
   m_ObjectHideFlags: 0

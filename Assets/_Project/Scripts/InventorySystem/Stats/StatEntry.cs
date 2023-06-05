@@ -13,15 +13,15 @@ namespace InventorySystem
 
         [HorizontalGroup, HideLabel]
         [SerializeField] private Stat _stat;
-        
+
         // intrinsic value, level-based typically
         [HorizontalGroup(40), HideLabel]
         [SerializeField] private float _baseValue;
-        
+
         // buffs, debuffs, equipment, etc.
         [ReadOnly]
         [SerializeField] protected List<StatModifier> _statModifiers = new();
-        
+
         protected bool _isDirty = true;
         private float _finalValue;
 
@@ -30,8 +30,8 @@ namespace InventorySystem
         public float BaseValue
         {
             get => _baseValue;
-            set 
-            { 
+            set
+            {
                 _baseValue = value;
                 _isDirty = true;
             }

@@ -4,10 +4,11 @@ using TooltipSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Utilities.Cooldown;
 
 namespace AbilitySystem
 {
-    public class AbilitySlot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IHaveTooltip
+    public class AbilitySlot : MonoBehaviour, IHaveTooltip, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
     {
         [OnValueChanged(nameof(OnAbilityChanged))]
         [SerializeField] private Ability _ability;
@@ -128,7 +129,7 @@ namespace AbilitySystem
 
         #endregion
 
-        #region Button Methods
+        #region Skill-Up
 
         public void SkillUpPressed()
         {
@@ -138,6 +139,8 @@ namespace AbilitySystem
         #endregion
 
         #region Interface Methods
+
+        public Tooltip GetTooltip() => _ability != null ? _ability.GetTooltip() : Tooltip.Empty;
 
         public void OnPointerClick(PointerEventData eventData)
         {
@@ -165,8 +168,6 @@ namespace AbilitySystem
             // if we're still holding an ability in the hand, return back to start
             Debug.Log("End Drag");
         }
-
-        public Tooltip GetTooltip() => _ability.GetTooltip();
 
         #endregion
     }

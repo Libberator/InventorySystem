@@ -1,4 +1,4 @@
-﻿namespace AbilitySystem
+﻿namespace Utilities.Cooldown
 {
     public interface IHaveCooldown
     {

@@ -38,8 +38,9 @@ namespace Utilities.UI
         #region Public Methods & Properties
 
         private bool _isActive;
-        public bool IsActive { 
-            get => _isActive; 
+        public bool IsActive
+        {
+            get => _isActive;
             private set
             {
                 _isActive = value;

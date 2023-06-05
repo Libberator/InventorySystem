@@ -21,7 +21,7 @@ namespace InventorySystem
     public class Equipment : Item
     {
         public EquipmentType EquipmentType;
-        public StatModifier[] StatModifiers;
+        public StatModifier[] StatModifiers = new StatModifier[0];
 
         private readonly StringBuilder _sb = new();
         

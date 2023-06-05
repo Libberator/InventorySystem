@@ -6,7 +6,8 @@ namespace CombatSystem
 {
     public class Mana : MonoBehaviour, IHaveMeter, IHaveMana
     {
-        [field: SerializeField] public Meter Meter { get; private set; }
+        [SerializeField] private Meter _meter;
+        public Meter Meter => _meter;
 
         // TODO: have a reference to the player stats, buffs/debuffs
 

@@ -8,7 +8,6 @@ namespace InventorySystem
     public class GarbageCan : MonoBehaviour, IPointerClickHandler, IDropHandler
     {
         [SerializeField] private PanelAnimator _animator;
-        [SerializeField] private ParticleSystem _particle;
         [SerializeField] private string _richTextLinkID = "Item";
         private ItemEntryDragger _dragger;
         private ConfirmationDialog _confirmationDialog;
@@ -46,11 +45,7 @@ namespace InventorySystem
             _confirmationDialog.AskWithBypass("Dispose Item", msg, ConfirmDisposal, CancelDisposal);
         }
 
-        private void ConfirmDisposal()
-        {
-            _dragger.DisposeEntry();
-            _particle.Play();
-        }
+        private void ConfirmDisposal() => _dragger.DisposeEntry();
 
         private void CancelDisposal() => Debug.Log("Disposal Cancelled"); // do nothing
     }
