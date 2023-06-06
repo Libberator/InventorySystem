@@ -12,11 +12,11 @@ namespace Utilities.UI
         public event Action<bool> DialogActiveChanged;
 
         [Header("Mandatory References")]
-        [SerializeField] private TMP_Text _messageText;
+        [SerializeField] private TextMeshProUGUI _messageText;
         [SerializeField] private Button _confirmButton;
-        //[SerializeField] private TMP_Text _confirmText; // in case you want to customize the button text?
+        //[SerializeField] private TextMeshProUGUI _confirmText; // in case you want to customize the button text?
         [SerializeField] private Button _cancelButton;
-        //[SerializeField] private TMP_Text _cancelText; // in case you want to customize the button text?
+        //[SerializeField] private TextMeshProUGUI _cancelText; // in case you want to customize the button text?
         [SerializeField] private Toggle _bypassToggle;
         [SerializeField] private GameObject _toggleContainer;
 

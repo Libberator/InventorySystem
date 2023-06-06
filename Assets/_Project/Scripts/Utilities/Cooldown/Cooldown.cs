@@ -63,10 +63,7 @@ namespace Utilities.Cooldown
             return cooldown;
         }
 
-        // Call this method periodically from 1 source to decrement cooldowns.
-        // Just make sure we're consistent *when* this is called:
-        // before any Updates, or after, just not in-between other stuff (i.e. "up to the engine").
-        // LateUpdate seems like an okay option. Perhaps w/ unscaledDeltaTime if pauses shouldn't affect cooldowns
+        // CooldownUpdater handles calling this in LateUpdate, which gets spawned by the CooldownBootstrapper
         public static void UpdateCooldowns(float deltaTime)
         {
             for (int i = _activeCooldowns.Count - 1; i >= 0; i--)
