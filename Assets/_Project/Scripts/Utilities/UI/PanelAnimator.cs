@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 namespace Utilities.UI
 {
-    public class PanelAnimator : MonoBehaviour
+    public class PanelAnimator : MonoBehaviour, IDisplayable
     {
         [HideInInspector] private RectTransform _rectTransform;
         private RectTransform RectProperty => _rectTransform != null ? _rectTransform : _rectTransform = GetComponent<RectTransform>();
@@ -41,6 +41,7 @@ namespace Utilities.UI
             gameObject.SetActive(_startShown);
         }
 
+        public void Show() => Show(false);
         [Button]
         public void Show(bool restart = false)
         {
@@ -58,6 +59,7 @@ namespace Utilities.UI
             });
         }
 
+        public void Hide() => Hide(false);
         [Button]
         public void Hide(bool instant = false)
         {

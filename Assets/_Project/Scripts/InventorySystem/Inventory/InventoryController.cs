@@ -15,8 +15,8 @@ namespace InventorySystem
         [SerializeField] private bool _isPlayerInventory = false;
         [SerializeField] private int _inventorySize = 12;
         [SerializeField] private List<ItemEntry> _startingItems = new();
-
-        private void Start() => Sync();
+  
+        private void Awake() => Sync();
 
         public void Initialize(List<ItemEntry> startingItems = null, int size = 12, bool isPlayerInventory = false) => 
             _inventory = new(startingItems, size, isPlayerInventory);

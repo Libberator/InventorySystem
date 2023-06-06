@@ -66,8 +66,6 @@ namespace InventorySystem
             _inventory = inventory;
 
             SyncItems();
-            //for (int i = 0; i < inventory.Size; i++)
-            //    _itemSlots[i].BindTo(inventory.Items[i]);
         }
 
         #region Adding & Removing ItemSlots
@@ -89,14 +87,6 @@ namespace InventorySystem
                 RemoveItemSlots(currentCount - size);
 
             GetItemSlots();
-        }
-
-        [Button]
-        private void SyncItems()
-        {
-            var count = Mathf.Min(_inventory.Size, _itemSlots.Length);
-            for (int i = 0; i < count; i++)
-                _itemSlots[i].BindTo(_inventory.Items[i]);
         }
 
         protected void AddItemSlots(int qty = 1)
@@ -127,7 +117,16 @@ namespace InventorySystem
 
         private void GetItemSlots() => _itemSlots = _itemSlotsParent.GetComponentsInChildren<ItemEntryView>(includeInactive: true);
 
-#endregion
+        [Button]
+        private void SyncItems()
+        {
+            // should be same size, unless we were manually adjusting via AdjustSize in the editor
+            var count = Mathf.Min(_inventory.Size, _itemSlots.Length);
+            for (int i = 0; i < count; i++)
+                _itemSlots[i].BindTo(_inventory.Items[i]);
+        }
+
+        #endregion
 
         #region Toggling View
 

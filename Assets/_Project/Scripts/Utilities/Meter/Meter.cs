@@ -39,8 +39,9 @@ namespace Utilities.Meter
                 };
                 _value = value;
 
-                OnValueChanged(args);
-                if (_value == 0) OnDepleted();
+                ValueChanged?.Invoke(args);
+                if (_value == 0) 
+                    Depleted?.Invoke();
             }
         }
 
@@ -61,7 +62,7 @@ namespace Utilities.Meter
                 };
                 _maximum = value;
 
-                OnMaxChanged(args);
+                MaxChanged?.Invoke(args);
                 if (value < Value) Value = Maximum;
             }
         }
@@ -82,7 +83,7 @@ namespace Utilities.Meter
             if (afterIncrease >= Maximum)
             {
                 Value = Maximum;
-                OnRefilled();
+                Refilled?.Invoke();
                 return afterIncrease - Maximum;
             }
             Value += amount;
@@ -145,14 +146,6 @@ namespace Utilities.Meter
             Decrease(decrease);
             return -decrease;
         }
-
-        protected virtual void OnRefilled() => Refilled?.Invoke();
-
-        protected virtual void OnDepleted() => Depleted?.Invoke();
-
-        protected virtual void OnValueChanged(MeterEventArgs e) => ValueChanged?.Invoke(e);
-
-        protected virtual void OnMaxChanged(MeterEventArgs e) => MaxChanged?.Invoke(e);
 
         public class MeterEventArgs : EventArgs
         {

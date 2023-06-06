@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Utilities;
+using Utilities.MessageSystem;
 using Utilities.UI;
 
 namespace InventorySystem
@@ -22,7 +23,7 @@ namespace InventorySystem
         private void OnDraggingChanged(bool isDragging)
         {
             if (isDragging)
-                _animator.Show();
+                _animator.Show(); // TODO: Add safety checks to not show if the item is not disposable.
             else
                 _animator.Hide();
         }
@@ -41,12 +42,17 @@ namespace InventorySystem
 
         private void StartDisposal(ItemEntry entry)
         {
+            // TODO: Add safety checks to automatically cancel if the item is not disposable.
             var msg = $"Dispose of\n{entry.Item.ColoredName.WithLink(_richTextLinkID)} ({entry.Quantity})?";
             _confirmationDialog.AskWithBypass("Dispose Item", msg, ConfirmDisposal, CancelDisposal);
         }
 
-        private void ConfirmDisposal() => _dragger.DisposeEntry();
+        private void ConfirmDisposal()
+        {
+            Messenger.SendMessage(new InventoryMessage($"Disposed {_dragger.Entry.Item.ColoredName} ({_dragger.Entry.Quantity})", InventoryEvent.ItemDiscardSuccess));
+            _dragger.DisposeEntry();
+        }
 
-        private void CancelDisposal() => Debug.Log("Disposal Cancelled"); // do nothing
+        private void CancelDisposal() => Messenger.SendMessage(new InventoryMessage("Disposal Cancelled", InventoryEvent.ItemDiscardFail));
     }
 }

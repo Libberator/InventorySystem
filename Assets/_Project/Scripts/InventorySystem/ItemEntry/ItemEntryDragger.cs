@@ -4,6 +4,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities.MessageSystem;
 using Utilities.UI;
 
 namespace InventorySystem
@@ -69,7 +70,6 @@ namespace InventorySystem
             ItemEntryView.LeftShiftClicked += OnLeftShiftClicked;
             ItemEntryView.DoubleClicked += OnDoubleClicked;
             ItemEntryView.DroppedOn += OnDropped;
-            ItemEntryView.EndDrag += OnEndDragging;
             
             InventoryView.Closed += OnInventoryClosed;
 
@@ -83,7 +83,6 @@ namespace InventorySystem
             ItemEntryView.LeftShiftClicked -= OnLeftShiftClicked;
             ItemEntryView.DoubleClicked -= OnDoubleClicked;
             ItemEntryView.DroppedOn -= OnDropped;
-            ItemEntryView.EndDrag -= OnEndDragging;
             
             InventoryView.Closed -= OnInventoryClosed;
 
@@ -176,24 +175,26 @@ namespace InventorySystem
                 return;
             // below here, _isDragging is false and we double clicked a valid item
 
-            var source = InventoryView.GetInventoryFromItemEntry(slot);
+            var target = InventoryView.GetInventoryFromItemEntry(slot) != _playerInventory ? 
+                _playerInventory : InventoryView.GetOtherOpenInventory(slot);
 
-            Inventory target = source != _playerInventory ? _playerInventory : InventoryView.GetOtherOpenInventory(slot);
-
-            // TODO: add a Notification System for any Errors
             if (target == null)
             {
-                Debug.Log("Double-clicked on Item in Player Inventory with no other open Inventory");
+                Messenger.SendMessage(new InventoryMessage($"No other open Inventory to move {slot.Item.ColoredName} ({slot.Quantity}) to", InventoryEvent.ItemMoveFail));
                 return;
             }
 
             if (!target.TryAddItem(slot.Entry, out int remainder))
-            {
-                Debug.Log($"Inventory is too full to add {slot.Item} ({remainder})");
-            }
+                Messenger.SendMessage(new InventoryMessage($"Inventory is too full to add {slot.Item.ColoredName} ({remainder})", InventoryEvent.ItemAddFail));
+
             var qtyAdded = slot.Quantity - remainder;
             if (qtyAdded > 0)
-                Debug.Log($"Added {qtyAdded} {slot.Item}");
+            {
+                if (target == _playerInventory)
+                    Messenger.SendMessage(new InventoryMessage($"Added {slot.Item.ColoredName} ({qtyAdded})", InventoryEvent.ItemAddSuccess));
+                else
+                    Messenger.SendMessage(new InventoryMessage($"Moved {slot.Item.ColoredName} ({qtyAdded})", InventoryEvent.ItemMoveSuccess));
+            }
             slot.Entry.RemoveQuantity(qtyAdded);
         }
 
@@ -213,12 +214,6 @@ namespace InventorySystem
                 ReturnItemsToStart();
                 StopDragging();
             }
-        }
-
-        // After refactoring, I guess I don't need this method
-        private void OnEndDragging(ItemEntryView slot)
-        {
-            // maybe if we drag out into the void (non-UI world), like for dropping items in minecraft
         }
 
         private void OnInventoryClosed(InventoryView panel)

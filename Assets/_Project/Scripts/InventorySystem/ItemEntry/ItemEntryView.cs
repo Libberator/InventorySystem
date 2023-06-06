@@ -61,8 +61,8 @@ namespace InventorySystem
             entry.ItemChanged -= OnItemChanged;
             entry.QuantityChanged -= OnQuantityChanged;
 
-            //OnItemChanged(null); // might need this later at some point
-            //OnQuantityChanged(0);
+            OnItemChanged(null);
+            OnQuantityChanged(0);
             _entry = null;
         }
 
@@ -106,6 +106,16 @@ namespace InventorySystem
 
         #region Interface Methods
 
+        public virtual void OnPointerEnter(PointerEventData eventData)
+        {
+            _background.DOFade(1f, 0.2f);
+        }
+
+        public virtual void OnPointerExit(PointerEventData eventData)
+        {
+            _background.DOFade(0.5f, 0.2f);
+        }
+
         public virtual void OnPointerClick(PointerEventData eventData)
         {
             if (eventData.button == PointerEventData.InputButton.Left)
@@ -121,17 +131,7 @@ namespace InventorySystem
             else if (eventData.button == PointerEventData.InputButton.Right)
                 RightClicked?.Invoke(this);
         }
-
-        public virtual void OnPointerEnter(PointerEventData eventData)
-        {
-            _background.DOFade(1f, 0.2f);
-        }
-
-        public virtual void OnPointerExit(PointerEventData eventData)
-        {
-            _background.DOFade(0.5f, 0.2f);
-        }
-
+     
         public virtual void OnBeginDrag(PointerEventData eventData)
         {
             if (_entry.Item == null)
