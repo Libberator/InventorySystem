@@ -49,6 +49,7 @@ GameObject:
   - component: {fileID: 2760927500638746532}
   - component: {fileID: 2760927500638746535}
   - component: {fileID: 2760927500638746533}
+  - component: {fileID: 1287242252}
   m_Layer: 5
   m_Name: Black Backdrop
   m_TagString: Untagged
@@ -127,6 +128,43 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &1287242252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2760927500638746537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a9aa5683770c184cb2c2875a046585b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _canvasGroup: {fileID: 2760927500638746533}
+  _startShown: 0
+  _shownAlpha: 1
+  _showDuration: 0.5
+  _showEase: 15
+  _interactableWhenShown: 1
+  _blockRaycastsWhenShown: 1
+  _onStartShowing:
+    m_PersistentCalls:
+      m_Calls: []
+  _onShowComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  _hiddenAlpha: 0
+  _hideDuration: 0.5
+  _hideEase: 15
+  _setInactiveWhenHidden: 0
+  _interactableWhenHidden: 0
+  _blockRaycastsWhenHidden: 0
+  _onStartHiding:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHideComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2760927500642706204
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,10 +651,9 @@ MonoBehaviour:
   _confirmButton: {fileID: 2760927501606569556}
   _cancelButton: {fileID: 2760927501568256994}
   _bypassToggle: {fileID: 2760927502225577222}
-  _canvasGroup: {fileID: 2760927500638746533}
-  _dialogBox: {fileID: 2760927502216269463}
   _toggleContainer: {fileID: 2760927500619994260}
-  _tweenDuration: 0.25
+  _fader: {fileID: 1287242252}
+  _scaler: {fileID: 8469195990429787931}
 --- !u!1 &2760927501568256996
 GameObject:
   m_ObjectHideFlags: 0
@@ -1096,6 +1133,7 @@ GameObject:
   - component: {fileID: 2760927502216269463}
   - component: {fileID: 2760927502216269461}
   - component: {fileID: 2760927502216269460}
+  - component: {fileID: 8469195990429787931}
   - component: {fileID: 2760927502216269459}
   - component: {fileID: 2760927502216269458}
   m_Layer: 5
@@ -1166,6 +1204,39 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.3
+--- !u!114 &8469195990429787931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2760927502216269462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 539c66ebaa99bb346ae23198e0afe7ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 2760927502216269463}
+  _startShown: 0
+  _shownScale: {x: 1, y: 1, z: 1}
+  _showDuration: 0.3
+  _showEase: 27
+  _onStartShowing:
+    m_PersistentCalls:
+      m_Calls: []
+  _onShowComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  _hiddenScale: {x: 0, y: 0, z: 0}
+  _hideDuration: 0.5
+  _hideEase: 27
+  _setInactiveWhenHidden: 0
+  _onStartHiding:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHideComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2760927502216269459
 MonoBehaviour:
   m_ObjectHideFlags: 0

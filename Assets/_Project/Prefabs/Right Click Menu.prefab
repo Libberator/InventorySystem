@@ -279,11 +279,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6680733013392182577}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b882420ac02b6f142bb78b57ddf99eae, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shownPosition: {x: -27, y: -6}
-  _showEase: 27
+  _showEase: 15
   _showDuration: 0.5
   _startShown: 0
   _onStartShowing:
@@ -292,8 +292,8 @@ MonoBehaviour:
   _onShowComplete:
     m_PersistentCalls:
       m_Calls: []
-  _hiddenPosition: {x: -100, y: -6}
-  _hideEase: 9
+  _hiddenPosition: {x: -80, y: -6}
+  _hideEase: 15
   _hideDuration: 0.5
   _setInactiveWhenHidden: 1
   _onStartHiding:
@@ -537,11 +537,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6680733013604720528}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b882420ac02b6f142bb78b57ddf99eae, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shownPosition: {x: 6, y: 27}
-  _showEase: 27
+  _showEase: 15
   _showDuration: 0.5
   _startShown: 0
   _onStartShowing:
@@ -550,8 +550,8 @@ MonoBehaviour:
   _onShowComplete:
     m_PersistentCalls:
       m_Calls: []
-  _hiddenPosition: {x: 6, y: 100}
-  _hideEase: 9
+  _hiddenPosition: {x: 6, y: 80}
+  _hideEase: 15
   _hideDuration: 0.5
   _setInactiveWhenHidden: 1
   _onStartHiding:
@@ -930,11 +930,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6680733014144997910}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b882420ac02b6f142bb78b57ddf99eae, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shownPosition: {x: -6, y: -27}
-  _showEase: 27
+  _showEase: 15
   _showDuration: 0.5
   _startShown: 0
   _onStartShowing:
@@ -943,8 +943,8 @@ MonoBehaviour:
   _onShowComplete:
     m_PersistentCalls:
       m_Calls: []
-  _hiddenPosition: {x: -6, y: -100}
-  _hideEase: 9
+  _hiddenPosition: {x: -6, y: -80}
+  _hideEase: 15
   _hideDuration: 0.5
   _setInactiveWhenHidden: 1
   _onStartHiding:
@@ -1430,11 +1430,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6680733014557194836}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b882420ac02b6f142bb78b57ddf99eae, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shownPosition: {x: 27, y: 6}
-  _showEase: 27
+  _showEase: 15
   _showDuration: 0.5
   _startShown: 0
   _onStartShowing:
@@ -1443,8 +1443,8 @@ MonoBehaviour:
   _onShowComplete:
     m_PersistentCalls:
       m_Calls: []
-  _hiddenPosition: {x: 100, y: 6}
-  _hideEase: 9
+  _hiddenPosition: {x: 80, y: 6}
+  _hideEase: 15
   _hideDuration: 0.5
   _setInactiveWhenHidden: 1
   _onStartHiding:

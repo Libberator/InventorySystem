@@ -6,27 +6,28 @@ using UnityEngine.Events;
 
 namespace Utilities.UI
 {
-    public class PanelAnimator : MonoBehaviour, IDisplayable
+    public class PanelSlider : MonoBehaviour, IDisplayable
     {
-        [HideInInspector] private RectTransform _rectTransform;
+        [SerializeField, HideInInspector] private RectTransform _rectTransform;
         private RectTransform RectProperty => _rectTransform != null ? _rectTransform : _rectTransform = GetComponent<RectTransform>();
 
+        [SerializeField] protected bool _startShown = false;
+
         [Tooltip("This should match the RectTranform's local/anchored Position in Inspector when shown")]
-        [InlineButton(nameof(MoveToShownPosition), "Move To")]
-        [InlineButton(nameof(SetShownPositionToCurrent), "Set")]
+        [InlineButton(nameof(SetShownPosition), "Set")]
+        [InlineButton(nameof(GetShownPosition), "Get")]
         [SerializeField, FoldoutGroup("Show Settings")] protected Vector2 _shownPosition;
-        [SerializeField, FoldoutGroup("Show Settings")] protected Ease _showEase = Ease.OutQuint;
         [SerializeField, FoldoutGroup("Show Settings")] protected float _showDuration = 0.5f;
-        [SerializeField, FoldoutGroup("Show Settings")] protected bool _startShown = false;
+        [SerializeField, FoldoutGroup("Show Settings")] protected Ease _showEase = Ease.OutBack;
         [SerializeField, FoldoutGroup("Show Settings")] protected UnityEvent _onStartShowing;
         [SerializeField, FoldoutGroup("Show Settings")] protected UnityEvent _onShowComplete;
 
         [Tooltip("This should match the RectTranform's local/anchored Position in Inspector when hidden")]
-        [InlineButton(nameof(MoveToHiddenPosition), "Move To")]
-        [InlineButton(nameof(SetHiddenPositionToCurrent), "Set")]
+        [InlineButton(nameof(SetHiddenPosition), "Set")]
+        [InlineButton(nameof(GetHiddenPosition), "Get")]
         [SerializeField, FoldoutGroup("Hide Settings")] protected Vector2 _hiddenPosition;
-        [SerializeField, FoldoutGroup("Hide Settings")] protected Ease _hideEase = Ease.OutQuint;
         [SerializeField, FoldoutGroup("Hide Settings")] protected float _hideDuration = 0.5f;
+        [SerializeField, FoldoutGroup("Hide Settings")] protected Ease _hideEase = Ease.OutQuint;
         [SerializeField, FoldoutGroup("Hide Settings")] protected bool _setInactiveWhenHidden = true;
         [SerializeField, FoldoutGroup("Hide Settings")] protected UnityEvent _onStartHiding;
         [SerializeField, FoldoutGroup("Hide Settings")] protected UnityEvent _onHideComplete;
@@ -38,55 +39,54 @@ namespace Utilities.UI
             yield return null;
             // why wait a frame? Because the things that are using this have conflicting LayoutGroups w/ Content Size Fitter on children
             // For more info: https://docs.unity3d.com/ScriptReference/Canvas.ForceUpdateCanvases.html
-            gameObject.SetActive(_startShown);
+            if (_startShown)
+                Show();
+            else
+                Hide(instant: true);
         }
 
-        public void Show() => Show(false);
         [Button]
-        public void Show(bool restart = false)
+        public void Show() => Show(false);
+        public void Show(bool restart)
         {
+            _onStartShowing.Invoke();
             if (restart || !gameObject.activeInHierarchy)
             {
-                MoveToHiddenPosition();
+                SetHiddenPosition();
                 gameObject.SetActive(true);
             }
-            _onStartShowing?.Invoke();
 
             _tween?.Kill();
-            _tween = RectProperty.DOAnchorPos(_shownPosition, _showDuration).SetEase(_showEase).OnComplete(() =>
-            {
-                _onShowComplete?.Invoke();
-            });
+            _tween = RectProperty.DOAnchorPos(_shownPosition, _showDuration).SetEase(_showEase).OnComplete(_onShowComplete.Invoke);
         }
 
-        public void Hide() => Hide(false);
         [Button]
-        public void Hide(bool instant = false)
+        public void Hide() => Hide(false);
+        public void Hide(bool instant)
         {
+            _onStartHiding.Invoke();
             if (instant)
             {
-                MoveToHiddenPosition();
+                SetHiddenPosition();
                 if (_setInactiveWhenHidden)
                     gameObject.SetActive(false);
-                _onHideComplete?.Invoke(); // decide later if this is preferred
+                _onHideComplete.Invoke();
                 return;
             }
-
-            _onStartHiding?.Invoke();
 
             _tween?.Kill();
             _tween = RectProperty.DOAnchorPos(_hiddenPosition, _hideDuration).SetEase(_hideEase).OnComplete(() =>
             {
-                _onHideComplete?.Invoke();
                 if (_setInactiveWhenHidden)
                     gameObject.SetActive(false);
+                _onHideComplete.Invoke();
             });
         }
 
-        private void SetShownPositionToCurrent() => _shownPosition = RectProperty.anchoredPosition;
-        private void MoveToShownPosition() => RectProperty.anchoredPosition = _shownPosition;
-        private void SetHiddenPositionToCurrent() => _hiddenPosition = RectProperty.anchoredPosition;
-        private void MoveToHiddenPosition() => RectProperty.anchoredPosition = _hiddenPosition;
+        private void GetShownPosition() => _shownPosition = RectProperty.anchoredPosition;
+        private void SetShownPosition() => RectProperty.anchoredPosition = _shownPosition;
+        private void GetHiddenPosition() => _hiddenPosition = RectProperty.anchoredPosition;
+        private void SetHiddenPosition() => RectProperty.anchoredPosition = _hiddenPosition;
 
         private void OnDrawGizmosSelected()
         {

@@ -1169,7 +1169,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4365926556038351648}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b882420ac02b6f142bb78b57ddf99eae, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shownPosition: {x: -100, y: 150}
@@ -1183,9 +1183,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5995132543296450454}
-        m_TargetAssemblyTypeName: Utilities.UI.PanelAnimator, Assembly-CSharp
+        m_TargetAssemblyTypeName: Utilities.UI.PanelSlider, Assembly-CSharp
         m_MethodName: Show
-        m_Mode: 6
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1202,9 +1202,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5995132543296450454}
-        m_TargetAssemblyTypeName: Utilities.UI.PanelAnimator, Assembly-CSharp
+        m_TargetAssemblyTypeName: Utilities.UI.PanelSlider, Assembly-CSharp
         m_MethodName: Hide
-        m_Mode: 6
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1526,11 +1526,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5995132543296450450}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b882420ac02b6f142bb78b57ddf99eae, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shownPosition: {x: 0, y: 0}
-  _showEase: 12
+  _showEase: 15
   _showDuration: 0.5
   _startShown: 0
   _onStartShowing:
@@ -1540,7 +1540,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: 0, y: 100}
-  _hideEase: 12
+  _hideEase: 15
   _hideDuration: 0.5
   _setInactiveWhenHidden: 1
   _onStartHiding:

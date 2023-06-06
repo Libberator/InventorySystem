@@ -579,6 +579,14 @@ PrefabInstance:
       propertyPath: _ability
       value: 
       objectReference: {fileID: 11400000, guid: 14a87dd1f7ea7a7458a327564703633e, type: 2}
+    - target: {fileID: 8961694349690331020, guid: 89ffd0c8796029541867eedec2289d25, type: 3}
+      propertyPath: _rectTransform
+      value: 
+      objectReference: {fileID: 8735304460464633548}
+    - target: {fileID: 8961694349690331020, guid: 89ffd0c8796029541867eedec2289d25, type: 3}
+      propertyPath: _hiddenPosition.y
+      value: -60
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89ffd0c8796029541867eedec2289d25, type: 3}
 --- !u!114 &5259745173895592162 stripped
@@ -595,5 +603,10 @@ MonoBehaviour:
 --- !u!224 &7981480214712372716 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 726076882860841584, guid: 89ffd0c8796029541867eedec2289d25, type: 3}
+  m_PrefabInstance: {fileID: 7264414931568973724}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &8735304460464633548 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2155653862346154320, guid: 89ffd0c8796029541867eedec2289d25, type: 3}
   m_PrefabInstance: {fileID: 7264414931568973724}
   m_PrefabAsset: {fileID: 0}

@@ -1,4 +1,3 @@
-using DG.Tweening;
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
@@ -19,12 +18,11 @@ namespace Utilities.UI
         [SerializeField] private Button _cancelButton;
         //[SerializeField] private TMP_Text _cancelText; // in case you want to customize the button text?
         [SerializeField] private Toggle _bypassToggle;
+        [SerializeField] private GameObject _toggleContainer;
 
         [Header("For Animations")]
-        [SerializeField] private CanvasGroup _canvasGroup;
-        [SerializeField] private Transform _dialogBox;
-        [SerializeField] private GameObject _toggleContainer;
-        [SerializeField] private float _tweenDuration = 0.25f;
+        [SerializeField] private PanelFader _fader;
+        [SerializeField] private PanelScaler _scaler;
 
         private Action _confirmCallback;
         private Action _cancelCallback;
@@ -92,11 +90,8 @@ namespace Utilities.UI
             _toggleContainer.SetActive(withBypass);
             _bypassToggle.isOn = false;
 
-            _canvasGroup.interactable = true;
-            _canvasGroup.blocksRaycasts = true;
-
-            _dialogBox.DOScale(Vector3.one, _tweenDuration).SetEase(Ease.OutBack);
-            _canvasGroup.DOFade(1f, _tweenDuration);
+            _fader.Show();
+            _scaler.Show();
 
             IsActive = true;
         }
@@ -112,11 +107,8 @@ namespace Utilities.UI
                 _bypassed.Add(_currentBypassGroup);
             }
 
-            _canvasGroup.interactable = false;
-            _canvasGroup.blocksRaycasts = false;
-
-            _dialogBox.DOScale(Vector3.zero, _tweenDuration).SetEase(Ease.InBack);
-            _canvasGroup.DOFade(0f, _tweenDuration);
+            _fader.Hide();
+            _scaler.Hide();
 
             IsActive = false;
         }

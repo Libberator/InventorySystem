@@ -8,7 +8,7 @@ namespace InventorySystem
 {
     public class GarbageCan : MonoBehaviour, IPointerClickHandler, IDropHandler
     {
-        [SerializeField] private PanelAnimator _animator;
+        [SerializeField] private PanelSlider _animator;
         [SerializeField] private string _richTextLinkID = "Item";
         private ItemEntryDragger _dragger;
         private ConfirmationDialog _confirmationDialog;

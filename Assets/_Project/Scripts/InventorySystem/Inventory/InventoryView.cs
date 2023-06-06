@@ -17,7 +17,7 @@ namespace InventorySystem
         public bool IsPlayerInventory => _inventory.IsPlayerInventory;
 
         [Header("References")]
-        [SerializeField] private PanelAnimator _panelAnimator;
+        [SerializeField] private PanelSlider _panelAnimator;
         [SerializeField] private ItemEntryView _slotPrefab;
         [SerializeField] private RectTransform _itemSlotsParent;
         [SerializeField, HideInInspector] private ItemEntryView[] _itemSlots;
@@ -180,7 +180,7 @@ namespace InventorySystem
         {
             if (_panelAnimator == null)
             {
-                _panelAnimator = GetComponentInChildren<PanelAnimator>();
+                _panelAnimator = GetComponentInChildren<PanelSlider>();
                 if (_panelAnimator == null) Debug.LogWarning("Please assign a Panel Animator for the Inventory View", _panelAnimator);
             }
 

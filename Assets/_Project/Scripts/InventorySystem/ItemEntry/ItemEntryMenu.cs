@@ -25,10 +25,10 @@ namespace InventorySystem
         private Tween _splitterTween;
 
         [Header("Button Animators")]
-        [SerializeField] private PanelAnimator _use;
-        [SerializeField] private PanelAnimator _equip;
-        [SerializeField] private PanelAnimator _sell;
-        [SerializeField] private PanelAnimator _toss;
+        [SerializeField] private PanelSlider _use;
+        [SerializeField] private PanelSlider _equip;
+        [SerializeField] private PanelSlider _sell;
+        [SerializeField] private PanelSlider _toss;
 
         private ItemEntryDragger _dragger;
         private ItemEntryView _focusedSlot;

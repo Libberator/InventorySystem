@@ -10,7 +10,7 @@ namespace Utilities.UI
     public class NotificationWindow : MonoBehaviour
     {
         [Header("Object References")]
-        [SerializeField] private PanelAnimator _panelAnimator;
+        [SerializeField] private PanelSlider _panelAnimator;
         [SerializeField] private TMP_Text _notificationText;
         [SerializeField] Image _notifImage;
 

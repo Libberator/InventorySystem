@@ -196,10 +196,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42ac8c1ca35b3d419df7365ea7a1949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inventory:
+    _isPlayerInventory: 0
+    _inventorySize: 0
+    _items: []
   _panelAnimator: {fileID: 2494589649657924855}
   _slotPrefab: {fileID: 5930910166036344315, guid: ae0e53b29041d924c81ce13a19892949, type: 3}
   _itemSlotsParent: {fileID: 2494589650189751325}
-  _isPlayerInventory: 1
+  _itemSlots: []
 --- !u!1 &2494589648975540790
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,7 +342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 2494589649084137570}
-  _particle: {fileID: 0}
+  _richTextLinkID: Item
 --- !u!114 &2494589649084137570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,11 +352,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2494589649084137500}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b882420ac02b6f142bb78b57ddf99eae, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shownPosition: {x: 0, y: 0}
-  _showEase: 12
+  _showEase: 15
   _showDuration: 0.5
   _startShown: 0
   _onStartShowing:
@@ -361,10 +365,10 @@ MonoBehaviour:
   _onShowComplete:
     m_PersistentCalls:
       m_Calls: []
-  _hiddenPosition: {x: -150, y: 0}
-  _hideEase: 12
+  _hiddenPosition: {x: 0, y: 0}
+  _hideEase: 15
   _hideDuration: 0.5
-  _setInactiveWhenHidden: 0
+  _setInactiveWhenHidden: 1
   _onStartHiding:
     m_PersistentCalls:
       m_Calls: []
@@ -586,10 +590,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2494589649657924852}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b882420ac02b6f142bb78b57ddf99eae, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shownPosition: {x: 0, y: 100}
+  _shownPosition: {x: 0, y: 0}
   _showEase: 27
   _showDuration: 0.5
   _startShown: 0
@@ -599,8 +603,8 @@ MonoBehaviour:
   _onShowComplete:
     m_PersistentCalls:
       m_Calls: []
-  _hiddenPosition: {x: -800, y: 100}
-  _hideEase: 26
+  _hiddenPosition: {x: 0, y: 0}
+  _hideEase: 15
   _hideDuration: 0.5
   _setInactiveWhenHidden: 1
   _onStartHiding:
@@ -608,19 +612,7 @@ MonoBehaviour:
       m_Calls: []
   _onHideComplete:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: InventorySystem.PanelAnimator, Assembly-CSharp
-        m_MethodName: Show
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2494589649657924854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -786,7 +778,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 386.5, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &2494589650189751393

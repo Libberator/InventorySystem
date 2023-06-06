@@ -7,7 +7,7 @@ namespace InventorySystem.Demo
 {
     public class MessageHandler : MonoBehaviour
     {
-        [SerializeField] private PanelAnimator _notification;
+        [SerializeField] private PanelSlider _notification;
         [SerializeField] private TextMeshProUGUI _notificationText;
 
         private void OnEnable()

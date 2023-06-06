@@ -883,11 +883,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5711264255023145417}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b882420ac02b6f142bb78b57ddf99eae, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shownPosition: {x: 0, y: 0}
-  _showEase: 15
+  _showEase: 27
   _showDuration: 0.5
   _startShown: 0
   _onStartShowing:
