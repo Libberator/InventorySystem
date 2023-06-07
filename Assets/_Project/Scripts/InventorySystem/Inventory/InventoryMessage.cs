@@ -5,21 +5,26 @@
         None,
         ItemAddSuccess,
         ItemAddFail,
+        ItemRemoveSuccess,
+        ItemRemoveFail,
         ItemMoveSuccess,
         ItemMoveFail,
         ItemDiscardSuccess,
-        ItemDiscardFail, // or "Cancel" instead?
+        ItemDiscardCancelled,
+        ItemDiscardFail,
         
     }
 
     public struct InventoryMessage
     {
-        public string Message;
+        public Item Item;
+        public int Quantity;
         public InventoryEvent Event;
 
-        public InventoryMessage(string message, InventoryEvent invEvent = InventoryEvent.None)
+        public InventoryMessage(Item item, int quantity = -1, InventoryEvent invEvent = InventoryEvent.None)
         {
-            Message = message;
+            Item = item;
+            Quantity = quantity;
             Event = invEvent;
         }
     }

@@ -1,5 +1,4 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 using Utilities.MessageSystem;
 using Utilities.UI;
 
@@ -7,8 +6,7 @@ namespace InventorySystem.Demo
 {
     public class MessageHandler : MonoBehaviour
     {
-        [SerializeField] private PanelSlider _notification;
-        [SerializeField] private TextMeshProUGUI _notificationText;
+        [SerializeField] private NotificationQueue _queue;
 
         private void OnEnable()
         {
@@ -22,7 +20,24 @@ namespace InventorySystem.Demo
 
         private void OnInventoryMessage(InventoryMessage message)
         {
-            Debug.Log($"[{message.Event}]: {message.Message}");
+            switch (message.Event)
+            {
+                case InventoryEvent.ItemAddSuccess:
+                    _queue.SendNotification($"+{message.Quantity} {message.Item.ColoredName}");
+                    break;
+                case InventoryEvent.ItemRemoveSuccess:
+                    _queue.SendNotification($"-{message.Quantity} {message.Item.ColoredName}");
+                    break;
+                default:
+                    Debug.Log($"[{message.Event}] {message.Item.Name} ({message.Quantity})");
+                    break;
+            }
         }
+
+        //private void OnAbilityMessages(AbilityMessage message)
+        //{
+
+        //}
+
     }
 }

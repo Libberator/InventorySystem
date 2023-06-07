@@ -6,20 +6,20 @@ using UnityEngine.Events;
 
 namespace Utilities.UI
 {
-    public class PanelScaler : MonoBehaviour, IDisplayable
+    public class PanelScaler : MonoBehaviour
     {
         [SerializeField, HideInInspector] private RectTransform _rectTransform;
         private RectTransform RectTransform => _rectTransform != null ? _rectTransform : _rectTransform = GetComponent<RectTransform>();
 
-        [SerializeField, LabelWidth(200)] protected bool _startShown = false;
+        [SerializeField, LabelWidth(200)] protected bool _hideOnStart = false;
 
         [InlineButton(nameof(SetShownScale), "Set")]
         [InlineButton(nameof(GetShownScale), "Get")]
         [SerializeField, FoldoutGroup("Show Settings")] protected Vector3 _shownScale = Vector3.one;
         [SerializeField, FoldoutGroup("Show Settings")] protected float _showDuration = 0.5f;
         [SerializeField, FoldoutGroup("Show Settings")] protected Ease _showEase = Ease.OutBack;
-        [SerializeField, FoldoutGroup("Show Settings")] protected UnityEvent _onStartShowing;
-        [SerializeField, FoldoutGroup("Show Settings")] protected UnityEvent _onShowComplete;
+        [FoldoutGroup("Show Settings")] public UnityEvent OnStartShowing;
+        [FoldoutGroup("Show Settings")] public UnityEvent OnShowComplete;
 
         [InlineButton(nameof(SetHiddenScale), "Set")]
         [InlineButton(nameof(GetHiddenScale), "Get")]
@@ -27,27 +27,25 @@ namespace Utilities.UI
         [SerializeField, FoldoutGroup("Hide Settings")] protected float _hideDuration = 0.5f;
         [SerializeField, FoldoutGroup("Hide Settings")] protected Ease _hideEase = Ease.OutBack;
         [SerializeField, FoldoutGroup("Hide Settings"), LabelWidth(200)] protected bool _setInactiveWhenHidden = false;
-        [SerializeField, FoldoutGroup("Hide Settings")] protected UnityEvent _onStartHiding;
-        [SerializeField, FoldoutGroup("Hide Settings")] protected UnityEvent _onHideComplete;
+        [FoldoutGroup("Hide Settings")] public UnityEvent OnStartHiding;
+        [FoldoutGroup("Hide Settings")] public UnityEvent OnHideComplete;
 
         private Tween _tween;
 
         private IEnumerator Start()
         {
             yield return null;
-            // why wait a frame? Because the things that are using this have conflicting LayoutGroups w/ Content Size Fitter on children
+            // why wait a frame? In case the things that are using this have conflicting LayoutGroups w/ Content Size Fitter on children
             // For more info: https://docs.unity3d.com/ScriptReference/Canvas.ForceUpdateCanvases.html
-            if (_startShown)
-                Show();
-            else
+            if (_hideOnStart)
                 Hide(instant: true);
         }
 
         [Button]
-        public void Show() => Show(false);
-        public void Show(bool restart)
+        public Tween Show() => Show(false);
+        public Tween Show(bool restart)
         {
-            _onStartShowing.Invoke();
+            OnStartShowing.Invoke();
             if (restart || !gameObject.activeInHierarchy)
             {
                 SetHiddenScale();
@@ -55,29 +53,29 @@ namespace Utilities.UI
             }
 
             _tween?.Kill();
-            _tween = RectTransform.DOScale(_shownScale, _showDuration).SetEase(_showEase).OnComplete(_onShowComplete.Invoke);
+            return _tween = RectTransform.DOScale(_shownScale, _showDuration).SetEase(_showEase).OnComplete(OnShowComplete.Invoke);
         }
 
         [Button]
-        public void Hide() => Hide(false);
-        public void Hide(bool instant)
+        public Tween Hide() => Hide(false);
+        public Tween Hide(bool instant)
         {
-            _onStartHiding.Invoke();
+            OnStartHiding.Invoke();
             if (instant)
             {
                 SetHiddenScale();
                 if (_setInactiveWhenHidden)
                     gameObject.SetActive(false);
-                _onHideComplete.Invoke();
-                return;
+                OnHideComplete.Invoke();
+                return null;
             }
 
             _tween?.Kill();
-            _tween = RectTransform.DOScale(_hiddenScale, _hideDuration).SetEase(_showEase).OnComplete(() =>
+            return _tween = RectTransform.DOScale(_hiddenScale, _hideDuration).SetEase(_showEase).OnComplete(() =>
             {
                 if (_setInactiveWhenHidden)
                     gameObject.SetActive(false);
-                _onHideComplete.Invoke();
+                OnHideComplete.Invoke();
             });
         }
 

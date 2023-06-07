@@ -1,8 +1,9 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Sirenix.OdinInspector;
+using Utilities.MessageSystem;
 
 namespace InventorySystem
 {
@@ -85,10 +86,15 @@ namespace InventorySystem
             {
                 foreach (var slot in _items.Where(s => s.Item == item && s.Quantity < item.MaxStack).OrderByDescending(s => s.Quantity))
                 {
-                    remainder = slot.AddQuantity(qty);
+                    remainder = slot.AddQuantity(remainder);
                     if (remainder == 0)
+                    {
+                        if (_isPlayerInventory)
+                            Messenger.SendMessage(new InventoryMessage(item, qty, InventoryEvent.ItemAddSuccess));
+                        else
+                            Messenger.SendMessage(new InventoryMessage(item, qty, InventoryEvent.ItemRemoveSuccess));
                         return true;
-                    qty = remainder;
+                    }
                 }
             }
 
@@ -99,10 +105,24 @@ namespace InventorySystem
                 emptySlot.Set(item, toAdd);
                 remainder -= toAdd;
                 if (remainder == 0)
+                {
+                    if (_isPlayerInventory)
+                        Messenger.SendMessage(new InventoryMessage(item, qty, InventoryEvent.ItemAddSuccess));
+                    else
+                        Messenger.SendMessage(new InventoryMessage(item, qty, InventoryEvent.ItemRemoveSuccess));
                     return true;
+                }
             }
 
-            // inventory is full. no room left
+            if (qty > remainder)
+            {
+                if (_isPlayerInventory)
+                   Messenger.SendMessage(new InventoryMessage(item, qty - remainder, InventoryEvent.ItemAddSuccess));
+                else
+                    Messenger.SendMessage(new InventoryMessage(item, qty, InventoryEvent.ItemRemoveSuccess));
+            }
+
+            Messenger.SendMessage(new InventoryMessage(item, remainder, InventoryEvent.ItemAddFail));
             return false;
         }
 
@@ -112,12 +132,18 @@ namespace InventorySystem
 
             foreach (var slot in _items.Where(s => s.Item == item).OrderBy(s => s.Quantity))
             {
-                remainder = slot.RemoveQuantity(qty);
+                remainder = slot.RemoveQuantity(remainder);
                 if (remainder == 0)
+                {
+                    if (_isPlayerInventory)
+                        Messenger.SendMessage(new InventoryMessage(item, qty, InventoryEvent.ItemRemoveSuccess));
                     return true;
-                qty = remainder;
+                }
             }
+            if (qty > remainder && _isPlayerInventory)
+                Messenger.SendMessage(new InventoryMessage(item, qty - remainder, InventoryEvent.ItemRemoveSuccess));
 
+            Messenger.SendMessage(new InventoryMessage(item, remainder, InventoryEvent.ItemRemoveFail));
             return false;
         }
 

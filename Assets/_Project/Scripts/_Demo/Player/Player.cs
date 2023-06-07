@@ -14,5 +14,13 @@ namespace InventorySystem.Demo
         {
             ServiceLocator.Register(this);
         }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                Inventory.Toggle();
+            }
+        }
     }
 }

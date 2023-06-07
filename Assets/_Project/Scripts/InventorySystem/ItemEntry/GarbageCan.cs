@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 using Utilities;
 using Utilities.MessageSystem;
 using Utilities.UI;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace InventorySystem
 {
@@ -49,10 +50,11 @@ namespace InventorySystem
 
         private void ConfirmDisposal()
         {
-            Messenger.SendMessage(new InventoryMessage($"Disposed {_dragger.Entry.Item.ColoredName} ({_dragger.Entry.Quantity})", InventoryEvent.ItemDiscardSuccess));
+            Messenger.SendMessage(new InventoryMessage(_dragger.Entry.Item, _dragger.Entry.Quantity, InventoryEvent.ItemDiscardSuccess));
             _dragger.DisposeEntry();
         }
 
-        private void CancelDisposal() => Messenger.SendMessage(new InventoryMessage("Disposal Cancelled", InventoryEvent.ItemDiscardFail));
+        private void CancelDisposal() => 
+            Messenger.SendMessage(new InventoryMessage(_dragger.Entry.Item, _dragger.Entry.Quantity, InventoryEvent.ItemDiscardCancelled));
     }
 }

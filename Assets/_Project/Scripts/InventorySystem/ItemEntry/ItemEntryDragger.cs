@@ -180,22 +180,12 @@ namespace InventorySystem
 
             if (target == null)
             {
-                Messenger.SendMessage(new InventoryMessage($"No other open Inventory to move {slot.Item.ColoredName} ({slot.Quantity}) to", InventoryEvent.ItemMoveFail));
+                Messenger.SendMessage(new InventoryMessage(slot.Item, slot.Quantity, InventoryEvent.ItemMoveFail));
                 return;
             }
 
-            if (!target.TryAddItem(slot.Entry, out int remainder))
-                Messenger.SendMessage(new InventoryMessage($"Inventory is too full to add {slot.Item.ColoredName} ({remainder})", InventoryEvent.ItemAddFail));
-
-            var qtyAdded = slot.Quantity - remainder;
-            if (qtyAdded > 0)
-            {
-                if (target == _playerInventory)
-                    Messenger.SendMessage(new InventoryMessage($"Added {slot.Item.ColoredName} ({qtyAdded})", InventoryEvent.ItemAddSuccess));
-                else
-                    Messenger.SendMessage(new InventoryMessage($"Moved {slot.Item.ColoredName} ({qtyAdded})", InventoryEvent.ItemMoveSuccess));
-            }
-            slot.Entry.RemoveQuantity(qtyAdded);
+            target.TryAddItem(slot.Entry, out int remainder);
+            slot.Entry.RemoveQuantity(slot.Quantity - remainder);
         }
 
         private void OnDoubleClicked(ItemEntryView slot)

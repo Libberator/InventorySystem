@@ -931,24 +931,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rectTransform: {fileID: 6216229247610194426}
+  _hideOnStart: 1
   _shownPosition: {x: 0, y: 0}
   _showDuration: 0.5
   _showEase: 27
-  _startShown: 0
-  _onStartShowing:
+  OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
-  _onShowComplete:
+  OnShowComplete:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: -900, y: 0}
   _hideDuration: 0.5
   _hideEase: 15
   _setInactiveWhenHidden: 1
-  _onStartHiding:
+  OnStartHiding:
     m_PersistentCalls:
       m_Calls: []
-  _onHideComplete:
+  OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &6216229247610194427
@@ -1130,24 +1130,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rectTransform: {fileID: 6216229247767729788}
+  _hideOnStart: 0
   _shownPosition: {x: 0, y: 0}
   _showDuration: 0.5
   _showEase: 15
-  _startShown: 0
-  _onStartShowing:
+  OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
-  _onShowComplete:
+  OnShowComplete:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: -150, y: 0}
   _hideDuration: 0.5
   _hideEase: 15
   _setInactiveWhenHidden: 1
-  _onStartHiding:
+  OnStartHiding:
     m_PersistentCalls:
       m_Calls: []
-  _onHideComplete:
+  OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &6216229247767729789

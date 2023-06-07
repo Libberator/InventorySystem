@@ -1,69 +1,53 @@
-using System.Collections.Generic;
+using DG.Tweening;
+using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Utilities.UI
 {
-    public enum NotificationType { General = 0, Warning = 1, Error = 2, }
-
     public class NotificationWindow : MonoBehaviour
     {
-        [Header("Object References")]
-        [SerializeField] private PanelSlider _panelAnimator;
-        [SerializeField] private TMP_Text _notificationText;
-        [SerializeField] Image _notifImage;
+        [Header("References")] // Note: not all of these references are *required*
+        [SerializeField] private PanelPivoter _pivoter;
+        [SerializeField] private PanelSlider _slider;
+        [SerializeField] private PanelFader _fader;
+        [SerializeField] private TMP_Text _messageText;
 
         [Header("Notification Settings")]
-        [SerializeField] private float _defaultDisappearTime = 4f;
+        [SerializeField] private float _shownDuration = 4f;
+        private Action<NotificationWindow> _onHideCallback;
 
-        private readonly Queue<Notification> _notificationQueue = new();
-        private bool _notifCurrentlyDisplayed = false;
+        public PanelPivoter Pivoter => _pivoter;
+        public PanelSlider Slider => _slider;
+        public PanelFader Fader => _fader;
 
-        public void SendNotification(string message) => SendNotification(message, NotificationType.General, _defaultDisappearTime);
-        public void SendNotification(string message, NotificationType type) => SendNotification(message, type, _defaultDisappearTime);
-        public void SendNotification(string message, NotificationType type, float disappearTime)
+        private Coroutine _coroutine;
+
+        public void Init(Action<NotificationWindow> onHideCallback)
         {
-            _notificationQueue.Enqueue(new Notification(message, type, disappearTime));
-            CheckForNotificationToDisplay();
+            _onHideCallback = onHideCallback;
         }
 
-        public void OnNotificationHideComplete() // assigned to OnHideComplete in the PanelAnimator
+        public virtual void ShowNotification(string message) => ShowNotification(message, _shownDuration);
+        public virtual void ShowNotification(string message, float shownDuration)
         {
-            _notifCurrentlyDisplayed = false;
-            CheckForNotificationToDisplay();
+            _messageText.SetText(message);
+            Show();
+
+            if (_coroutine != null) StopCoroutine(_coroutine);
+            _coroutine = this.DelayThenDo(shownDuration, Hide); // custom extension method
         }
 
-        private void CheckForNotificationToDisplay()
+        protected virtual void Show()
         {
-            if (_notificationQueue.Count > 0 && !_notifCurrentlyDisplayed)
-                Show(_notificationQueue.Dequeue());
+            if (_slider != null) _slider.Show(restart: true);
+            if (_fader != null) _fader.Show(restart: true);
         }
 
-        private void Show(Notification notif)
+        protected virtual void Hide()
         {
-            _notifCurrentlyDisplayed = true;
-            _notificationText.SetText(notif.Message);
-            _notificationText.color = notif.Type == NotificationType.Warning ? Color.black : Color.white;
-
-            _panelAnimator.Show();
-            Invoke(nameof(Hide), notif.DelayTime);
-        }
-
-        private void Hide() => _panelAnimator.Hide();
-
-        private readonly struct Notification
-        {
-            public readonly string Message;
-            public readonly NotificationType Type;
-            public readonly float DelayTime;
-
-            public Notification(string message, NotificationType type, float delay)
-            {
-                Message = message;
-                Type = type;
-                DelayTime = delay;
-            }
+            if (_slider != null) _slider.Hide();
+            if (_fader != null) _fader.Hide().OnComplete(() => _onHideCallback?.Invoke(this));
         }
     }
 }

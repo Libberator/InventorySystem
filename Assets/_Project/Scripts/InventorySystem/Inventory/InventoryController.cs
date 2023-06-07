@@ -42,14 +42,5 @@ namespace InventorySystem
         
         [ButtonGroup("View", ButtonHeight = 20)]
         public void Close() => _inventoryView.CloseInventory();
-
-        // TODO: make the input connect to the Player's InventoryView another way
-        // TODO: Switch to alternative forms of Input instead of relying directly on the legacy Input system
-        private void Update()
-        {
-            if (!_isPlayerInventory) return;
-            if (Input.GetKeyDown(KeyCode.I))
-                Toggle();
-        }
     }
 }

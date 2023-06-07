@@ -7,12 +7,12 @@ using UnityEngine.Events;
 namespace Utilities.UI
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class PanelFader : MonoBehaviour, IDisplayable
+    public class PanelFader : MonoBehaviour
     {
         [SerializeField, HideInInspector] private CanvasGroup _canvasGroup;
         private CanvasGroup CanvasGroup => _canvasGroup != null ? _canvasGroup : _canvasGroup = GetComponent<CanvasGroup>();
-        
-        [SerializeField, LabelWidth(200)] protected bool _startShown = false;
+
+        [SerializeField, LabelWidth(200)] protected bool _hideOnStart = true;
 
         [InlineButton(nameof(SetShownAlpha), "Set")]
         [InlineButton(nameof(GetShownAlpha), "Get")]
@@ -42,15 +42,13 @@ namespace Utilities.UI
             yield return null;
             // why wait a frame? Because the things that are using this have conflicting LayoutGroups w/ Content Size Fitter on children
             // For more info: https://docs.unity3d.com/ScriptReference/Canvas.ForceUpdateCanvases.html
-            if (_startShown)
-                Show();
-            else
+            if (_hideOnStart)
                 Hide(instant: true);
         }
 
-        [Button]
-        public void Show() => Show(false);
-        public void Show(bool restart)
+        [Button(DisplayParameters = false)]
+        public Tween Show() => Show(false);
+        public Tween Show(bool restart)
         {
             _onStartShowing.Invoke();
             if (restart || !gameObject.activeInHierarchy)
@@ -62,31 +60,37 @@ namespace Utilities.UI
             SetShownState();
 
             _tween?.Kill();
-            _tween = CanvasGroup.DOFade(_shownAlpha, _showDuration).SetEase(_showEase).OnComplete(_onShowComplete.Invoke);
+            return _tween = CanvasGroup.DOFade(_shownAlpha, _showDuration)
+                .SetEase(_showEase)
+                .OnComplete(_onShowComplete.Invoke);
         }
 
-        [Button]
-        public void Hide() => Hide(false);
-        public void Hide(bool instant)
+        [Button(DisplayParameters = false)]
+        public Tween Hide() => Hide(false);
+        public Tween Hide(bool instant)
         {
             _onStartHiding.Invoke();
+            _tween?.Kill();
+
             if (instant)
             {
+                CanvasGroup.alpha = _hiddenAlpha;
                 SetHiddenState();
                 if (_setInactiveWhenHidden)
                     gameObject.SetActive(false);
                 _onHideComplete.Invoke();
-                return;
+                return null;
             }
 
-            _tween?.Kill();
-            _tween = CanvasGroup.DOFade(_hiddenAlpha, _hideDuration).SetEase(_showEase).OnComplete(() =>
-            {
-                SetHiddenState();
-                if (_setInactiveWhenHidden)
-                    gameObject.SetActive(false);
-                _onHideComplete.Invoke();
-            });
+            return _tween = CanvasGroup.DOFade(_hiddenAlpha, _hideDuration)
+                .SetEase(_hideEase)
+                .OnComplete(() =>
+                {
+                    SetHiddenState();
+                    if (_setInactiveWhenHidden)
+                        gameObject.SetActive(false);
+                    _onHideComplete.Invoke();
+                });
         }
 
         private void GetShownAlpha() => _shownAlpha = CanvasGroup.alpha;

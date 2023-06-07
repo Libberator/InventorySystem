@@ -1,10 +1,20 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Utilities
 {
     public static class ComponentUtils
     {
+        public static Coroutine DelayThenDo(this MonoBehaviour source, float delay, Action callback) => 
+            source.StartCoroutine(DelayRoutine(delay, callback));
+
+        private static IEnumerator DelayRoutine(float delay, Action callback)
+        {
+            yield return new WaitForSeconds(delay);
+            callback?.Invoke();
+        }
+
         /// <summary>Searches Self, then Parents, then Children for the component.</summary>
         public static Component GetComponentInHierarchy(this Component source, Type t, bool includeInactive = false)
         {

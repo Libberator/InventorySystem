@@ -501,24 +501,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 0}
+  _hideOnStart: 0
   _shownPosition: {x: 0, y: 0}
-  _showEase: 27
   _showDuration: 0.5
-  _startShown: 0
-  _onStartShowing:
+  _showEase: 27
+  OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
-  _onShowComplete:
+  OnShowComplete:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: 0, y: 100}
-  _hideEase: 15
   _hideDuration: 0.5
+  _hideEase: 15
   _setInactiveWhenHidden: 1
-  _onStartHiding:
+  OnStartHiding:
     m_PersistentCalls:
       m_Calls: []
-  _onHideComplete:
+  OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &6999970582336612468
@@ -659,48 +660,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 6999970582410877971}
+  _hideOnStart: 1
   _shownPosition: {x: -100, y: 150}
-  _showEase: 27
   _showDuration: 0.5
-  _startShown: 0
-  _onStartShowing:
+  _showEase: 27
+  OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
-  _onShowComplete:
+  OnShowComplete:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6999970582336612471}
-        m_TargetAssemblyTypeName: Utilities.UI.PanelSlider, Assembly-CSharp
-        m_MethodName: Show
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   _hiddenPosition: {x: 700, y: 150}
-  _hideEase: 15
   _hideDuration: 0.5
+  _hideEase: 15
   _setInactiveWhenHidden: 1
-  _onStartHiding:
+  OnStartHiding:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6999970582336612471}
-        m_TargetAssemblyTypeName: Utilities.UI.PanelSlider, Assembly-CSharp
-        m_MethodName: Hide
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _onHideComplete:
+      m_Calls: []
+  OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &6999970582410877970

@@ -282,24 +282,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 0}
+  _hideOnStart: 1
   _shownPosition: {x: -27, y: -6}
-  _showEase: 15
   _showDuration: 0.5
-  _startShown: 0
-  _onStartShowing:
+  _showEase: 15
+  OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
-  _onShowComplete:
+  OnShowComplete:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: -80, y: -6}
-  _hideEase: 15
   _hideDuration: 0.5
+  _hideEase: 15
   _setInactiveWhenHidden: 1
-  _onStartHiding:
+  OnStartHiding:
     m_PersistentCalls:
       m_Calls: []
-  _onHideComplete:
+  OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6680733013568326567
@@ -540,24 +541,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 0}
+  _hideOnStart: 1
   _shownPosition: {x: 6, y: 27}
-  _showEase: 15
   _showDuration: 0.5
-  _startShown: 0
-  _onStartShowing:
+  _showEase: 15
+  OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
-  _onShowComplete:
+  OnShowComplete:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: 6, y: 80}
-  _hideEase: 15
   _hideDuration: 0.5
+  _hideEase: 15
   _setInactiveWhenHidden: 1
-  _onStartHiding:
+  OnStartHiding:
     m_PersistentCalls:
       m_Calls: []
-  _onHideComplete:
+  OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6680733013756035775
@@ -933,24 +935,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 6680733014144997907}
+  _hideOnStart: 1
   _shownPosition: {x: -6, y: -27}
-  _showEase: 15
   _showDuration: 0.5
-  _startShown: 0
-  _onStartShowing:
+  _showEase: 15
+  OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
-  _onShowComplete:
+  OnShowComplete:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: -6, y: -80}
-  _hideEase: 15
   _hideDuration: 0.5
+  _hideEase: 15
   _setInactiveWhenHidden: 1
-  _onStartHiding:
+  OnStartHiding:
     m_PersistentCalls:
       m_Calls: []
-  _onHideComplete:
+  OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6680733014206935177
@@ -1433,24 +1436,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 6680733014557194833}
+  _hideOnStart: 1
   _shownPosition: {x: 27, y: 6}
-  _showEase: 15
   _showDuration: 0.5
-  _startShown: 0
-  _onStartShowing:
+  _showEase: 15
+  OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
-  _onShowComplete:
+  OnShowComplete:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: 80, y: 6}
-  _hideEase: 15
   _hideDuration: 0.5
+  _hideEase: 15
   _setInactiveWhenHidden: 1
-  _onStartHiding:
+  OnStartHiding:
     m_PersistentCalls:
       m_Calls: []
-  _onHideComplete:
+  OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &6680733014907331144
