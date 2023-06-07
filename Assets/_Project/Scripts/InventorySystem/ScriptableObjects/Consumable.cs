@@ -1,5 +1,4 @@
-﻿using System.Text;
-using TooltipSystem;
+﻿using TooltipSystem;
 using UnityEngine;
 using Utilities.Cooldown;
 
@@ -12,8 +11,6 @@ namespace InventorySystem
     {
         [SerializeField] private float _cooldown = 0.5f;
         public StatModifier[] StatModifiers = new StatModifier[0];
-
-        private readonly StringBuilder _sb = new();
 
         public float Cooldown => _cooldown;
         public virtual void Use() // IStatHolder, IHaveStats, ICharacter, I..

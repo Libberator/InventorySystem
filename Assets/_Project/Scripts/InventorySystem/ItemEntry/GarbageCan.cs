@@ -44,6 +44,7 @@ namespace InventorySystem
         private void StartDisposal(ItemEntry entry)
         {
             // TODO: Add safety checks to automatically cancel if the item is not disposable.
+            // It would classify as an ItemDiscardFailed InventoryEvent
             var msg = $"Dispose of\n{entry.Item.ColoredName.WithLink(_richTextLinkID)} ({entry.Quantity})?";
             _confirmationDialog.AskWithBypass("Dispose Item", msg, ConfirmDisposal, CancelDisposal);
         }

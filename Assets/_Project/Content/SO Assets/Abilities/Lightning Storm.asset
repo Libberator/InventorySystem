@@ -16,5 +16,7 @@ MonoBehaviour:
   _nameOverride: 
   Description: "Summon a looming cloud that follows you for 20 seconds, \ndealing
     50 DMG to nearby enemies sporadically"
-  <Cooldown>k__BackingField: 0
-  Cost: 60
+  Cost: 40
+  _cooldown: 15
+  _level: 1
+  NextLevelAbility: {fileID: 0}

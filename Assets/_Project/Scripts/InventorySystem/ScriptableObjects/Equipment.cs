@@ -1,4 +1,3 @@
-using System.Text;
 using TooltipSystem;
 using UnityEngine;
 
@@ -23,8 +22,6 @@ namespace InventorySystem
         public EquipmentType EquipmentType;
         public StatModifier[] StatModifiers = new StatModifier[0];
 
-        private readonly StringBuilder _sb = new();
-        
         public void Equip()
         {
             throw new System.NotImplementedException();

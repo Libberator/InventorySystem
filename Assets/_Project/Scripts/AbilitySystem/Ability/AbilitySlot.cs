@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using TMPro;
 using TooltipSystem;
 using UnityEngine;
@@ -10,6 +11,9 @@ namespace AbilitySystem
 {
     public class AbilitySlot : MonoBehaviour, IHaveTooltip, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
     {
+        public static event Action<AbilitySlot> Pressed;
+        public static event Action<AbilitySlot> UpgradePressed;
+
         [OnValueChanged(nameof(OnAbilityChanged))]
         [SerializeField] private Ability _ability;
         [OnValueChanged(nameof(OnKeyCodeChanged))]
@@ -20,7 +24,10 @@ namespace AbilitySystem
         [SerializeField] private Image _radialFill;
         [SerializeField] private TextMeshProUGUI _keyText;
         [SerializeField] private TextMeshProUGUI _timerText;
-        private Cooldown _cooldownTimer;
+        private Cooldown _cooldown;
+
+        public Ability Ability => _ability;
+        public Cooldown Cooldown => _cooldown;
 
         private void Start()
         {
@@ -33,12 +40,14 @@ namespace AbilitySystem
         private void Update()
         {
             if (Input.GetKeyDown(_key))
-                AbilityPressed();
+                Pressed?.Invoke(this);
         }
+
+        #region Bindings
 
         public void BindTo(Ability ability)
         {
-            if (_ability != null) UnbindFrom(_ability);
+            if (_ability != null) UnbindFromCurrent();
             if (ability == null) return;
 
             _ability = ability;
@@ -46,45 +55,26 @@ namespace AbilitySystem
             OnAbilityChanged(_ability);
 
             // TODO: Avoid divide-by-zero. Handle what to do in case Cooldown Duration is 0
-            _cooldownTimer = Cooldown.Get(ability);
-            _cooldownTimer.Started += OnCooldownStarted;
-            _cooldownTimer.Updated += OnCooldownUpdated;
-            _cooldownTimer.Completed += OnCooldownCompleted;
-            if (_cooldownTimer.IsActive) OnCooldownStarted(_cooldownTimer.Remaining);
+            _cooldown = Cooldown.Get(ability);
+            _cooldown.Started += OnCooldownStarted;
+            _cooldown.Updated += OnCooldownUpdated;
+            _cooldown.Completed += OnCooldownCompleted;
+            if (_cooldown.IsActive) OnCooldownStarted(_cooldown.Remaining);
             else OnCooldownCompleted();
         }
 
-        private void UnbindFrom(Ability ability)
+        private void UnbindFromCurrent()
         {
-            if (_cooldownTimer != null)
+            if (_cooldown != null)
             {
-                _cooldownTimer.Started -= OnCooldownStarted;
-                _cooldownTimer.Updated -= OnCooldownUpdated;
-                _cooldownTimer.Completed -= OnCooldownCompleted;
+                _cooldown.Started -= OnCooldownStarted;
+                _cooldown.Updated -= OnCooldownUpdated;
+                _cooldown.Completed -= OnCooldownCompleted;
             }
 
-            //OnAbilityChanged(null); // might need this later
-            //OnCooldownChanged(0);
+            OnAbilityChanged(null);
+            OnCooldownCompleted();
             _ability = null;
-        }
-
-        #region Ability Usage
-
-        public void AbilityPressed()
-        {
-            if (_cooldownTimer.IsActive)
-            {
-                Debug.LogWarning($"Timer for {_ability.Name} is still active!");
-                return;
-            }
-            // if we don't have enough mana, give reject reason
-
-            ActivateAbility();
-        }
-
-        private void ActivateAbility()
-        {
-            Debug.Log($"Ability activated: {_ability.Name}");
         }
 
         #endregion
@@ -118,7 +108,7 @@ namespace AbilitySystem
         private void OnCooldownUpdated(float remaining)
         {
             _radialFill.fillAmount = remaining / _ability.Cooldown;
-            _timerText.SetText(remaining.ToString());
+            _timerText.SetText(remaining.ToString("F1"));
         }
 
         private void OnCooldownCompleted()
@@ -129,23 +119,25 @@ namespace AbilitySystem
 
         #endregion
 
-        #region Skill-Up
-
-        public void SkillUpPressed()
-        {
-            Debug.Log($"Leveled up {_ability.Name}");
-        }
-
-        #endregion
-
         #region Interface Methods
+
+        public void UpgradeButtonPressed() => UpgradePressed?.Invoke(this);
 
         public Tooltip GetTooltip() => _ability != null ? _ability.GetTooltip() : Tooltip.Empty;
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            // Shift-Click to Level-Up the ability if available
-            AbilityPressed();
+            if (_ability == null) return;
+
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                if (Input.GetKey(KeyCode.LeftShift))
+                    UpgradeButtonPressed();
+                else
+                    Pressed?.Invoke(this);
+            }
+            else if (eventData.button == PointerEventData.InputButton.Right)
+                Debug.Log($"Right clicked {_ability.Name}");
         }
 
         public void OnBeginDrag(PointerEventData eventData)

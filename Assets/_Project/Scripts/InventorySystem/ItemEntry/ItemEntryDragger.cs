@@ -19,6 +19,7 @@ namespace InventorySystem
         // garbage can is only thing listening to these events
         public static event Action<bool> IsDraggingChanged;
         public static event EventHandler<ItemEntry> ItemDisposed;
+        public ItemEntry Entry => _entry;
 
         [Header("Dragging References")]
         [SerializeField, Required] private Image _icon;
@@ -36,8 +37,6 @@ namespace InventorySystem
         
         [Header("What's In Hand")]
         [SerializeField, ReadOnly] private ItemEntry _entry = new();
-        public ItemEntry Entry => _entry;
-
         private ItemEntryView _returnSlot;
         private bool _isPartialDrag = false;
         

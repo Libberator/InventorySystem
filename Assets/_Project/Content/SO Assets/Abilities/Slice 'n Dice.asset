@@ -18,5 +18,7 @@ MonoBehaviour:
 
     knocking back
     enemies and dealing 30 DMG'
-  <Cooldown>k__BackingField: 0
-  Cost: 10
+  Cost: 12
+  _cooldown: 2.5
+  _level: 1
+  NextLevelAbility: {fileID: 0}

@@ -67,11 +67,11 @@ namespace InventorySystem
             if (_isPlayerInventory) return;
             var playerInventory = ServiceLocator.Get<Inventory>();
 
-            foreach (var slot in _items)
+            foreach (var entry in _items)
             {
-                if (slot.Item == null) continue;
-                playerInventory.TryAddItem(slot, out int remainder);
-                slot.RemoveQuantity(slot.Quantity - remainder);
+                if (entry.Item == null) continue;
+                playerInventory.TryAddItem(entry, out int remainder);
+                entry.RemoveQuantity(entry.Quantity - remainder);
             }
         }
 

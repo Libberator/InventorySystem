@@ -15,18 +15,18 @@ namespace Utilities.UI
 
         [InlineButton(nameof(SetShownScale), "Set")]
         [InlineButton(nameof(GetShownScale), "Get")]
-        [SerializeField, FoldoutGroup("Show Settings")] protected Vector3 _shownScale = Vector3.one;
-        [SerializeField, FoldoutGroup("Show Settings")] protected float _showDuration = 0.5f;
-        [SerializeField, FoldoutGroup("Show Settings")] protected Ease _showEase = Ease.OutBack;
+        [FoldoutGroup("Show Settings"), SerializeField] protected Vector3 _shownScale = Vector3.one;
+        [FoldoutGroup("Show Settings"), SerializeField, Min(0.01f)] protected float _showDuration = 0.5f;
+        [FoldoutGroup("Show Settings"), SerializeField] protected Ease _showEase = Ease.OutBack;
         [FoldoutGroup("Show Settings")] public UnityEvent OnStartShowing;
         [FoldoutGroup("Show Settings")] public UnityEvent OnShowComplete;
 
         [InlineButton(nameof(SetHiddenScale), "Set")]
         [InlineButton(nameof(GetHiddenScale), "Get")]
-        [SerializeField, FoldoutGroup("Hide Settings")] protected Vector3 _hiddenScale = Vector3.zero;
-        [SerializeField, FoldoutGroup("Hide Settings")] protected float _hideDuration = 0.5f;
-        [SerializeField, FoldoutGroup("Hide Settings")] protected Ease _hideEase = Ease.OutBack;
-        [SerializeField, FoldoutGroup("Hide Settings"), LabelWidth(200)] protected bool _setInactiveWhenHidden = false;
+        [FoldoutGroup("Hide Settings"), SerializeField] protected Vector3 _hiddenScale = Vector3.zero;
+        [FoldoutGroup("Hide Settings"), SerializeField, Min(0.01f)] protected float _hideDuration = 0.5f;
+        [FoldoutGroup("Hide Settings"), SerializeField] protected Ease _hideEase = Ease.OutBack;
+        [FoldoutGroup("Hide Settings"), SerializeField, LabelWidth(200)] protected bool _setInactiveWhenHidden = false;
         [FoldoutGroup("Hide Settings")] public UnityEvent OnStartHiding;
         [FoldoutGroup("Hide Settings")] public UnityEvent OnHideComplete;
 

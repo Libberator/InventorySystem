@@ -15,12 +15,11 @@ namespace Utilities.UI
         [SerializeField, FoldoutGroup("Settings")] protected TextAnchor _defaultPivot = TextAnchor.UpperLeft;
         [SerializeField, FoldoutGroup("Settings")] protected Ease _slideEase = Ease.Linear; // Or InOut options
         [SerializeField, FoldoutGroup("Settings")] protected bool _isSpeedBased = false;
-        [SerializeField, FoldoutGroup("Settings"), LabelText("@SlideText"), LabelWidth(150)] protected float _slideDuration = 0.5f;
-
-        private string SlideText => _isSpeedBased ? "Slide Speed (units/sec)" : "Slide Duration (sec)";
-
+        [SerializeField, FoldoutGroup("Settings"), LabelText("@SlideText"), LabelWidth(150), Min(0.01f)] protected float _slideDuration = 0.5f;
         [FoldoutGroup("Callbacks")] public UnityEvent OnDoneSliding;
         [FoldoutGroup("Callbacks")] public UnityEvent OnResetToDefault;
+
+        private string SlideText => _isSpeedBased ? "Slide Speed (units/sec)" : "Slide Duration (sec)";
 
         private Tween _tween;
         private Vector2 _targetPivot;

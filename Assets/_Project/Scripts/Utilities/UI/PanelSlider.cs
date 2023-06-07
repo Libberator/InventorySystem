@@ -11,17 +11,15 @@ namespace Utilities.UI
         [SerializeField, HideInInspector] private RectTransform _rectTransform;
         private RectTransform RectProperty => _rectTransform != null ? _rectTransform : _rectTransform = GetComponent<RectTransform>();
 
-        #region Inspector Properties
-
         [SerializeField, LabelWidth(200)] protected bool _hideOnStart = true;
 
         [Tooltip("This should match the RectTranform's local/anchored Position in Inspector when shown")]
         [InlineButton(nameof(SetShownPosition), "Set")]
         [InlineButton(nameof(GetShownPosition), "Get")]
-        [SerializeField, FoldoutGroup("Show Settings")] protected Vector2 _shownPosition;
-        [SerializeField, FoldoutGroup("Show Settings")] protected Ease _showEase = Ease.OutBack;
-        [SerializeField, FoldoutGroup("Show Settings"), LabelWidth(150)] protected bool _showIsSpeedBased = false;
-        [SerializeField, FoldoutGroup("Show Settings"), LabelText("@ShowText"), LabelWidth(150)] protected float _showDuration = 0.5f;
+        [FoldoutGroup("Show Settings"), SerializeField] protected Vector2 _shownPosition;
+        [FoldoutGroup("Show Settings"), SerializeField] protected Ease _showEase = Ease.OutBack;
+        [FoldoutGroup("Show Settings"), SerializeField, LabelWidth(150)] protected bool _showIsSpeedBased = false;
+        [FoldoutGroup("Show Settings"), SerializeField, LabelText("@ShowText"), LabelWidth(150), Min(0.01f)] protected float _showDuration = 0.5f;
         [FoldoutGroup("Show Settings")] public UnityEvent OnStartShowing;
         [FoldoutGroup("Show Settings")] public UnityEvent OnShowComplete;
         private string ShowText => _showIsSpeedBased ? "Show Speed (units/sec)" : "Show Duration (sec)";
@@ -29,17 +27,14 @@ namespace Utilities.UI
         [Tooltip("This should match the RectTranform's local/anchored Position in Inspector when hidden")]
         [InlineButton(nameof(SetHiddenPosition), "Set")]
         [InlineButton(nameof(GetHiddenPosition), "Get")]
-        [SerializeField, FoldoutGroup("Hide Settings")] protected Vector2 _hiddenPosition;
-        [SerializeField, FoldoutGroup("Hide Settings")] protected Ease _hideEase = Ease.OutQuint;
-        [SerializeField, FoldoutGroup("Hide Settings"), LabelWidth(150)] protected bool _hideIsSpeedBased = false;
-        [SerializeField, FoldoutGroup("Hide Settings"), LabelText("@HideText"), LabelWidth(150)] protected float _hideDuration = 0.5f;
-        [SerializeField, FoldoutGroup("Hide Settings"), LabelWidth(150)] protected bool _setInactiveWhenHidden = false;
-        private string HideText => _hideIsSpeedBased ? "Hide Speed (units/sec)" : "Hide Duration (sec)";
-
+        [FoldoutGroup("Hide Settings"), SerializeField] protected Vector2 _hiddenPosition;
+        [FoldoutGroup("Hide Settings"), SerializeField] protected Ease _hideEase = Ease.OutQuint;
+        [FoldoutGroup("Hide Settings"), SerializeField, LabelWidth(150)] protected bool _hideIsSpeedBased = false;
+        [FoldoutGroup("Hide Settings"), SerializeField, LabelText("@HideText"), LabelWidth(150), Min(0.01f)] protected float _hideDuration = 0.5f;
+        [FoldoutGroup("Hide Settings"), SerializeField, LabelWidth(150)] protected bool _setInactiveWhenHidden = false;
         [FoldoutGroup("Hide Settings")] public UnityEvent OnStartHiding;
         [FoldoutGroup("Hide Settings")] public UnityEvent OnHideComplete;
-
-        #endregion
+        private string HideText => _hideIsSpeedBased ? "Hide Speed (units/sec)" : "Hide Duration (sec)";
 
         private Tween _tween;
 

@@ -15,5 +15,7 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: b6bb7126232f20d4ab52470b6262d842, type: 3}
   _nameOverride: 
   Description: Drops arrows on a target area, dealing 60 DMG
-  Cooldown: 6
-  Cost: 25
+  Cost: 15
+  _cooldown: 5
+  _level: 1
+  NextLevelAbility: {fileID: 0}

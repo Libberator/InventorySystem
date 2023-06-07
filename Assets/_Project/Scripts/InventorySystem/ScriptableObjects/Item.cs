@@ -1,4 +1,5 @@
 ﻿using Sirenix.OdinInspector;
+using System.Text;
 using TooltipSystem;
 using UnityEngine;
 using Utilities;
@@ -7,6 +8,8 @@ namespace InventorySystem
 {
     public abstract class Item : ScriptableObject, IHaveTooltip
     {
+        protected readonly StringBuilder _sb = new();
+        
         [PreviewField(Alignment = ObjectFieldAlignment.Center, Height = 120f)]
         public Sprite Icon;
 
@@ -24,7 +27,15 @@ namespace InventorySystem
 
         public virtual string Name => string.IsNullOrEmpty(_nameOverride) ? name : _nameOverride;
         public virtual string ColoredName => Name.WithColor(Rarity.TextColor);
-        public virtual Tooltip GetTooltip() => $"{ColoredName}\n\n<i>{Description}</i>";
         public virtual bool IsStackable => MaxStack > 1;
+        public virtual Tooltip GetTooltip()
+        {
+            _sb.Clear();
+            _sb.AppendLine(ColoredName);
+            _sb.AppendLine();
+            _sb.Append($"<i>{Description}</i>");
+
+            return _sb.ToString();
+        }
     }
 }

@@ -16,24 +16,24 @@ namespace Utilities.UI
 
         [InlineButton(nameof(SetShownAlpha), "Set")]
         [InlineButton(nameof(GetShownAlpha), "Get")]
-        [SerializeField, FoldoutGroup("Show Settings"), Range(0, 1)] protected float _shownAlpha = 1f;
-        [SerializeField, FoldoutGroup("Show Settings")] protected float _showDuration = 0.5f;
-        [SerializeField, FoldoutGroup("Show Settings")] protected Ease _showEase = Ease.OutQuint;
-        [SerializeField, FoldoutGroup("Show Settings"), LabelWidth(200)] protected bool _interactableWhenShown = true;
-        [SerializeField, FoldoutGroup("Show Settings"), LabelWidth(200)] protected bool _blockRaycastsWhenShown = true;
-        [SerializeField, FoldoutGroup("Show Settings")] protected UnityEvent _onStartShowing;
-        [SerializeField, FoldoutGroup("Show Settings")] protected UnityEvent _onShowComplete;
+        [FoldoutGroup("Show Settings"), SerializeField, Range(0, 1)] protected float _shownAlpha = 1f;
+        [FoldoutGroup("Show Settings"), SerializeField] protected float _showDuration = 0.5f;
+        [FoldoutGroup("Show Settings"), SerializeField] protected Ease _showEase = Ease.OutQuint;
+        [FoldoutGroup("Show Settings"), SerializeField, LabelWidth(200)] protected bool _interactableWhenShown = true;
+        [FoldoutGroup("Show Settings"), SerializeField, LabelWidth(200)] protected bool _blockRaycastsWhenShown = true;
+        [FoldoutGroup("Show Settings")] public UnityEvent OnStartShowing;
+        [FoldoutGroup("Show Settings")] public UnityEvent OnShowComplete;
 
         [InlineButton(nameof(SetHiddenAlpha), "Set")]
         [InlineButton(nameof(GetHiddenAlpha), "Get")]
-        [SerializeField, FoldoutGroup("Hide Settings"), Range(0, 1)] protected float _hiddenAlpha = 0f;
-        [SerializeField, FoldoutGroup("Hide Settings")] protected float _hideDuration = 0.5f;
-        [SerializeField, FoldoutGroup("Hide Settings")] protected Ease _hideEase = Ease.OutQuint;
-        [SerializeField, FoldoutGroup("Hide Settings"), LabelWidth(200)] protected bool _setInactiveWhenHidden = false;
-        [SerializeField, FoldoutGroup("Hide Settings"), LabelWidth(200)] protected bool _interactableWhenHidden = false;
-        [SerializeField, FoldoutGroup("Hide Settings"), LabelWidth(200)] protected bool _blockRaycastsWhenHidden = false;
-        [SerializeField, FoldoutGroup("Hide Settings")] protected UnityEvent _onStartHiding;
-        [SerializeField, FoldoutGroup("Hide Settings")] protected UnityEvent _onHideComplete;
+        [FoldoutGroup("Hide Settings"), SerializeField, Range(0, 1)] protected float _hiddenAlpha = 0f;
+        [FoldoutGroup("Hide Settings"), SerializeField] protected float _hideDuration = 0.5f;
+        [FoldoutGroup("Hide Settings"), SerializeField] protected Ease _hideEase = Ease.OutQuint;
+        [FoldoutGroup("Hide Settings"), SerializeField, LabelWidth(200)] protected bool _setInactiveWhenHidden = false;
+        [FoldoutGroup("Hide Settings"), SerializeField, LabelWidth(200)] protected bool _interactableWhenHidden = false;
+        [FoldoutGroup("Hide Settings"), SerializeField, LabelWidth(200)] protected bool _blockRaycastsWhenHidden = false;
+        [FoldoutGroup("Hide Settings")] public UnityEvent OnStartHiding;
+        [FoldoutGroup("Hide Settings")] public UnityEvent OnHideComplete;
 
         private Tween _tween;
 
@@ -50,7 +50,7 @@ namespace Utilities.UI
         public Tween Show() => Show(false);
         public Tween Show(bool restart)
         {
-            _onStartShowing.Invoke();
+            OnStartShowing.Invoke();
             if (restart || !gameObject.activeInHierarchy)
             {
                 SetHiddenState();
@@ -62,14 +62,14 @@ namespace Utilities.UI
             _tween?.Kill();
             return _tween = CanvasGroup.DOFade(_shownAlpha, _showDuration)
                 .SetEase(_showEase)
-                .OnComplete(_onShowComplete.Invoke);
+                .OnComplete(OnShowComplete.Invoke);
         }
 
         [Button(DisplayParameters = false)]
         public Tween Hide() => Hide(false);
         public Tween Hide(bool instant)
         {
-            _onStartHiding.Invoke();
+            OnStartHiding.Invoke();
             _tween?.Kill();
 
             if (instant)
@@ -78,7 +78,7 @@ namespace Utilities.UI
                 SetHiddenState();
                 if (_setInactiveWhenHidden)
                     gameObject.SetActive(false);
-                _onHideComplete.Invoke();
+                OnHideComplete.Invoke();
                 return null;
             }
 
@@ -89,7 +89,7 @@ namespace Utilities.UI
                     SetHiddenState();
                     if (_setInactiveWhenHidden)
                         gameObject.SetActive(false);
-                    _onHideComplete.Invoke();
+                    OnHideComplete.Invoke();
                 });
         }
 

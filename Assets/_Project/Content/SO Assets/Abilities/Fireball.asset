@@ -16,5 +16,7 @@ MonoBehaviour:
   _nameOverride: 
   Description: "Fire a flaming projectile that deals \n90 DMG with a 15% chance to
     Burn"
-  <Cooldown>k__BackingField: 0
-  Cost: 35
+  Cost: 20
+  _cooldown: 7
+  _level: 1
+  NextLevelAbility: {fileID: 0}

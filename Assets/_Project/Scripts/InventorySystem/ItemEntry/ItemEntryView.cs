@@ -33,6 +33,7 @@ namespace InventorySystem
 
         [Header("Internal Data")]
         [SerializeField, ReadOnly] private ItemEntry _entry;
+        
         public ItemEntry Entry => _entry;
         public Item Item => _entry.Item;
         public int Quantity => _entry.Quantity;
@@ -41,6 +42,8 @@ namespace InventorySystem
         {
             if (_entry != null ) UnbindFrom(_entry); 
         }
+
+        #region Bindings
 
         public virtual void BindTo(ItemEntry entry)
         {
@@ -65,6 +68,8 @@ namespace InventorySystem
             OnQuantityChanged(0);
             _entry = null;
         }
+
+        #endregion
 
         #region Updating UI
 

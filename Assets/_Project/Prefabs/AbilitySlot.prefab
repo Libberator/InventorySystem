@@ -863,8 +863,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3183548756195372926}
-        m_TargetAssemblyTypeName: InventorySystem.AbilitySlot, Assembly-CSharp
-        m_MethodName: SkillUpPressed
+        m_TargetAssemblyTypeName: AbilitySystem.AbilitySlot, Assembly-CSharp
+        m_MethodName: UpgradeButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -886,24 +886,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 2155653862346154320}
+  _hideOnStart: 1
   _shownPosition: {x: 0, y: 0}
   _showEase: 27
+  _showIsSpeedBased: 0
   _showDuration: 0.5
-  _startShown: 0
-  _onStartShowing:
+  OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
-  _onShowComplete:
+  OnShowComplete:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: 0, y: -60}
   _hideEase: 15
+  _hideIsSpeedBased: 0
   _hideDuration: 0.5
   _setInactiveWhenHidden: 1
-  _onStartHiding:
+  OnStartHiding:
     m_PersistentCalls:
       m_Calls: []
-  _onHideComplete:
+  OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &7683053966081983129

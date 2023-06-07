@@ -33,23 +33,25 @@ namespace InventorySystem
         private ItemEntryDragger _dragger;
         private ItemEntryView _focusedSlot;
         private bool _isShown;
-        
+
         private ItemEntry Entry => _focusedSlot.Entry;
 
-        private void Awake()
+        private void OnEnable()
         {
             ItemEntryView.BeginDrag += Hide;
             ItemEntryView.LeftClicked += Hide;
             ItemEntryView.LeftShiftClicked += Hide;
             ItemEntryView.RightClicked += OnRightClicked;
+            InventoryView.Closed += OnInventoryClosed;
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             ItemEntryView.BeginDrag -= Hide;
             ItemEntryView.LeftClicked -= Hide;
             ItemEntryView.LeftShiftClicked -= Hide;
             ItemEntryView.RightClicked -= OnRightClicked;
+            InventoryView.Closed -= OnInventoryClosed;
         }
 
         private void Start()
@@ -78,6 +80,11 @@ namespace InventorySystem
                 ShowMenu(slot);
         }
 
+        private void OnInventoryClosed(InventoryView view)
+        {
+            if (_isShown && view.Contains(_focusedSlot)) HideMenu();
+        }
+
         #region Show & Hide Menu
 
         public void ShowMenu(ItemEntryView slot)
@@ -95,7 +102,7 @@ namespace InventorySystem
                 _use.Show(restart: true);
             else if (_use.isActiveAndEnabled)
                 _use.Hide(instant: true);
-            
+
             // consider interfaces
             if (Entry.Item is Equipment)
                 _equip.Show(restart: true);
@@ -188,7 +195,7 @@ namespace InventorySystem
             var consumable = Entry.Item as Consumable;
 
             UseClicked?.Invoke(_focusedSlot);
-            
+
             if (Entry.RemoveQuantity(1) == 0)
             {
                 UpdateQuantity(_partialQuantity);
