@@ -5521,6 +5521,7 @@ GameObject:
   - component: {fileID: 654053674}
   - component: {fileID: 654053673}
   - component: {fileID: 654053672}
+  - component: {fileID: 654053675}
   m_Layer: 5
   m_Name: Heal Button
   m_TagString: Untagged
@@ -5643,6 +5644,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 654053669}
   m_CullTransparentMesh: 1
+--- !u!114 &654053675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 654053669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &673676042
 GameObject:
   m_ObjectHideFlags: 0
@@ -6031,6 +6045,7 @@ GameObject:
   - component: {fileID: 940157633}
   - component: {fileID: 940157632}
   - component: {fileID: 940157631}
+  - component: {fileID: 940157634}
   m_Layer: 5
   m_Name: Refill Mana
   m_TagString: Untagged
@@ -6153,6 +6168,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 940157628}
   m_CullTransparentMesh: 1
+--- !u!114 &940157634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 940157628}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -6435,6 +6463,7 @@ GameObject:
   - component: {fileID: 1739060225}
   - component: {fileID: 1739060224}
   - component: {fileID: 1739060223}
+  - component: {fileID: 1739060226}
   m_Layer: 5
   m_Name: Damage Button
   m_TagString: Untagged
@@ -6557,6 +6586,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1739060220}
   m_CullTransparentMesh: 1
+--- !u!114 &1739060226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739060220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!114 &1770300097 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6216229247428024852, guid: 48d0416171d435b44b074c55fd384af2, type: 3}

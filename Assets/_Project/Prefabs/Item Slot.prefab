@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 685115089052111917}
   - component: {fileID: 5930910166036344316}
   - component: {fileID: 5930910166036344317}
+  - component: {fileID: 1060205549310200970}
   m_Layer: 5
   m_Name: Item Slot
   m_TagString: Untagged
@@ -286,24 +287,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 860e5bb1678fbba4481ab42bc782288f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects:
-    - {fileID: 685115089052111917}
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes:
-    - Name: _tooltipSource
-      Entry: 10
-      Data: 0
   _onPointerEnter: 1
   _onPointerMove: 0
   _onPointerExit: 2
   _onPointerClick: 2
-  _entry: {fileID: 5930910166036344315}
+  _target: {fileID: 5930910166036344315}
 --- !u!222 &5930910166036344316
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -342,6 +330,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1060205549310200970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5930910166036344319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &5930910166408903301
 GameObject:
   m_ObjectHideFlags: 0

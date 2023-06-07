@@ -242,6 +242,7 @@ GameObject:
   - component: {fileID: 2803334492110505464}
   - component: {fileID: 2803334492110505466}
   - component: {fileID: 2803334492110505467}
+  - component: {fileID: 270726510}
   m_Layer: 0
   m_Name: OpenChest
   m_TagString: Untagged
@@ -615,6 +616,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &270726510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2803334492110505446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &2803334493032694151
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,6 +641,7 @@ GameObject:
   - component: {fileID: 2803334493032694168}
   - component: {fileID: 2803334493032694170}
   - component: {fileID: 2803334493032694171}
+  - component: {fileID: 1412145472}
   m_Layer: 0
   m_Name: ClosedChest
   m_TagString: Untagged
@@ -947,6 +962,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1412145472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2803334493032694151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &2803334493250080223
 GameObject:
   m_ObjectHideFlags: 0
@@ -1175,8 +1203,9 @@ MonoBehaviour:
   _rectTransform: {fileID: 4365926556038351655}
   _hideOnStart: 1
   _shownPosition: {x: -100, y: 150}
-  _showDuration: 0.5
   _showEase: 27
+  _showIsSpeedBased: 0
+  _showDuration: 0.5
   OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
@@ -1184,8 +1213,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: 700, y: 150}
-  _hideDuration: 0.5
   _hideEase: 15
+  _hideIsSpeedBased: 0
+  _hideDuration: 0.5
   _setInactiveWhenHidden: 1
   OnStartHiding:
     m_PersistentCalls:
@@ -1458,6 +1488,7 @@ GameObject:
   - component: {fileID: 5995132543296450454}
   - component: {fileID: 5995132543296450449}
   - component: {fileID: 5995132543296450448}
+  - component: {fileID: 8060410643656196106}
   m_Layer: 5
   m_Name: Collect All Button
   m_TagString: Untagged
@@ -1506,11 +1537,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rectTransform: {fileID: 0}
+  _rectTransform: {fileID: 5995132543296450451}
   _hideOnStart: 0
   _shownPosition: {x: 0, y: 0}
-  _showDuration: 0.5
   _showEase: 15
+  _showIsSpeedBased: 0
+  _showDuration: 0.5
   OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
@@ -1518,8 +1550,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: 0, y: 100}
-  _hideDuration: 0.5
   _hideEase: 15
+  _hideIsSpeedBased: 0
+  _hideDuration: 0.5
   _setInactiveWhenHidden: 1
   OnStartHiding:
     m_PersistentCalls:
@@ -1613,6 +1646,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8060410643656196106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5995132543296450450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &5995132543746108292
 GameObject:
   m_ObjectHideFlags: 0

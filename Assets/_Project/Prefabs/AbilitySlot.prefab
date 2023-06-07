@@ -752,6 +752,7 @@ GameObject:
   - component: {fileID: 919087883580082946}
   - component: {fileID: 2380820224300354047}
   - component: {fileID: 8961694349690331020}
+  - component: {fileID: 4055693406152828179}
   m_Layer: 5
   m_Name: Skill Up Button
   m_TagString: Untagged
@@ -909,6 +910,19 @@ MonoBehaviour:
   OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4055693406152828179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5711264255023145417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &7683053966081983129
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,6 +935,7 @@ GameObject:
   - component: {fileID: 7707476400477468234}
   - component: {fileID: 7107133725598432208}
   - component: {fileID: 5867066790392347027}
+  - component: {fileID: 3342550651521294937}
   m_Layer: 5
   m_Name: AbilityMask
   m_TagString: Untagged
@@ -1004,3 +1019,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!114 &3342550651521294937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7683053966081983129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2

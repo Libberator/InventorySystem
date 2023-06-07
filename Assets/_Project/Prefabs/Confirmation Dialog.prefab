@@ -141,16 +141,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 2760927500638746533}
-  _startShown: 0
+  _hideOnStart: 1
   _shownAlpha: 1
   _showDuration: 0.5
   _showEase: 15
   _interactableWhenShown: 1
   _blockRaycastsWhenShown: 1
-  _onStartShowing:
+  OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
-  _onShowComplete:
+  OnShowComplete:
     m_PersistentCalls:
       m_Calls: []
   _hiddenAlpha: 0
@@ -159,10 +159,10 @@ MonoBehaviour:
   _setInactiveWhenHidden: 0
   _interactableWhenHidden: 0
   _blockRaycastsWhenHidden: 0
-  _onStartHiding:
+  OnStartHiding:
     m_PersistentCalls:
       m_Calls: []
-  _onHideComplete:
+  OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &2760927500642706204
@@ -666,6 +666,7 @@ GameObject:
   - component: {fileID: 2760927501568256992}
   - component: {fileID: 2760927501568256995}
   - component: {fileID: 2760927501568256994}
+  - component: {fileID: 421748803007358201}
   m_Layer: 5
   m_Name: Cancel Button
   m_TagString: Untagged
@@ -788,6 +789,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &421748803007358201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2760927501568256996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &2760927501569016823
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,6 +879,7 @@ GameObject:
   - component: {fileID: 2760927501606569554}
   - component: {fileID: 2760927501606569557}
   - component: {fileID: 2760927501606569556}
+  - component: {fileID: 7448181412815937481}
   m_Layer: 5
   m_Name: Confirm Button
   m_TagString: Untagged
@@ -987,6 +1002,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7448181412815937481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2760927501606569558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &2760927501848716756
 GameObject:
   m_ObjectHideFlags: 0
@@ -1217,24 +1245,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rectTransform: {fileID: 2760927502216269463}
-  _startShown: 0
+  _hideOnStart: 0
   _shownScale: {x: 1, y: 1, z: 1}
   _showDuration: 0.3
   _showEase: 27
-  _onStartShowing:
+  OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
-  _onShowComplete:
+  OnShowComplete:
     m_PersistentCalls:
       m_Calls: []
   _hiddenScale: {x: 0, y: 0, z: 0}
   _hideDuration: 0.5
   _hideEase: 27
   _setInactiveWhenHidden: 0
-  _onStartHiding:
+  OnStartHiding:
     m_PersistentCalls:
       m_Calls: []
-  _onHideComplete:
+  OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &2760927502216269459
@@ -1287,6 +1315,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2760927502225577225}
   - component: {fileID: 2760927502225577222}
+  - component: {fileID: 5651872426192520149}
   m_Layer: 5
   m_Name: Toggle
   m_TagString: Untagged
@@ -1376,6 +1405,19 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsOn: 0
+--- !u!114 &5651872426192520149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2760927502225577224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &2760927502353800858
 GameObject:
   m_ObjectHideFlags: 0

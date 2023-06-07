@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 6680733013392182588}
   - component: {fileID: 6680733013392182591}
   - component: {fileID: 6680733013392182590}
+  - component: {fileID: 5556103448356119814}
   m_Layer: 5
   m_Name: Right Button
   m_TagString: Untagged
@@ -285,8 +286,9 @@ MonoBehaviour:
   _rectTransform: {fileID: 0}
   _hideOnStart: 1
   _shownPosition: {x: -27, y: -6}
-  _showDuration: 0.5
   _showEase: 15
+  _showIsSpeedBased: 0
+  _showDuration: 0.5
   OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
@@ -294,8 +296,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: -80, y: -6}
-  _hideDuration: 0.5
   _hideEase: 15
+  _hideIsSpeedBased: 0
+  _hideDuration: 0.5
   _setInactiveWhenHidden: 1
   OnStartHiding:
     m_PersistentCalls:
@@ -303,6 +306,19 @@ MonoBehaviour:
   OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5556103448356119814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6680733013392182577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &6680733013568326567
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,6 +423,7 @@ GameObject:
   - component: {fileID: 6680733013604720543}
   - component: {fileID: 6680733013604720542}
   - component: {fileID: 6680733013604720529}
+  - component: {fileID: 3870878539004640523}
   m_Layer: 5
   m_Name: Bottom Button
   m_TagString: Untagged
@@ -544,8 +561,9 @@ MonoBehaviour:
   _rectTransform: {fileID: 0}
   _hideOnStart: 1
   _shownPosition: {x: 6, y: 27}
-  _showDuration: 0.5
   _showEase: 15
+  _showIsSpeedBased: 0
+  _showDuration: 0.5
   OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
@@ -553,8 +571,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: 6, y: 80}
-  _hideDuration: 0.5
   _hideEase: 15
+  _hideIsSpeedBased: 0
+  _hideDuration: 0.5
   _setInactiveWhenHidden: 1
   OnStartHiding:
     m_PersistentCalls:
@@ -562,6 +581,19 @@ MonoBehaviour:
   OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3870878539004640523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6680733013604720528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &6680733013756035775
 GameObject:
   m_ObjectHideFlags: 0
@@ -801,6 +833,7 @@ GameObject:
   - component: {fileID: 6680733014144997909}
   - component: {fileID: 6680733014144997908}
   - component: {fileID: 6680733014144997911}
+  - component: {fileID: 82284308004196979}
   m_Layer: 5
   m_Name: Top Button
   m_TagString: Untagged
@@ -938,8 +971,9 @@ MonoBehaviour:
   _rectTransform: {fileID: 6680733014144997907}
   _hideOnStart: 1
   _shownPosition: {x: -6, y: -27}
-  _showDuration: 0.5
   _showEase: 15
+  _showIsSpeedBased: 0
+  _showDuration: 0.5
   OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
@@ -947,8 +981,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: -6, y: -80}
-  _hideDuration: 0.5
   _hideEase: 15
+  _hideIsSpeedBased: 0
+  _hideDuration: 0.5
   _setInactiveWhenHidden: 1
   OnStartHiding:
     m_PersistentCalls:
@@ -956,6 +991,19 @@ MonoBehaviour:
   OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &82284308004196979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6680733014144997910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &6680733014206935177
 GameObject:
   m_ObjectHideFlags: 0
@@ -968,6 +1016,7 @@ GameObject:
   - component: {fileID: 6680733014206935189}
   - component: {fileID: 6680733014206935188}
   - component: {fileID: 1967341300}
+  - component: {fileID: 2732811395139706098}
   m_Layer: 5
   m_Name: Radial Fill
   m_TagString: Untagged
@@ -1063,6 +1112,19 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &2732811395139706098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6680733014206935177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &6680733014382123042
 GameObject:
   m_ObjectHideFlags: 0
@@ -1302,6 +1364,7 @@ GameObject:
   - component: {fileID: 6680733014557194835}
   - component: {fileID: 6680733014557194834}
   - component: {fileID: 6680733014557194837}
+  - component: {fileID: 3059925890183488767}
   m_Layer: 5
   m_Name: Left Button
   m_TagString: Untagged
@@ -1439,8 +1502,9 @@ MonoBehaviour:
   _rectTransform: {fileID: 6680733014557194833}
   _hideOnStart: 1
   _shownPosition: {x: 27, y: 6}
-  _showDuration: 0.5
   _showEase: 15
+  _showIsSpeedBased: 0
+  _showDuration: 0.5
   OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
@@ -1448,8 +1512,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _hiddenPosition: {x: 80, y: 6}
-  _hideDuration: 0.5
   _hideEase: 15
+  _hideIsSpeedBased: 0
+  _hideDuration: 0.5
   _setInactiveWhenHidden: 1
   OnStartHiding:
     m_PersistentCalls:
@@ -1457,6 +1522,19 @@ MonoBehaviour:
   OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3059925890183488767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6680733014557194836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &6680733014907331144
 GameObject:
   m_ObjectHideFlags: 0
