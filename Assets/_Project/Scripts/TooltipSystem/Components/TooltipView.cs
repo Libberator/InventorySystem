@@ -66,9 +66,9 @@ namespace TooltipSystem
 
         #region Update Text, Show & Hide
 
-        public void ShowTooltip(IHaveTooltip source) => ShowTooltip(source.GetTooltip());
+        public virtual void ShowTooltip(IHaveTooltip source) => ShowTooltip(source.GetTooltip());
 
-        private void ShowTooltip(Tooltip tip)
+        protected virtual void ShowTooltip(Tooltip tip)
         {
             if (!tip.ShouldShow) return;
 
@@ -79,7 +79,7 @@ namespace TooltipSystem
                 .SetDelay(_canvasGroup.alpha == 0f ? _hoverDelay : 0f);
         }
 
-        public void HideTooltip(bool instant = false)
+        public virtual void HideTooltip(bool instant = false)
         {
             _tween?.Kill();
             if (instant)

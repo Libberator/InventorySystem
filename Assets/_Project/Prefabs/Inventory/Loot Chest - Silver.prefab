@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _view: {fileID: 6999970582118720738}
-  _open: {fileID: 6999970583299950234}
-  _closed: {fileID: 6999970582787970807}
+  _openChest: {fileID: 6999970583299950236}
+  _closedChest: {fileID: 6999970582787970809}
 --- !u!1 &6999970581485077251
 GameObject:
   m_ObjectHideFlags: 0
@@ -1093,19 +1093,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6999970582118720738}
-        m_TargetAssemblyTypeName: InventorySystem.InventoryView, Assembly-CSharp
-        m_MethodName: OpenInventory
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &6925662313725228556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1578,19 +1566,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6999970582118720738}
-        m_TargetAssemblyTypeName: InventorySystem.InventoryView, Assembly-CSharp
-        m_MethodName: CloseInventory
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &7564297399377729761
 MonoBehaviour:
   m_ObjectHideFlags: 0

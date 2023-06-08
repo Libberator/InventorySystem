@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Utilities
 {
+    /// <summary>
+    /// To use these in a Monobehaviour class, call this.DelayThenDo(...), this.GetComp..., this.TryGetComp...
+    /// </summary>
     public static class ComponentUtils
     {
         public static Coroutine DelayThenDo(this MonoBehaviour source, float delay, Action callback) => 
@@ -14,6 +17,8 @@ namespace Utilities
             yield return new WaitForSeconds(delay);
             callback?.Invoke();
         }
+
+        #region GetComponents
 
         /// <summary>Searches Self, then Parents, then Children for the component.</summary>
         public static Component GetComponentInHierarchy(this Component source, Type t, bool includeInactive = false)
@@ -64,5 +69,7 @@ namespace Utilities
             component = source.GetComponentInHierarchy<T>(includeInactive);
             return component != null;
         }
+
+        #endregion
     }
 }

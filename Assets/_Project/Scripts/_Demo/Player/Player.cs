@@ -4,7 +4,6 @@ using InventorySystem;
 using UnityEngine;
 using Utilities.Cooldown;
 using Utilities.MessageSystem;
-using static UnityEngine.EventSystems.EventTrigger;
 
 namespace SystemsDemo
 {
