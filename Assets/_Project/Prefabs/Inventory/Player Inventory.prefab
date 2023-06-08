@@ -284,7 +284,7 @@ MonoBehaviour:
       _quantity: 0
     - _item: {fileID: 0}
       _quantity: 0
-  _panelAnimator: {fileID: 6216229247610194424}
+  _panelSlider: {fileID: 6216229247610194424}
   _slotPrefab: {fileID: 5930910166036344315, guid: ae0e53b29041d924c81ce13a19892949, type: 3}
   _itemSlotsParent: {fileID: 6216229246761436914}
   _itemSlots:
@@ -742,6 +742,8 @@ MonoBehaviour:
     _quantity: 0
   - _item: {fileID: 11400000, guid: 5cc6cfde492b0334389f14f39a0d7b86, type: 2}
     _quantity: 12
+  - _item: {fileID: 11400000, guid: 2b8cee2c5a4449948bc0d75c5fa63ce5, type: 2}
+    _quantity: 8
 --- !u!1 &6216229247436950986
 GameObject:
   m_ObjectHideFlags: 0

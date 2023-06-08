@@ -74,14 +74,14 @@ MonoBehaviour:
     _quantity: 1
   - _item: {fileID: 11400000, guid: 80171b8f15a1d9f4e8ff4b49ebc9a46b, type: 2}
     _quantity: 1
+  - _item: {fileID: 11400000, guid: 5cc6cfde492b0334389f14f39a0d7b86, type: 2}
+    _quantity: 14
   - _item: {fileID: 11400000, guid: 976ee028c048bcd44b6ce49a229cfd8f, type: 2}
     _quantity: 15
-  - _item: {fileID: 0}
-    _quantity: 0
+  - _item: {fileID: 11400000, guid: 9c534ed0a0c42b4458b13d85cc7a275a, type: 2}
+    _quantity: 12
   - _item: {fileID: 11400000, guid: 2b8cee2c5a4449948bc0d75c5fa63ce5, type: 2}
     _quantity: 13
-  - _item: {fileID: 0}
-    _quantity: 0
   - _item: {fileID: 11400000, guid: c4eb431d888c3d640bce1c385240e997, type: 2}
     _quantity: 18
 --- !u!1 &2803334491983800534
@@ -218,7 +218,7 @@ MonoBehaviour:
       _quantity: 18
     - _item: {fileID: 0}
       _quantity: 0
-  _panelAnimator: {fileID: 4365926556038351654}
+  _panelSlider: {fileID: 4365926556038351654}
   _slotPrefab: {fileID: 5930910166036344315, guid: ae0e53b29041d924c81ce13a19892949, type: 3}
   _itemSlotsParent: {fileID: 4365926555508635898}
   _itemSlots:

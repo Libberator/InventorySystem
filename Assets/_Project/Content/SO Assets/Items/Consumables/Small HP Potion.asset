@@ -14,6 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Icon: {fileID: 21300000, guid: b247ef8a899ae4425b46bad4a10a76b8, type: 3}
   _nameOverride: 
-  Description: Heal a little
+  Description: 
   Rarity: {fileID: 11400000, guid: 8bcf53369b44f0047b14f130b6bfb90f, type: 2}
   MaxStack: 20
+  _cooldown: 0.5
+  StatModifiers:
+  - _stat: {fileID: 11400000, guid: e4b7ea0d89864f84591e695ef6f0ef3e, type: 2}
+    _value: 10
+    _modType: 100

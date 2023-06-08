@@ -23,11 +23,10 @@ namespace AbilitySystem
         [SerializeField] private Image _icon;
         [SerializeField] private Image _radialFill;
         [SerializeField] private TextMeshProUGUI _keyText;
-        [SerializeField] private TextMeshProUGUI _timerText;
-        private Cooldown _cooldown;
+        [SerializeField] private CooldownView _cooldownView;
 
         public Ability Ability => _ability;
-        public Cooldown Cooldown => _cooldown;
+        public CooldownView CooldownView => _cooldownView;
 
         private void Start()
         {
@@ -53,27 +52,13 @@ namespace AbilitySystem
             _ability = ability;
 
             OnAbilityChanged(_ability);
-
-            // TODO: Avoid divide-by-zero. Handle what to do in case Cooldown Duration is 0
-            _cooldown = Cooldown.Get(ability);
-            _cooldown.Started += OnCooldownStarted;
-            _cooldown.Updated += OnCooldownUpdated;
-            _cooldown.Completed += OnCooldownCompleted;
-            if (_cooldown.IsActive) OnCooldownStarted(_cooldown.Remaining);
-            else OnCooldownCompleted();
+            _cooldownView.BindTo(ability);
         }
 
         private void UnbindFromCurrent()
         {
-            if (_cooldown != null)
-            {
-                _cooldown.Started -= OnCooldownStarted;
-                _cooldown.Updated -= OnCooldownUpdated;
-                _cooldown.Completed -= OnCooldownCompleted;
-            }
-
             OnAbilityChanged(null);
-            OnCooldownCompleted();
+            _cooldownView.UnbindFromCurrent();
             _ability = null;
         }
 
@@ -97,24 +82,6 @@ namespace AbilitySystem
         private void OnKeyCodeChanged(KeyCode keyCode)
         {
             _keyText.SetText(keyCode.ToString());
-        }
-
-        private void OnCooldownStarted(float remaining)
-        {
-            OnCooldownUpdated(remaining);
-            _timerText.enabled = true;
-        }
-
-        private void OnCooldownUpdated(float remaining)
-        {
-            _radialFill.fillAmount = remaining / _ability.Cooldown;
-            _timerText.SetText(remaining.ToString("F1"));
-        }
-
-        private void OnCooldownCompleted()
-        {
-            _radialFill.fillAmount = 0f;
-            _timerText.enabled = false;
         }
 
         #endregion

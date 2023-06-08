@@ -1,3 +1,4 @@
+using InventorySystem;
 using Sirenix.OdinInspector;
 using Utilities.Meter;
 
@@ -5,6 +6,9 @@ namespace CombatSystem
 {
     public class Health : MeterController, IHaveHP
     {
+        public Stat CurrentHP;
+        public Stat MaxHP;
+        
         // TODO: have a reference to the player stats, buffs/debuffs, which routes the combat calculations
 
         [Button]
@@ -25,6 +29,16 @@ namespace CombatSystem
             // then apply the Increase to the meter
             Meter.Increase(amount);
             // then return a HealingResult(?) so they know how much healing they've done - for stat tracking
+        }
+
+        public void IncreaseMaxHP(int amount)
+        {
+            Meter.Maximum += amount;
+        }
+
+        public void DecreaseMaxHP(int amount)
+        {
+            Meter.Maximum -= amount;
         }
     }
 }

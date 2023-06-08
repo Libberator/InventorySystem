@@ -12,7 +12,10 @@
         ItemDiscardSuccess,
         ItemDiscardCancelled,
         ItemDiscardFail,
-        
+        ConsumableUseSuccess,
+        ConsumableOnCooldown,
+        EquipmentEquippedSuccess,
+        EquipmentEquippedFail,
     }
 
     public struct InventoryMessage

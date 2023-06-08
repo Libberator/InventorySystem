@@ -175,15 +175,19 @@ namespace InventorySystem
                 {
                     _entry.SwapWith(slot.Entry);
 
-                    // TODO: figure out a working way to update adding and removing
-
-                    //if (source != target)
-                    //{
-                    //    if (source == _playerInventory)
-                    //        Messenger.SendMessage(new InventoryMessage(slot.Item, qty, InventoryEvent.ItemRemoveSuccess));
-                    //    if (target == _playerInventory)
-                    //        Messenger.SendMessage(new InventoryMessage(slot.Item, qty, InventoryEvent.ItemAddSuccess));
-                    //}
+                    if (source != target)
+                    {
+                        if (source == _playerInventory)
+                        {
+                            Messenger.SendMessage(new InventoryMessage(slot.Item, qty, InventoryEvent.ItemRemoveSuccess));
+                            Messenger.SendMessage(new InventoryMessage(_entry.Item, _entry.Quantity, InventoryEvent.ItemAddSuccess));
+                        }
+                        if (target == _playerInventory)
+                        {
+                            Messenger.SendMessage(new InventoryMessage(_entry.Item, _entry.Quantity, InventoryEvent.ItemRemoveSuccess));
+                            Messenger.SendMessage(new InventoryMessage(slot.Item, qty, InventoryEvent.ItemAddSuccess));
+                        }
+                    }
                 }
             }
         }

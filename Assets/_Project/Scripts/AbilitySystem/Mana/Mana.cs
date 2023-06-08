@@ -1,3 +1,4 @@
+using InventorySystem;
 using Sirenix.OdinInspector;
 using Utilities.Meter;
 
@@ -6,6 +7,9 @@ namespace AbilitySystem
     public class Mana : MeterController, IHaveMana
     {
         // TODO: have a reference to the player stats, buffs/debuffs
+
+        public Stat CurrentMana;
+        public Stat MaxMana;
 
         public bool CanSpendMana(int amount) => amount >= Meter.Value;
 
@@ -22,6 +26,16 @@ namespace AbilitySystem
             // calculate with any buffs/debuffs that might change the amount
             // then apply the Increase to the meter
             Meter.Increase(amount);
+        }
+
+        public void IncreaseMaxMana(int amount)
+        {
+            Meter.Maximum += amount;
+        }
+
+        public void DecreaseMaxMana(int amount)
+        {
+            Meter.Maximum -= amount;
         }
     }
 }

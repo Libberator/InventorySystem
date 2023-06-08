@@ -9,7 +9,7 @@ namespace InventorySystem
     {
         [Header("References")]
         [SerializeField] private Inventory _inventory = new();
-        [SerializeField] private InventoryView _inventoryView; // prefab, reference, or use a Factory approach
+        [SerializeField] private InventoryView _inventoryView;
 
         [Header("Starting Items")]
         [SerializeField] private bool _isPlayerInventory = false;
@@ -17,16 +17,16 @@ namespace InventorySystem
         [SerializeField] private List<ItemEntry> _startingItems = new();
 
         private void Awake() => Sync();
-
-        public void Initialize(List<ItemEntry> startingItems = null, int size = 12, bool isPlayerInventory = false) => 
-            _inventory = new(startingItems, size, isPlayerInventory);
         
         [Button(ButtonSizes.Large)]
-        private void Sync()
+        public void Sync()
         {
             ApplyStartingItems();
             BindToView();
         }
+        
+        public void Initialize(List<ItemEntry> startingItems = null, int size = 12, bool isPlayerInventory = false) => 
+            _inventory = new(startingItems, size, isPlayerInventory);
 
         [ButtonGroup("Syncing", ButtonHeight = 25)]
         public void ApplyStartingItems() => Initialize(_startingItems, _inventorySize, _isPlayerInventory);

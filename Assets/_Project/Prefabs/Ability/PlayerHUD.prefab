@@ -329,7 +329,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5262282401554561018}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -713,10 +713,8 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: _source
-      Entry: 6
-      Data: 
+    SerializationNodes: []
+  _source: {fileID: 0}
   _slider: {fileID: 5262282402135056209}
   _text: {fileID: 8574103110436700795}
 --- !u!1 &5262282402812130232
@@ -948,10 +946,8 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes:
-    - Name: _source
-      Entry: 6
-      Data: 
+    SerializationNodes: []
+  _source: {fileID: 0}
   _slider: {fileID: 5262282402854426922}
   _text: {fileID: 8574103108615884037}
 --- !u!1 &5262282403051691889

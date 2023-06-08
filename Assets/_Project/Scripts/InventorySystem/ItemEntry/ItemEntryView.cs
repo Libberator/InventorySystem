@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Utilities.Cooldown;
 
 namespace InventorySystem
 {
@@ -24,6 +25,7 @@ namespace InventorySystem
         [SerializeField] private Image _frame;
         [SerializeField] private Image _icon;
         [SerializeField] private TMP_Text _qtyText;
+        [SerializeField] private CooldownView _cooldown;
 
         [Header("Settings")]
         [SerializeField] private Rarity _default;
@@ -90,6 +92,11 @@ namespace InventorySystem
                 _frame.color = _default.SecondaryColor;
                 _icon.enabled = false;
             }
+
+            if (item is IHaveCooldown cooldown)
+                _cooldown.BindTo(cooldown);
+            else
+                _cooldown.UnbindFromCurrent();
         }
 
         private void OnQuantityChanged(int qty)

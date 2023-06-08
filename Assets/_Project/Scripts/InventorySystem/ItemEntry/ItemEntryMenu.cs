@@ -66,7 +66,7 @@ namespace InventorySystem
             if (Input.mouseScrollDelta.y != 0)
             {
                 _splitterTween?.Kill();
-                UpdateQuantity(_partialQuantity + (int)Input.mouseScrollDelta.y);
+                UpdateSplitQuantity(_partialQuantity + (int)Input.mouseScrollDelta.y);
             }
         }
 
@@ -156,10 +156,10 @@ namespace InventorySystem
 
             var max = Entry.Quantity;
 
-            _splitterTween = DOVirtual.Int(0, max / 2, _fillDuration, UpdateQuantity).SetEase(_fillEase);
+            _splitterTween = DOVirtual.Int(0, max / 2, _fillDuration, UpdateSplitQuantity).SetEase(_fillEase);
         }
 
-        private void UpdateQuantity(int qty)
+        private void UpdateSplitQuantity(int qty)
         {
             int max = Entry.Quantity;
             if (max == 0)
@@ -192,15 +192,9 @@ namespace InventorySystem
 
         public void UseButtonPressed()
         {
-            var consumable = Entry.Item as Consumable;
-
             UseClicked?.Invoke(_focusedSlot);
-
-            if (Entry.RemoveQuantity(1) == 0)
-            {
-                UpdateQuantity(_partialQuantity);
-                consumable.Use();
-            }
+            Entry.RemoveQuantity(1);
+            UpdateSplitQuantity(_partialQuantity);
         }
 
         public void EquipButtonPressed()

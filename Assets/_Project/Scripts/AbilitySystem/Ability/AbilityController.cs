@@ -26,7 +26,7 @@ namespace AbilitySystem
 
         private void OnAbilityPressed(AbilitySlot slot)
         {
-            if (slot.Cooldown.IsActive)
+            if (slot.CooldownView.Cooldown.IsActive)
             {
                 Messenger.SendMessage(new AbilityMessage(slot.Ability, AbilityEvent.OnCooldown));
                 return;
@@ -39,7 +39,7 @@ namespace AbilitySystem
             }
 
             _playerMana.Meter.Decrease(slot.Ability.Cost);
-            slot.Cooldown.Start();
+            slot.CooldownView.Cooldown.Start();
             Messenger.SendMessage(new AbilityMessage(slot.Ability, AbilityEvent.SuccessfulCast));
         }
 
