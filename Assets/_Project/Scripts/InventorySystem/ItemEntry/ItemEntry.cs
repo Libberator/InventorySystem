@@ -78,7 +78,6 @@ namespace InventorySystem
             {
                 target.Set(Item, quantity);
                 RemoveQuantity(quantity);
-                //Messenger.SendMessage(new InventoryMessage("Moved {0} ({1})", target.Item, quantity, InventoryEvent.ItemMoveSuccess));
             }
             // stacking
             else if (target.Item == Item)
@@ -87,7 +86,6 @@ namespace InventorySystem
                 var qtyToTransfer = Math.Min(target.Item.MaxStack - target.Quantity, quantity);
                 RemoveQuantity(qtyToTransfer);
                 target.AddQuantity(qtyToTransfer);
-                //Messenger.SendMessage(new InventoryMessage("Moved {0} ({1})", target.Item, qtyToTransfer, InventoryEvent.ItemMoveSuccess));
             }
             else
                 Messenger.SendMessage(new InventoryMessage(Item, Quantity, InventoryEvent.ItemMoveFail));

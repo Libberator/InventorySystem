@@ -9,8 +9,13 @@ namespace InventorySystem
     [CreateAssetMenu(fileName = "New Consumable", menuName = "Inventory System/Consumable")]
     public class Consumable : Item, IHaveCooldown
     {
+        #region Inspector Properties
+
         [SerializeField] private float _cooldown = 0.5f;
+        
         public StatModifier[] StatModifiers = new StatModifier[0];
+
+        #endregion
 
         public float Cooldown => _cooldown;
         public virtual void Use() // IStatHolder, IHaveStats, ICharacter, I..

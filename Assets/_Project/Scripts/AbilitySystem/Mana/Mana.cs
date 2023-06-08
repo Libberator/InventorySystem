@@ -1,15 +1,13 @@
 using Sirenix.OdinInspector;
-using UnityEngine;
 using Utilities.Meter;
 
-namespace CombatSystem
+namespace AbilitySystem
 {
-    public class Mana : MonoBehaviour, IHaveMeter, IHaveMana
+    public class Mana : MeterController, IHaveMana
     {
-        [SerializeField] private Meter _meter;
-        public Meter Meter => _meter;
-
         // TODO: have a reference to the player stats, buffs/debuffs
+
+        public bool CanSpendMana(int amount) => amount >= Meter.Value;
 
         [Button]
         public void UseMana(int amount)

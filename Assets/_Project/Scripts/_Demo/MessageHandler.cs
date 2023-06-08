@@ -1,9 +1,10 @@
 ﻿using AbilitySystem;
+using InventorySystem;
 using UnityEngine;
 using Utilities.MessageSystem;
 using Utilities.UI;
 
-namespace InventorySystem.Demo
+namespace SystemsDemo
 {
     public class MessageHandler : MonoBehaviour
     {

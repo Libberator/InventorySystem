@@ -40,7 +40,7 @@ namespace InventorySystem
 
         private void OnDestroy()
         {
-            if (_entry != null ) UnbindFrom(_entry); 
+            if (_entry != null) UnbindFrom(_entry); 
         }
 
         #region Bindings

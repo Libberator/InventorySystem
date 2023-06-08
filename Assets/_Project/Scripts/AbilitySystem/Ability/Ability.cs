@@ -9,8 +9,8 @@ namespace AbilitySystem
     [CreateAssetMenu(fileName = "New Ability", menuName = "Ability System/Ability")]
     public class Ability : ScriptableObject, IHaveCooldown, IHaveTooltip
     {
-        protected readonly StringBuilder _sb = new();
-        
+        #region Inspector Properties
+
         [PreviewField(Alignment = ObjectFieldAlignment.Center, Height = 120f)]
         public Sprite Icon;
 
@@ -21,13 +21,16 @@ namespace AbilitySystem
         [Multiline] public string Description;
 
         [Min(0)] public int Cost;
-        
+
         [SerializeField] private float _cooldown;
-        
+
         [SerializeField, Min(0)] private int _level = 1;
 
         public Ability NextLevelAbility;
-        
+
+        #endregion
+
+        protected readonly StringBuilder _sb = new();
         public virtual string Name => string.IsNullOrEmpty(_nameOverride) ? name : _nameOverride;
         public int Level => _level;
         public float Cooldown => _cooldown;
@@ -35,7 +38,7 @@ namespace AbilitySystem
         public virtual Tooltip GetTooltip()
         {
             _sb.Clear();
-            
+
             _sb.AppendLine($"{Name} (Lvl. {Level})");
             _sb.Append($"<color=lightblue>{Cost} Mana</color>");
             if (!string.IsNullOrEmpty(Description))

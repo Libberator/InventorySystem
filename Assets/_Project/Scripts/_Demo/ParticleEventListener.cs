@@ -1,6 +1,7 @@
+using InventorySystem;
 using UnityEngine;
 
-namespace InventorySystem.Demo
+namespace SystemsDemo
 {
     public class ParticleEventListener : MonoBehaviour
     {

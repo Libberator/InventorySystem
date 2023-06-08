@@ -24,30 +24,20 @@ namespace InventorySystem
 
         public Inventory(List<ItemEntry> startingItems, int inventorySize = 15, bool isPlayerInventory = false) : this(inventorySize, isPlayerInventory)
         {
-            InitializeWith(startingItems);
+            SetItemsTo(startingItems);
         }
 
         public Inventory(int inventorySize = 15, bool isPlayerInventory = false)
         {
             AdjustSize(inventorySize);
+            InitializeItems();
             _isPlayerInventory = isPlayerInventory;
             if (_isPlayerInventory) ServiceLocator.Register(this);
         }
 
         #region Initializing Inventory
 
-        [Button]
-        public void InitializeWith(List<ItemEntry> startingEntries)
-        {
-            for (int i = 0; i < _inventorySize; i++)
-            {
-                _items[i] = new ItemEntry();
-                if (startingEntries != null && i < startingEntries.Count)
-                    _items[i].Set(startingEntries[i]);
-            }
-        }
-
-        protected void AdjustSize(int size)
+        public void AdjustSize(int size)
         {
             _inventorySize = size;
             if (_items == null)
@@ -56,6 +46,19 @@ namespace InventorySystem
                 return;
             }
             Array.Resize(ref _items, size);
+        }
+
+        public void InitializeItems()
+        {
+            for (int i = 0; i < _inventorySize; i++)
+                _items[i] = new ItemEntry();
+        }
+
+        public void SetItemsTo(List<ItemEntry> startingEntries)
+        {
+            var upperBound = Math.Min(startingEntries.Count, _inventorySize);
+            for (int i = 0; i < upperBound; i++)
+                _items[i].Set(startingEntries[i]);
         }
 
         #endregion
@@ -151,20 +154,20 @@ namespace InventorySystem
 
         #region Stacking & Sorting
 
-        // sorts to the upper-left in the grid
+        // stacks onto the upper-left-most like items in the grid
         public void CombineLikeItems(Item item)
         {
             if (!item.IsStackable) return;
 
-            var likeItemSlots = _items.Where(s => s.Item == item).Reverse().ToArray();
+            var likeItemSlots = _items.Where(s => s.Item == item).ToArray();
 
-            for (var i = 0; i < likeItemSlots.Length - 1; i++)
+            for (int i = likeItemSlots.Length - 1; i >= 0; i--)
             {
                 // start with the bottom-right-most slot
                 var current = likeItemSlots[i];
 
                 // fill from the top-left on
-                for (int j = likeItemSlots.Length - 1; j > i; j--)
+                for (int j = 0; j < i; j++)
                 {
                     var target = likeItemSlots[j];
                     if (target.Quantity == item.MaxStack) continue;

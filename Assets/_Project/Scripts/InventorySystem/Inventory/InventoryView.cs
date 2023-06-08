@@ -17,7 +17,7 @@ namespace InventorySystem
         public bool IsPlayerInventory => _inventory.IsPlayerInventory;
 
         [Header("References")]
-        [SerializeField] private PanelSlider _panelAnimator;
+        [SerializeField] private PanelSlider _panelSlider;
         [SerializeField] private ItemEntryView _slotPrefab;
         [SerializeField] private RectTransform _itemSlotsParent;
         [SerializeField, HideInInspector] private ItemEntryView[] _itemSlots;
@@ -76,7 +76,7 @@ namespace InventorySystem
 #if UNITY_EDITOR
             if (!Application.isPlaying && UnityEditor.PrefabUtility.IsPartOfPrefabInstance(_itemSlotsParent))
             {
-                Debug.LogWarning("Can't adjust item count if we're both part of a Prefab Instance and not in Play Mode.", this);
+                Debug.LogWarning("Can't adjust InventoryView size if we're both part of a Prefab Instance and not in Play Mode", this);
                 return;
             }
 #endif
@@ -121,8 +121,8 @@ namespace InventorySystem
         private void SyncItems()
         {
             // should be same size, unless we were manually adjusting via AdjustSize in the editor
-            var count = Mathf.Min(_inventory.Size, _itemSlots.Length);
-            for (int i = 0; i < count; i++)
+            var upperBound = Mathf.Min(_inventory.Size, _itemSlots.Length);
+            for (int i = 0; i < upperBound; i++)
                 _itemSlots[i].BindTo(_inventory.Items[i]);
         }
 
@@ -145,7 +145,7 @@ namespace InventorySystem
             if (!IsPlayerInventory)
                 CloseAllNonPlayerInventories();
             _openInventoryViews.Add(this);
-            _panelAnimator.Show();
+            _panelSlider.Show();
             IsOpen = true;
         }
 
@@ -154,7 +154,7 @@ namespace InventorySystem
         {
             if (_confirmationDialog.IsActive) return;
             _openInventoryViews.Remove(this);
-            _panelAnimator.Hide();
+            _panelSlider.Hide();
             IsOpen = false;
         }
 
@@ -178,10 +178,10 @@ namespace InventorySystem
 
         protected virtual void OnValidate()
         {
-            if (_panelAnimator == null)
+            if (_panelSlider == null)
             {
-                _panelAnimator = GetComponentInChildren<PanelSlider>();
-                if (_panelAnimator == null) Debug.LogWarning("Please assign a Panel Animator for the Inventory View", _panelAnimator);
+                _panelSlider = GetComponentInChildren<PanelSlider>();
+                if (_panelSlider == null) Debug.LogWarning("Please assign a PanelSlider for the Inventory View", _panelSlider);
             }
 
             if (_itemSlotsParent == null)

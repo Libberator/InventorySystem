@@ -12,8 +12,8 @@ namespace Utilities.Meter
         public event Action<MeterEventArgs> ValueChanged;
         public event Action<MeterEventArgs> MaxChanged;
 
-        public Meter(int maximum) : this(maximum, maximum) { }
-        public Meter(int maximum, int value)
+        public Meter(int maximum = 100) : this(maximum, maximum) { }
+        public Meter(int maximum = 100, int value = 100)
         {
             Maximum = maximum;
             Value = value;

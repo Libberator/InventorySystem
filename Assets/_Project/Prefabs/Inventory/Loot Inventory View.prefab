@@ -186,27 +186,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 804431912}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b882420ac02b6f142bb78b57ddf99eae, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 804431913}
+  _hideOnStart: 1
   _shownPosition: {x: 0, y: 0}
-  _showEase: 12
+  _showEase: 27
+  _showIsSpeedBased: 0
   _showDuration: 0.5
-  _startShown: 0
-  _onStartShowing:
+  OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
-  _onShowComplete:
+  OnShowComplete:
     m_PersistentCalls:
       m_Calls: []
-  _hiddenPosition: {x: 0, y: 100}
-  _hideEase: 12
+  _hiddenPosition: {x: 0, y: 0}
+  _hideEase: 15
+  _hideIsSpeedBased: 0
   _hideDuration: 0.5
-  _setInactiveWhenHidden: 1
-  _onStartHiding:
+  _setInactiveWhenHidden: 0
+  OnStartHiding:
     m_PersistentCalls:
       m_Calls: []
-  _onHideComplete:
+  OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &804431915
@@ -479,51 +482,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 8044588209633447066}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b882420ac02b6f142bb78b57ddf99eae, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d003d49b1e78784f8eafe673f50a19c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shownPosition: {x: -100, y: 150}
+  _rectTransform: {fileID: 8044588209633447069}
+  _hideOnStart: 1
+  _shownPosition: {x: 0, y: 0}
   _showEase: 27
+  _showIsSpeedBased: 0
   _showDuration: 0.5
-  _startShown: 0
-  _onStartShowing:
+  OnStartShowing:
     m_PersistentCalls:
       m_Calls: []
-  _onShowComplete:
+  OnShowComplete:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 804431916}
-        m_TargetAssemblyTypeName: Utilities.UI.PanelAnimator, Assembly-CSharp
-        m_MethodName: Show
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _hiddenPosition: {x: 700, y: 150}
-  _hideEase: 26
+      m_Calls: []
+  _hiddenPosition: {x: 0, y: 0}
+  _hideEase: 15
+  _hideIsSpeedBased: 0
   _hideDuration: 0.5
-  _setInactiveWhenHidden: 1
-  _onStartHiding:
+  _setInactiveWhenHidden: 0
+  OnStartHiding:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 804431916}
-        m_TargetAssemblyTypeName: Utilities.UI.PanelAnimator, Assembly-CSharp
-        m_MethodName: Hide
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _onHideComplete:
+      m_Calls: []
+  OnHideComplete:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &124933904
@@ -611,8 +593,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42ac8c1ca35b3d419df7365ea7a1949, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inventorySize: 8
-  _startingItems: []
+  _inventory:
+    _isPlayerInventory: 0
+    _inventorySize: 0
+    _items: []
   _panelAnimator: {fileID: 8044588209633447068}
   _slotPrefab: {fileID: 5930910166036344315, guid: ae0e53b29041d924c81ce13a19892949, type: 3}
   _itemSlotsParent: {fileID: 8044588210177343296}

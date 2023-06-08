@@ -1,4 +1,4 @@
-﻿namespace CombatSystem
+﻿namespace AbilitySystem
 {
     public interface IHaveMana
     {

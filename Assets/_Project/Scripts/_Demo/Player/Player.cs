@@ -1,7 +1,9 @@
+using AbilitySystem;
 using CombatSystem;
+using InventorySystem;
 using UnityEngine;
 
-namespace InventorySystem.Demo
+namespace SystemsDemo
 {
     public class Player : MonoBehaviour
     {

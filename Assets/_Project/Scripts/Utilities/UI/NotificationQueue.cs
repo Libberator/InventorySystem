@@ -73,7 +73,7 @@ namespace Utilities.UI
                 actionOnGet: OnGet,
                 actionOnRelease: OnRelease,
                 actionOnDestroy: OnDispose,
-                collectionCheck: false, // ignore calling Release on an item in the pool
+                collectionCheck: false, // don't throw errors when calling Release on an item in the pool
                 defaultCapacity: _maxDisplayed);
         }
 

@@ -1,14 +1,10 @@
 using Sirenix.OdinInspector;
-using UnityEngine;
 using Utilities.Meter;
 
 namespace CombatSystem
 {
-    public class Health : MonoBehaviour, IHaveMeter, IHaveHP
+    public class Health : MeterController, IHaveHP
     {
-        [SerializeField] private Meter _meter;
-        public Meter Meter => _meter;
-
         // TODO: have a reference to the player stats, buffs/debuffs, which routes the combat calculations
 
         [Button]

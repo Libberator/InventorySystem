@@ -8,8 +8,8 @@ namespace InventorySystem
 {
     public abstract class Item : ScriptableObject, IHaveTooltip
     {
-        protected readonly StringBuilder _sb = new();
-        
+        #region Inspector Properties
+
         [PreviewField(Alignment = ObjectFieldAlignment.Center, Height = 120f)]
         public Sprite Icon;
 
@@ -25,8 +25,11 @@ namespace InventorySystem
         [Min(1)]
         public int MaxStack = 1;
 
+        #endregion
+
+        protected readonly StringBuilder _sb = new();
         public virtual string Name => string.IsNullOrEmpty(_nameOverride) ? name : _nameOverride;
-        public virtual string ColoredName => Name.WithColor(Rarity.TextColor);
+        public virtual string ColoredName => Rarity != null ? Name.WithColor(Rarity.TextColor) : Name;
         public virtual bool IsStackable => MaxStack > 1;
         public virtual Tooltip GetTooltip()
         {

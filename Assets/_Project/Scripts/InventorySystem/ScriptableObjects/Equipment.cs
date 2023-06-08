@@ -19,19 +19,22 @@ namespace InventorySystem
     [CreateAssetMenu(fileName = "New Equipment", menuName = "Inventory System/Equipment")]
     public class Equipment : Item
     {
+        #region Inspector Properties
+
         public EquipmentType EquipmentType;
+        
         public StatModifier[] StatModifiers = new StatModifier[0];
+
+        #endregion
 
         public void Equip()
         {
             throw new System.NotImplementedException();
         }
-
         public void Unequip()
         {
             throw new System.NotImplementedException();
         }
-
         public override Tooltip GetTooltip()
         {
             _sb.Clear();

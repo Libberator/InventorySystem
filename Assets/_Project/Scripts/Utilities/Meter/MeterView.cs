@@ -11,7 +11,7 @@ namespace Utilities.Meter
     public class MeterView : SerializedMonoBehaviour
     {
         [Header("Target")]
-        [SerializeField] private IHaveMeter _source;
+        [SerializeField] private MeterController _source;
         protected Meter _meter;
 
         [Header("UI References")]
@@ -20,7 +20,8 @@ namespace Utilities.Meter
 
         protected virtual void Start()
         {
-            _source ??= GetComponentInParent<IHaveMeter>();
+            if (_source == null)
+                _source = GetComponentInParent<MeterController>();
             if (_source != null)
                 BindTo(_source.Meter);
         }
@@ -28,16 +29,19 @@ namespace Utilities.Meter
         public virtual void BindTo(Meter meter)
         {
             if (_meter != null)
-            {
-                _meter.ValueChanged -= OnValueChanged;
-                _meter.MaxChanged -= OnMaxChanged;
-            }
+                UnbindFrom(_meter);
 
             _meter = meter;
             UpdateUI();
 
             _meter.ValueChanged += OnValueChanged;
             _meter.MaxChanged += OnMaxChanged;
+        }
+
+        public virtual void UnbindFrom(Meter meter)
+        {
+            meter.ValueChanged -= OnValueChanged;
+            meter.MaxChanged -= OnMaxChanged;
         }
 
         protected virtual void OnValueChanged(Meter.MeterEventArgs args) => UpdateUI();

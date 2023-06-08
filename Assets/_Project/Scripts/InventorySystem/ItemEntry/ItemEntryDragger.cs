@@ -142,12 +142,24 @@ namespace InventorySystem
             }
             // below here, _isDragging is true
 
+            var source = InventoryView.GetInventoryFromItemEntry(_returnSlot);
+            var target = InventoryView.GetInventoryFromItemEntry(slot);
+            var qty = _entry.Quantity;
+
             // moving to empty slot or stacking on similar one
             if (_entry.CanTransferTo(slot.Entry))
             {
                 _entry.TransferTo(slot.Entry);
                 if (_entry.Quantity == 0)
                     StopDragging();
+
+                if (source != target)
+                {
+                    if (source == _playerInventory)
+                        Messenger.SendMessage(new InventoryMessage(slot.Item, qty - _entry.Quantity, InventoryEvent.ItemRemoveSuccess));
+                    else
+                        Messenger.SendMessage(new InventoryMessage(slot.Item, qty - _entry.Quantity, InventoryEvent.ItemAddSuccess));
+                }
             }
             // swapping
             else if (slot.Item != _entry.Item)
@@ -162,6 +174,16 @@ namespace InventorySystem
                 else
                 {
                     _entry.SwapWith(slot.Entry);
+
+                    // TODO: figure out a working way to update adding and removing
+
+                    //if (source != target)
+                    //{
+                    //    if (source == _playerInventory)
+                    //        Messenger.SendMessage(new InventoryMessage(slot.Item, qty, InventoryEvent.ItemRemoveSuccess));
+                    //    if (target == _playerInventory)
+                    //        Messenger.SendMessage(new InventoryMessage(slot.Item, qty, InventoryEvent.ItemAddSuccess));
+                    //}
                 }
             }
         }
