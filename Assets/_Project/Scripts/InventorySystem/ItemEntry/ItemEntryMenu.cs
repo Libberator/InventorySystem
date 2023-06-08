@@ -13,7 +13,7 @@ namespace InventorySystem
     public class ItemEntryMenu : MonoBehaviour
     {
         public static event Action<ItemEntryView, int> BeginPartialDrag;
-        public static event Action<ItemEntryView> UseClicked;
+        public static event Action<ItemEntry> UseClicked;
         public static event Action<ItemEntryView> EquipClicked;
 
         [Header("Quantity Splitter")]
@@ -192,8 +192,7 @@ namespace InventorySystem
 
         public void UseButtonPressed()
         {
-            UseClicked?.Invoke(_focusedSlot);
-            Entry.RemoveQuantity(1);
+            UseClicked?.Invoke(Entry);
             UpdateSplitQuantity(_partialQuantity);
         }
 

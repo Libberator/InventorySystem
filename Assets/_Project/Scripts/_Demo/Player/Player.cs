@@ -4,6 +4,7 @@ using InventorySystem;
 using UnityEngine;
 using Utilities.Cooldown;
 using Utilities.MessageSystem;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace SystemsDemo
 {
@@ -39,14 +40,14 @@ namespace SystemsDemo
             }
         }
 
-        private void OnConsumableUsed(ItemEntryView view)
+        private void OnConsumableUsed(ItemEntry entry)
         {
-            var consumable = view.Entry.Item as Consumable;
+            var consumable = entry.Item as Consumable;
 
             var cooldown = Cooldown.Get(consumable);
             if (cooldown.IsActive)
             {
-                Messenger.SendMessage(new InventoryMessage(view.Item, view.Quantity, InventoryEvent.ConsumableOnCooldown));
+                Messenger.SendMessage(new InventoryMessage(entry.Item, entry.Quantity, InventoryEvent.ConsumableOnCooldown));
                 return;
             }
 
@@ -62,8 +63,9 @@ namespace SystemsDemo
                     Mana.IncreaseMaxMana((int)statMod.Value);
             }
 
+            Messenger.SendMessage(new InventoryMessage(entry.Item, entry.Quantity, InventoryEvent.ConsumableUseSuccess));
+            entry.RemoveQuantity(1);
             cooldown.Start();
-            Messenger.SendMessage(new InventoryMessage(view.Item, view.Quantity, InventoryEvent.ConsumableUseSuccess));
         }
 
         private void OnEquipClicked(ItemEntryView view)
