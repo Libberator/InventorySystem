@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using Sirenix.OdinInspector;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,7 +18,7 @@ namespace InventorySystem
     public class ItemEntryDragger : MonoBehaviour
     {
         // garbage can is only thing listening to these events
-        public static event Action<bool> IsDraggingChanged;
+        public static event Action<bool> IsCarryingChanged;
         public static event EventHandler<ItemEntry> ItemDisposed;
         public ItemEntry Entry => _entry;
 
@@ -34,22 +35,23 @@ namespace InventorySystem
         // Dependencies retrieved via ServiceLocator
         private Inventory _playerInventory;
         private ConfirmationDialog _confirmationDialog;
-        
+
         [Header("What's In Hand")]
         [SerializeField, ReadOnly] private ItemEntry _entry = new();
         private ItemEntryView _returnSlot;
-        private bool _isPartialDrag = false;
-        
-        private bool _isDragging = false;
-        public bool IsDragging
+        private bool _isPartialCarry = false;
+        private bool _isCarrying = false;
+        private bool CanDropOnto(ItemEntry slot) => slot.Item == null || slot.Item == _entry.Item && slot.Quantity < _entry.Item.MaxStack;
+
+        public bool IsCarrying
         {
-            get => _isDragging;
+            get => _isCarrying;
             private set
             {
-                if (_isDragging != value)
+                if (_isCarrying != value)
                 {
-                    _isDragging = value;
-                    IsDraggingChanged?.Invoke(_isDragging);
+                    _isCarrying = value;
+                    IsCarryingChanged?.Invoke(_isCarrying);
                 }
             }
         }
@@ -64,28 +66,38 @@ namespace InventorySystem
 
         private void OnEnable()
         {
-            ItemEntryView.BeginDrag += OnStartDragging;
+            ItemEntryView.HoverEntered += OnEntered;
             ItemEntryView.LeftClicked += OnLeftClicked;
+            ItemEntryView.RightClicked += OnRightClicked;
             ItemEntryView.LeftShiftClicked += OnLeftShiftClicked;
             ItemEntryView.DoubleClicked += OnDoubleClicked;
             ItemEntryView.DroppedOn += OnDropped;
-            
+            ItemEntryView.BeginDrag += OnBeginCarry;
+            ItemEntryView.RightBeginDrag += OnBeginRightDragging;
+            ItemEntryView.RightEndDrag += OnEndRightDragging;
+            ItemEntryView.RightDroppedOn += OnEndRightDragging;
+
             InventoryView.Closed += OnInventoryClosed;
 
-            ItemEntryMenu.BeginPartialDrag += OnStartPartialDragging;
+            ItemEntryMenu.BeginPartialCarry += OnStartPartialCarrying;
         }
 
         private void OnDisable()
         {
-            ItemEntryView.BeginDrag -= OnStartDragging;
+            ItemEntryView.HoverEntered -= OnEntered;
             ItemEntryView.LeftClicked -= OnLeftClicked;
+            ItemEntryView.RightClicked -= OnRightClicked;
             ItemEntryView.LeftShiftClicked -= OnLeftShiftClicked;
             ItemEntryView.DoubleClicked -= OnDoubleClicked;
             ItemEntryView.DroppedOn -= OnDropped;
-            
+            ItemEntryView.BeginDrag -= OnBeginCarry;
+            ItemEntryView.RightBeginDrag -= OnBeginRightDragging;
+            ItemEntryView.RightEndDrag -= OnEndRightDragging;
+            ItemEntryView.RightDroppedOn -= OnEndRightDragging;
+
             InventoryView.Closed -= OnInventoryClosed;
 
-            ItemEntryMenu.BeginPartialDrag -= OnStartPartialDragging;
+            ItemEntryMenu.BeginPartialCarry -= OnStartPartialCarrying;
         }
 
         private void Start()
@@ -96,51 +108,54 @@ namespace InventorySystem
 
         private void Update()
         {
-            if (!_isDragging || _confirmationDialog.IsActive) return;
+            if (!_isCarrying || _confirmationDialog.IsActive) return;
             // TODO: consider if the dragged icon needs to be offset. Update when we add custom Cursor
             _draggedTransform.position = Input.mousePosition;
         }
 
-        #region Dragging, Dropping, Stacking, Swapping
+        #region Carrying, Dragging, Dropping, Stacking, Swapping
 
-        private void OnStartDragging(ItemEntryView slot)
+        private void OnBeginCarry(ItemEntryView slot)
         {
-            if (_isPartialDrag)
+            if (_isSplitDragging) return;
+
+            if (_isPartialCarry)
                 ReturnItemsToStart();
 
             _entry.SwapWith(slot.Entry);
             if (_returnSlot == null)
                 _returnSlot = slot;
-            IsDragging = true;
-            _isPartialDrag = false;
+            IsCarrying = true;
+            _isPartialCarry = false;
         }
 
-        private void OnStartPartialDragging(ItemEntryView slot, int partialQty)
+        private void OnStartPartialCarrying(ItemEntryView slot, int partialQty)
         {
             // if this "partial" is actually a "full" drag
             if (partialQty == slot.Entry.Quantity)
             {
-                OnStartDragging(slot);
+                OnBeginCarry(slot);
                 return;
             }
 
             slot.Entry.TransferTo(_entry, partialQty);
             if (_returnSlot == null)
                 _returnSlot = slot;
-            IsDragging = true;
-            _isPartialDrag = true;
+            IsCarrying = true;
+            _isPartialCarry = true;
         }
 
         // pick up, drop, stack, drop
         private void OnLeftClicked(ItemEntryView slot)
         {
-            if (!_isDragging)
+            if (_isSplitDragging) return;
+
+            if (!_isCarrying)
             {
                 if (slot.Item != null)
-                    OnStartDragging(slot);
+                    OnBeginCarry(slot);
                 return;
             }
-            // below here, _isDragging is true
 
             var source = InventoryView.GetInventoryFromItemEntry(_returnSlot);
             var target = InventoryView.GetInventoryFromItemEntry(slot);
@@ -151,7 +166,7 @@ namespace InventorySystem
             {
                 _entry.TransferTo(slot.Entry);
                 if (_entry.Quantity == 0)
-                    StopDragging();
+                    EndCarrying();
 
                 if (source != target)
                 {
@@ -164,11 +179,11 @@ namespace InventorySystem
             // swapping
             else if (slot.Item != _entry.Item)
             {
-                // carrying a partial quantity - return to home
-                if (_isPartialDrag)
+                // return partial carry to home before doing a swap
+                if (_isPartialCarry)
                 {
                     ReturnItemsToStart();
-                    OnStartDragging(slot);
+                    OnBeginCarry(slot);
                 }
                 // swap with what's in hand
                 else
@@ -192,15 +207,64 @@ namespace InventorySystem
             }
         }
 
-        // swap to other open inventory (or "quick-collect" if from non-Player inventory)
+        private void OnRightClicked(ItemEntryView view)
+        {
+            if (!_isCarrying || _isSplitDragging) return;
+            if (!CanDropOnto(view.Entry)) return;
+
+            _entry.TransferTo(view.Entry, 1);
+            if (_entry.Quantity == 0)
+                EndCarrying();
+        }
+
+        private void OnDropped(ItemEntryView slot)
+        {
+            if (_isSplitDragging) return;
+
+            if (_isCarrying)
+            {
+                OnLeftClicked(slot);
+                ReturnItemsToStart();
+                EndCarrying();
+            }
+        }
+
+        private void ReturnItemsToStart()
+        {
+            if (_returnSlot != null)
+                _entry.TransferTo(_returnSlot.Entry);
+            _returnSlot = null;
+        }
+
+        private void EndCarrying()
+        {
+            _returnSlot = null;
+            _isPartialCarry = false;
+            IsCarrying = false;
+        }
+
+        private void OnInventoryClosed(InventoryView panel)
+        {
+            if (_isCarrying && panel.Contains(_returnSlot))
+            {
+                ReturnItemsToStart();
+                EndCarrying();
+            }
+        }
+
+        #endregion
+
+        #region Auto-Transferring & Auto-Stacking
+
+        // swap to other open inventory
         private void OnLeftShiftClicked(ItemEntryView slot)
         {
             // nothing implemented yet for shift-click while dragging
-            if (_isDragging || slot.Item == null)
+            if (_isCarrying || slot.Item == null)
                 return;
             // below here, _isDragging is false and we double clicked a valid item
 
-            var target = InventoryView.GetInventoryFromItemEntry(slot) != _playerInventory ? 
+            var target = InventoryView.GetInventoryFromItemEntry(slot) != _playerInventory ?
                 _playerInventory : InventoryView.GetOtherOpenInventory(slot);
 
             if (target == null)
@@ -220,38 +284,74 @@ namespace InventorySystem
                 _playerInventory.CombineLikeItems(slot.Item);
         }
 
-        // called in conjunction with OnEndDragging
-        private void OnDropped(ItemEntryView slot)
+        #endregion
+
+        #region Split Dragging
+
+        private readonly HashSet<ItemEntryView> _splitDraggedTargets = new();
+        private bool _isSplitDragging = false; // RMB + drag while carrying
+        private bool CanSplitDrag => _isCarrying && _entry.Quantity > 1;
+
+        private void OnBeginRightDragging(ItemEntryView slot)
         {
-            if (_isDragging)
+            if (!CanSplitDrag) return;
+            if (!CanDropOnto(slot.Entry)) return;
+            _isSplitDragging = true;
+
+            AddTarget(slot);
+        }
+
+        private void OnEntered(ItemEntryView slot)
+        {
+            if (!_isSplitDragging) return;
+            if (!CanDropOnto(slot.Entry)) return;
+
+            AddTarget(slot);
+        }
+
+        private void OnEndRightDragging(ItemEntryView slot)
+        {
+            if (!_isSplitDragging) return;
+            _isSplitDragging = false;
+
+            SplitBetweenTargets();
+            if (_entry.Quantity == 0)
+                EndCarrying();
+            else
+                _isPartialCarry = true;
+        }
+
+        private void AddTarget(ItemEntryView slot)
+        {
+            slot.ShowHighlight();
+            _splitDraggedTargets.Add(slot);
+        }
+
+        private void RemoveTargets()
+        {
+            foreach (var target in _splitDraggedTargets)
+                target.HideHighlight();
+            _splitDraggedTargets.Clear();
+        }
+
+        private void SplitBetweenTargets()
+        {
+            var targetAmount = _splitDraggedTargets.Count;
+            var excess = _entry.Quantity % _splitDraggedTargets.Count;
+
+            foreach (var target in _splitDraggedTargets)
             {
-                OnLeftClicked(slot);
-                ReturnItemsToStart();
-                StopDragging();
+                var amountToAdd = _entry.Quantity / targetAmount;
+                if (excess > 0)
+                {
+                    amountToAdd++;
+                    excess--;
+                }
+                _entry.TransferTo(target.Entry, amountToAdd);
+                targetAmount--;
             }
-        }
 
-        private void OnInventoryClosed(InventoryView panel)
-        {
-            if (_isDragging && panel.Contains(_returnSlot))
-            {
-                ReturnItemsToStart();
-                StopDragging();
-            }
-        }
-
-        private void ReturnItemsToStart()
-        {
-            if (_returnSlot != null)
-                _entry.TransferTo(_returnSlot.Entry);
-            _returnSlot = null;
-        }
-
-        private void StopDragging()
-        {
-            _returnSlot = null;
-            _isPartialDrag = false;
-            IsDragging = false;
+            RemoveTargets();
         }
 
         #endregion
@@ -260,9 +360,9 @@ namespace InventorySystem
 
         public void DisposeEntry()
         {
-            ItemDisposed?.Invoke(_draggedTransform, Entry);
+            ItemDisposed?.Invoke(_draggedTransform, _entry);
             _entry.Set(null, 0);
-            StopDragging();
+            EndCarrying();
         }
 
         #endregion

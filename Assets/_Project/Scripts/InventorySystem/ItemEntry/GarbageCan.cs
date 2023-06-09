@@ -3,7 +3,6 @@ using UnityEngine.EventSystems;
 using Utilities;
 using Utilities.MessageSystem;
 using Utilities.UI;
-using static UnityEngine.EventSystems.EventTrigger;
 
 namespace InventorySystem
 {
@@ -14,14 +13,17 @@ namespace InventorySystem
         private ItemEntryDragger _dragger;
         private ConfirmationDialog _confirmationDialog;
 
+        private void OnEnable() => ItemEntryDragger.IsCarryingChanged += OnCarryingChanged;
+
+        private void OnDisable() => ItemEntryDragger.IsCarryingChanged -= OnCarryingChanged;
+
         private void Start()
         {
             _dragger = ServiceLocator.Get<ItemEntryDragger>();
             _confirmationDialog = ServiceLocator.Get<ConfirmationDialog>();
-            ItemEntryDragger.IsDraggingChanged += OnDraggingChanged;
         }
 
-        private void OnDraggingChanged(bool isDragging)
+        private void OnCarryingChanged(bool isDragging)
         {
             if (isDragging)
                 _animator.Show(); // TODO: Add safety checks to not show if the item is not disposable.
@@ -55,7 +57,7 @@ namespace InventorySystem
             _dragger.DisposeEntry();
         }
 
-        private void CancelDisposal() => 
+        private void CancelDisposal() =>
             Messenger.SendMessage(new InventoryMessage(_dragger.Entry.Item, _dragger.Entry.Quantity, InventoryEvent.ItemDiscardCancelled));
     }
 }

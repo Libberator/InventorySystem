@@ -12,13 +12,13 @@ namespace InventorySystem
     // "Right Click Menu". Relies on the legacy Input system for the mouse scrolling
     public class ItemEntryMenu : MonoBehaviour, IPointerClickHandler
     {
-        public static event Action<ItemEntryView, int> BeginPartialDrag;
+        public static event Action<ItemEntryView, int> BeginPartialCarry;
         public static event Action<ItemEntry> UseClicked;
         public static event Action<ItemEntryView> EquipClicked;
 
         [Header("Quantity Splitter")]
         [SerializeField] private Image _splittingSelector;
-        [SerializeField] private Image _highlight;
+        
         [SerializeField] private TMP_Text _qtyText;
         [SerializeField] private float _fillDuration = 0.5f;
         [SerializeField] private Ease _fillEase = Ease.OutQuint;
@@ -39,19 +39,23 @@ namespace InventorySystem
 
         private void OnEnable()
         {
-            ItemEntryView.BeginDrag += Hide;
             ItemEntryView.LeftClicked += Hide;
-            ItemEntryView.LeftShiftClicked += Hide;
             ItemEntryView.RightClicked += OnRightClicked;
+            ItemEntryView.LeftShiftClicked += Hide;
+            ItemEntryView.BeginDrag += Hide;
+            ItemEntryView.RightBeginDrag += Hide;
+
             InventoryView.Closed += OnInventoryClosed;
         }
 
         private void OnDisable()
         {
-            ItemEntryView.BeginDrag -= Hide;
             ItemEntryView.LeftClicked -= Hide;
-            ItemEntryView.LeftShiftClicked -= Hide;
             ItemEntryView.RightClicked -= OnRightClicked;
+            ItemEntryView.LeftShiftClicked -= Hide;
+            ItemEntryView.BeginDrag -= Hide;
+            ItemEntryView.RightBeginDrag -= Hide;
+
             InventoryView.Closed -= OnInventoryClosed;
         }
 
@@ -73,7 +77,7 @@ namespace InventorySystem
 
         private void OnRightClicked(ItemEntryView slot)
         {
-            if (_dragger.IsDragging) return;
+            if (_dragger.IsCarrying) return;
 
             if (slot.Item == null || _isShown && _focusedSlot == slot)
                 HideMenu();
@@ -90,10 +94,11 @@ namespace InventorySystem
 
         public void ShowMenu(ItemEntryView slot)
         {
+            HideHighlight();
             _focusedSlot = slot;
-            transform.position = slot.transform.position;
-
             ShowHighlight();
+
+            transform.position = slot.transform.position;
 
             if (Entry.Quantity > 1)
                 ShowQtySplitter();
@@ -132,9 +137,17 @@ namespace InventorySystem
             _isShown = false;
         }
 
-        private void ShowHighlight() => _highlight.enabled = true;
+        private void ShowHighlight()
+        {
+            if (_focusedSlot != null)
+                _focusedSlot.ShowHighlight();
+        }
 
-        private void HideHighlight() => _highlight.enabled = false;
+        private void HideHighlight()
+        {
+            if (_focusedSlot != null)
+                _focusedSlot.HideHighlight();
+        }
 
         #endregion
 
@@ -144,7 +157,7 @@ namespace InventorySystem
         {
             if (eventData.button == PointerEventData.InputButton.Left)
             {
-                BeginPartialDrag?.Invoke(_focusedSlot, _partialQuantity);
+                BeginPartialCarry?.Invoke(_focusedSlot, _partialQuantity);
                 HideMenu();
             }
             else if (eventData.button == PointerEventData.InputButton.Right)
@@ -157,11 +170,9 @@ namespace InventorySystem
 
         private void ShowQtySplitter()
         {
-            _splitterTween?.Kill();
             _splittingSelector.enabled = true;
-
             var max = Entry.Quantity;
-
+            _splitterTween?.Kill();
             _splitterTween = DOVirtual.Int(0, max / 2, _fillDuration, UpdateSplitQuantity).SetEase(_fillEase);
         }
 

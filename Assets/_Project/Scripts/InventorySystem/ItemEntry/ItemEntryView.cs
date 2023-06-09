@@ -12,20 +12,26 @@ namespace InventorySystem
     // Relies on the legacy Input system for holding down Left Shift
     public class ItemEntryView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IDropHandler, IEndDragHandler
     {
+        public static event Action<ItemEntryView> HoverEntered;
+        public static event Action<ItemEntryView> HoverExited;
         public static event Action<ItemEntryView> LeftClicked;
+        public static event Action<ItemEntryView> RightClicked;
         public static event Action<ItemEntryView> LeftShiftClicked;
         public static event Action<ItemEntryView> DoubleClicked;
-        public static event Action<ItemEntryView> RightClicked;
+        
         public static event Action<ItemEntryView> BeginDrag;
-        public static event Action<ItemEntryView> BeginRightButtonkDrag;
         public static event Action<ItemEntryView> EndDrag;
-        public static event Action<ItemEntryView> EndRightButtonDrag;
+        public static event Action<ItemEntryView> RightBeginDrag;
+        public static event Action<ItemEntryView> RightEndDrag;
+        
         public static event Action<ItemEntryView> DroppedOn;
+        public static event Action<ItemEntryView> RightDroppedOn;
 
         [Header("UI References")]
         [SerializeField] private Image _background;
         [SerializeField] private Image _frame;
         [SerializeField] private Image _icon;
+        [SerializeField] private Image _highlight;
         [SerializeField] private TMP_Text _qtyText;
         [SerializeField] private CooldownView _cooldown;
 
@@ -116,6 +122,10 @@ namespace InventorySystem
             }
         }
 
+        public void ShowHighlight() => _highlight.enabled = true;
+
+        public void HideHighlight() => _highlight.enabled = false;
+
         #endregion
 
         #region Interface Methods
@@ -123,11 +133,13 @@ namespace InventorySystem
         public virtual void OnPointerEnter(PointerEventData eventData)
         {
             _background.DOFade(1f, 0.2f);
+            HoverEntered?.Invoke(this);
         }
 
         public virtual void OnPointerExit(PointerEventData eventData)
         {
             _background.DOFade(0.5f, 0.2f);
+            HoverExited?.Invoke(this);
         }
 
         public virtual void OnPointerClick(PointerEventData eventData)
@@ -148,20 +160,25 @@ namespace InventorySystem
 
         public virtual void OnBeginDrag(PointerEventData eventData)
         {
-            if (_entry.Item == null)
-                eventData.pointerDrag = null; // prevents OnDrop from being called
-            if (eventData.button == PointerEventData.InputButton.Left && _entry.Item != null)
-                BeginDrag?.Invoke(this);
+            if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                if (_entry.Item != null)
+                    BeginDrag?.Invoke(this);
+                else if (_entry.Item == null)
+                    eventData.pointerDrag = null; // prevents OnDrag & OnDrop from being called
+            }
             else if (eventData.button == PointerEventData.InputButton.Right)
-                BeginRightButtonkDrag?.Invoke(this);
+                RightBeginDrag?.Invoke(this);
         }
 
-        public virtual void OnDrag(PointerEventData eventData) { } // unusued, but required for other things to work
+        public virtual void OnDrag(PointerEventData eventData) { }
 
         public virtual void OnDrop(PointerEventData eventData)
         {
             if (eventData.button == PointerEventData.InputButton.Left)
                 DroppedOn?.Invoke(this);
+            if (eventData.button == PointerEventData.InputButton.Right)
+                RightDroppedOn?.Invoke(this);
         }
 
         public virtual void OnEndDrag(PointerEventData eventData)
@@ -169,7 +186,7 @@ namespace InventorySystem
             if (eventData.button == PointerEventData.InputButton.Left)
                 EndDrag?.Invoke(this);
             else if (eventData.button == PointerEventData.InputButton.Right)
-                EndRightButtonDrag?.Invoke(this);
+                RightEndDrag?.Invoke(this);
         }
 
         #endregion

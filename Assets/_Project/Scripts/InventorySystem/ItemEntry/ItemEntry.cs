@@ -69,26 +69,26 @@ namespace InventorySystem
             (Quantity, other.Quantity) = (other.Quantity, Quantity);
         }
 
-        public void TransferTo(ItemEntry target) => TransferTo(target, Quantity);
+        public int TransferTo(ItemEntry target) => TransferTo(target, Quantity);
 
-        public void TransferTo(ItemEntry target, int quantity)
+        public int TransferTo(ItemEntry target, int quantity)
         {
             // moving to empty spot (all or partial)
             if (target.Item == null)
             {
                 target.Set(Item, quantity);
                 RemoveQuantity(quantity);
+                return 0;
             }
             // stacking
-            else if (target.Item == Item)
+            if (target.Item == Item)
             {
-                // return remainder in case of excessive requested transfer quantity?
-                var qtyToTransfer = Math.Min(target.Item.MaxStack - target.Quantity, quantity);
-                RemoveQuantity(qtyToTransfer);
-                target.AddQuantity(qtyToTransfer);
+                var remainder = target.AddQuantity(quantity);
+                RemoveQuantity(quantity - remainder);
+                return remainder;
             }
-            else
-                Messenger.SendMessage(new InventoryMessage(Item, Quantity, InventoryEvent.ItemMoveFail));
+            Messenger.SendMessage(new InventoryMessage(Item, Quantity, InventoryEvent.ItemMoveFail));
+            return quantity;
         }
 
         /// <returns>Remainder of the requested quantity to add. If not 0, we reached MaxStack prematurely.</returns>
