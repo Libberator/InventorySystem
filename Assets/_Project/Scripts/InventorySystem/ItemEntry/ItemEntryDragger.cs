@@ -260,6 +260,7 @@ namespace InventorySystem
             {
                 ReturnItemsToStart();
                 EndCarrying();
+                OnEndRightDragging();
             }
         }
 
@@ -290,9 +291,8 @@ namespace InventorySystem
 
         private void OnDoubleClicked(ItemEntryView slot)
         {
-            // stack like items - only within the Player Inventory (I guess. Don't ask me why)
-            if (_playerInventory.Contains(slot.Entry))
-                _playerInventory.CombineLikeItems(slot.Item);
+            var inventory = InventoryView.GetInventoryFromItemEntry(slot);
+            inventory.CombineLikeItems(slot.Item);
         }
 
         #endregion
@@ -321,7 +321,7 @@ namespace InventorySystem
             AddTarget(slot);
         }
 
-        private void OnEndRightDragging(ItemEntryView slot)
+        private void OnEndRightDragging(ItemEntryView slot = null)
         {
             if (!_isSplitDragging) return;
             _isSplitDragging = false;
@@ -337,13 +337,6 @@ namespace InventorySystem
         {
             slot.ShowHighlight();
             _splitDraggedTargets.Add(slot);
-        }
-
-        private void RemoveTargets()
-        {
-            foreach (var target in _splitDraggedTargets)
-                target.HideHighlight();
-            _splitDraggedTargets.Clear();
         }
 
         private void SplitBetweenTargets()
@@ -366,6 +359,13 @@ namespace InventorySystem
             }
 
             RemoveTargets();
+        }
+
+        private void RemoveTargets()
+        {
+            foreach (var target in _splitDraggedTargets)
+                target.HideHighlight();
+            _splitDraggedTargets.Clear();
         }
 
         #endregion

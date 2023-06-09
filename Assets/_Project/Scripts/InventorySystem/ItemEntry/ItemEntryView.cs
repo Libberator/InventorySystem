@@ -14,10 +14,11 @@ namespace InventorySystem
     {
         public static event Action<ItemEntryView> HoverEntered;
         public static event Action<ItemEntryView> HoverExited;
-        public static event Action<ItemEntryView> LeftClicked;
-        public static event Action<ItemEntryView> RightClicked;
+
         public static event Action<ItemEntryView> LeftShiftClicked;
         public static event Action<ItemEntryView> DoubleClicked;
+        public static event Action<ItemEntryView> LeftClicked;
+        public static event Action<ItemEntryView> RightClicked;
         
         public static event Action<ItemEntryView> BeginDrag;
         public static event Action<ItemEntryView> EndDrag;
