@@ -10,7 +10,7 @@ using Utilities.UI;
 namespace InventorySystem
 {
     // "Right Click Menu". Relies on the legacy Input system for the mouse scrolling
-    public class ItemEntryMenu : MonoBehaviour
+    public class ItemEntryMenu : MonoBehaviour, IPointerClickHandler
     {
         public static event Action<ItemEntryView, int> BeginPartialDrag;
         public static event Action<ItemEntry> UseClicked;
@@ -18,6 +18,7 @@ namespace InventorySystem
 
         [Header("Quantity Splitter")]
         [SerializeField] private Image _splittingSelector;
+        [SerializeField] private Image _highlight;
         [SerializeField] private TMP_Text _qtyText;
         [SerializeField] private float _fillDuration = 0.5f;
         [SerializeField] private Ease _fillEase = Ease.OutQuint;
@@ -56,8 +57,8 @@ namespace InventorySystem
 
         private void Start()
         {
-            HideQtySplitter();
             _dragger = ServiceLocator.Get<ItemEntryDragger>();
+            HideMenu();
         }
 
         private void Update()
@@ -92,6 +93,8 @@ namespace InventorySystem
             _focusedSlot = slot;
             transform.position = slot.transform.position;
 
+            ShowHighlight();
+
             if (Entry.Quantity > 1)
                 ShowQtySplitter();
             else
@@ -125,17 +128,20 @@ namespace InventorySystem
             _sell.Hide();
             _toss.Hide();
             HideQtySplitter();
+            HideHighlight();
             _isShown = false;
         }
+
+        private void ShowHighlight() => _highlight.enabled = true;
+
+        private void HideHighlight() => _highlight.enabled = false;
 
         #endregion
 
         #region Quantity Splitter
 
-        // assigned to the Radial Fill as an Event Trigger
-        public void OnSplitterClick(BaseEventData baseEventData)
+        public void OnPointerClick(PointerEventData eventData)
         {
-            var eventData = baseEventData as PointerEventData;
             if (eventData.button == PointerEventData.InputButton.Left)
             {
                 BeginPartialDrag?.Invoke(_focusedSlot, _partialQuantity);
@@ -152,7 +158,7 @@ namespace InventorySystem
         private void ShowQtySplitter()
         {
             _splitterTween?.Kill();
-            _splittingSelector.gameObject.SetActive(true);
+            _splittingSelector.enabled = true;
 
             var max = Entry.Quantity;
 
@@ -176,6 +182,7 @@ namespace InventorySystem
             qty = Mathf.Clamp(qty, 1, max);
             _splittingSelector.fillAmount = (float)qty / max;
             _qtyText.SetText(QtyText(qty, max));
+            _qtyText.enabled = true;
 
             _partialQuantity = qty;
         }
@@ -183,7 +190,8 @@ namespace InventorySystem
         private void HideQtySplitter()
         {
             _splitterTween?.Kill();
-            _splittingSelector.gameObject.SetActive(false);
+            _splittingSelector.enabled = false;
+            _qtyText.enabled = false;
         }
 
         #endregion

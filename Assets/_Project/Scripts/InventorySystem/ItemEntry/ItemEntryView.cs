@@ -17,7 +17,9 @@ namespace InventorySystem
         public static event Action<ItemEntryView> DoubleClicked;
         public static event Action<ItemEntryView> RightClicked;
         public static event Action<ItemEntryView> BeginDrag;
+        public static event Action<ItemEntryView> BeginRightButtonkDrag;
         public static event Action<ItemEntryView> EndDrag;
+        public static event Action<ItemEntryView> EndRightButtonDrag;
         public static event Action<ItemEntryView> DroppedOn;
 
         [Header("UI References")]
@@ -35,14 +37,14 @@ namespace InventorySystem
 
         [Header("Internal Data")]
         [SerializeField, ReadOnly] private ItemEntry _entry;
-        
+
         public ItemEntry Entry => _entry;
         public Item Item => _entry.Item;
         public int Quantity => _entry.Quantity;
 
         private void OnDestroy()
         {
-            if (_entry != null) UnbindFrom(_entry); 
+            if (_entry != null) UnbindFrom(_entry);
         }
 
         #region Bindings
@@ -52,11 +54,11 @@ namespace InventorySystem
             if (_entry == entry) return;
             if (_entry != null) UnbindFrom(_entry);
             if (entry == null) return;
-            
+
             _entry = entry;
             _entry.ItemChanged += OnItemChanged;
             _entry.QuantityChanged += OnQuantityChanged;
-            
+
             OnItemChanged(_entry.Item);
             OnQuantityChanged(_entry.Quantity);
         }
@@ -136,20 +138,22 @@ namespace InventorySystem
                     LeftShiftClicked?.Invoke(this);
                 else
                     LeftClicked?.Invoke(this);
-                
+
                 if (eventData.clickCount == 2 && Item != null) // or just clickCount > 1 ?
                     DoubleClicked?.Invoke(this);
             }
             else if (eventData.button == PointerEventData.InputButton.Right)
                 RightClicked?.Invoke(this);
         }
-     
+
         public virtual void OnBeginDrag(PointerEventData eventData)
         {
             if (_entry.Item == null)
                 eventData.pointerDrag = null; // prevents OnDrop from being called
             if (eventData.button == PointerEventData.InputButton.Left && _entry.Item != null)
                 BeginDrag?.Invoke(this);
+            else if (eventData.button == PointerEventData.InputButton.Right)
+                BeginRightButtonkDrag?.Invoke(this);
         }
 
         public virtual void OnDrag(PointerEventData eventData) { } // unusued, but required for other things to work
@@ -164,6 +168,8 @@ namespace InventorySystem
         {
             if (eventData.button == PointerEventData.InputButton.Left)
                 EndDrag?.Invoke(this);
+            else if (eventData.button == PointerEventData.InputButton.Right)
+                EndRightButtonDrag?.Invoke(this);
         }
 
         #endregion
