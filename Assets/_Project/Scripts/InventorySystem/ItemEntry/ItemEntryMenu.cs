@@ -18,7 +18,7 @@ namespace InventorySystem
 
         [Header("Quantity Splitter")]
         [SerializeField] private Image _splittingSelector;
-        
+
         [SerializeField] private TMP_Text _qtyText;
         [SerializeField] private float _fillDuration = 0.5f;
         [SerializeField] private Ease _fillEase = Ease.OutQuint;
@@ -31,58 +31,25 @@ namespace InventorySystem
         [SerializeField] private PanelSlider _sell;
         [SerializeField] private PanelSlider _toss;
 
-        private ItemEntryDragger _dragger;
-        private ItemEntryView _focusedSlot;
         private bool _isShown;
-
+        private ItemEntryView _focusedSlot;
         private ItemEntry Entry => _focusedSlot.Entry;
 
-        private void OnEnable()
-        {
-            ItemEntryView.LeftClicked += Hide;
-            ItemEntryView.RightClicked += OnRightClicked;
-            ItemEntryView.LeftShiftClicked += Hide;
-            ItemEntryView.BeginDrag += Hide;
-            ItemEntryView.RightBeginDrag += Hide;
+        public ItemEntryView FocusedSlot => _focusedSlot;
+        public bool IsShown => _isShown;
 
-            InventoryView.Closed += OnInventoryClosed;
-        }
-
-        private void OnDisable()
-        {
-            ItemEntryView.LeftClicked -= Hide;
-            ItemEntryView.RightClicked -= OnRightClicked;
-            ItemEntryView.LeftShiftClicked -= Hide;
-            ItemEntryView.BeginDrag -= Hide;
-            ItemEntryView.RightBeginDrag -= Hide;
-
-            InventoryView.Closed -= OnInventoryClosed;
-        }
-
-        private void Start()
-        {
-            _dragger = ServiceLocator.Get<ItemEntryDragger>();
-            HideMenu();
-        }
-
+        private void Awake() => ServiceLocator.Register(this);
+        private void OnEnable() => InventoryView.Closed += OnInventoryClosed;
+        private void OnDisable() => InventoryView.Closed -= OnInventoryClosed;
+        private void Start() => HideMenu(forced: true);
         private void Update()
         {
-            if (!_isShown || _focusedSlot == null || Entry.Item == null || !Entry.Item.IsStackable) return;
+            if (!_isShown || Entry.Item == null || !Entry.Item.IsStackable) return;
             if (Input.mouseScrollDelta.y != 0)
             {
                 _splitterTween?.Kill();
                 UpdateSplitQuantity(_partialQuantity + (int)Input.mouseScrollDelta.y);
             }
-        }
-
-        private void OnRightClicked(ItemEntryView slot)
-        {
-            if (_dragger.IsCarrying) return;
-
-            if (slot.Item == null || _isShown && _focusedSlot == slot)
-                HideMenu();
-            else
-                ShowMenu(slot);
         }
 
         private void OnInventoryClosed(InventoryView view)
@@ -120,14 +87,11 @@ namespace InventorySystem
             _isShown = true;
         }
 
-        private void Hide(ItemEntryView _)
-        {
-            if (_isShown) HideMenu();
-        }
-
         [Button]
-        public void HideMenu()
+        public void HideMenu(bool forced = false)
         {
+            if (!_isShown && !forced) return;
+            
             _use.Hide();
             _equip.Hide();
             _sell.Hide();

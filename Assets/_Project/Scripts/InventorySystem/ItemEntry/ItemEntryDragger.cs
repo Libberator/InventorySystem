@@ -34,6 +34,7 @@ namespace InventorySystem
 
         // Dependencies retrieved via ServiceLocator
         private Inventory _playerInventory;
+        private ItemEntryMenu _rightClickMenu;
         private ConfirmationDialog _confirmationDialog;
 
         [Header("What's In Hand")]
@@ -103,6 +104,7 @@ namespace InventorySystem
         private void Start()
         {
             _playerInventory = ServiceLocator.Get<Inventory>();
+            _rightClickMenu = ServiceLocator.Get<ItemEntryMenu>();
             _confirmationDialog = ServiceLocator.Get<ConfirmationDialog>();
         }
 
@@ -117,6 +119,7 @@ namespace InventorySystem
 
         private void OnBeginCarry(ItemEntryView slot)
         {
+            HideMenu();
             if (_isSplitDragging) return;
 
             if (_isPartialCarry)
@@ -148,6 +151,7 @@ namespace InventorySystem
         // pick up, drop, stack, drop
         private void OnLeftClicked(ItemEntryView slot)
         {
+            HideMenu();
             if (_isSplitDragging) return;
 
             if (!_isCarrying)
@@ -207,12 +211,19 @@ namespace InventorySystem
             }
         }
 
-        private void OnRightClicked(ItemEntryView view)
+        private void OnRightClicked(ItemEntryView slot)
         {
-            if (!_isCarrying || _isSplitDragging) return;
-            if (!CanDropOnto(view.Entry)) return;
+            if (!_isCarrying)
+            {
+                if (slot.Item == null || _rightClickMenu.IsShown && _rightClickMenu.FocusedSlot == slot)
+                    HideMenu();
+                else
+                    ShowMenu(slot);
+                return;
+            }
+            if (!CanDropOnto(slot.Entry)) return;
 
-            _entry.TransferTo(view.Entry, 1);
+            _entry.TransferTo(slot.Entry, 1);
             if (_entry.Quantity == 0)
                 EndCarrying();
         }
@@ -259,10 +270,10 @@ namespace InventorySystem
         // swap to other open inventory
         private void OnLeftShiftClicked(ItemEntryView slot)
         {
+            HideMenu();
             // nothing implemented yet for shift-click while dragging
-            if (_isCarrying || slot.Item == null)
-                return;
-            // below here, _isDragging is false and we double clicked a valid item
+            if (_isCarrying || slot.Item == null) return;
+            // below here, _isCarrying is false and we shift-clicked a valid item
 
             var target = InventoryView.GetInventoryFromItemEntry(slot) != _playerInventory ?
                 _playerInventory : InventoryView.GetOtherOpenInventory(slot);
@@ -294,6 +305,7 @@ namespace InventorySystem
 
         private void OnBeginRightDragging(ItemEntryView slot)
         {
+            HideMenu();
             if (!CanSplitDrag) return;
             if (!CanDropOnto(slot.Entry)) return;
             _isSplitDragging = true;
@@ -342,12 +354,14 @@ namespace InventorySystem
             foreach (var target in _splitDraggedTargets)
             {
                 var amountToAdd = _entry.Quantity / targetAmount;
+                // this is used to front-load the splitting
                 if (excess > 0)
                 {
                     amountToAdd++;
                     excess--;
                 }
                 _entry.TransferTo(target.Entry, amountToAdd);
+                if (_entry.Quantity == 0) break;
                 targetAmount--;
             }
 
@@ -394,6 +408,10 @@ namespace InventorySystem
             else
                 _qtyText.enabled = false;
         }
+
+        private void ShowMenu(ItemEntryView slot) => _rightClickMenu.ShowMenu(slot);
+
+        private void HideMenu() => _rightClickMenu.HideMenu();
 
         #endregion
     }
