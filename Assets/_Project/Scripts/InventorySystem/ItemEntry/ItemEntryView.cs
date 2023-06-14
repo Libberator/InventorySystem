@@ -1,33 +1,17 @@
 ﻿using DG.Tweening;
 using Sirenix.OdinInspector;
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Utilities.Cooldown;
+using Utilities.UI;
 
 namespace InventorySystem
 {
     // Relies on the legacy Input system for holding down Left Shift
-    public class ItemEntryView : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler, IBeginDragHandler, IDragHandler, IDropHandler, IEndDragHandler
+    public class ItemEntryView : PointerInteractor<ItemEntryView>
     {
-        public static event Action<ItemEntryView> HoverEntered;
-        public static event Action<ItemEntryView> HoverExited;
-
-        public static event Action<ItemEntryView> LeftShiftClicked;
-        public static event Action<ItemEntryView> DoubleClicked;
-        public static event Action<ItemEntryView> LeftClicked;
-        public static event Action<ItemEntryView> RightClicked;
-        
-        public static event Action<ItemEntryView> BeginDrag;
-        public static event Action<ItemEntryView> EndDrag;
-        public static event Action<ItemEntryView> RightBeginDrag;
-        public static event Action<ItemEntryView> RightEndDrag;
-        
-        public static event Action<ItemEntryView> DroppedOn;
-        public static event Action<ItemEntryView> RightDroppedOn;
-
         [Header("UI References")]
         [SerializeField] private Image _background;
         [SerializeField] private Image _frame;
@@ -123,71 +107,37 @@ namespace InventorySystem
             }
         }
 
+        #endregion
+
         public void ShowHighlight() => _highlight.enabled = true;
 
         public void HideHighlight() => _highlight.enabled = false;
 
-        #endregion
+        #region Inherited Methods
 
-        #region Interface Methods
-
-        public virtual void OnPointerEnter(PointerEventData eventData)
+        protected override void OnHoverEntered(ItemEntryView target)
         {
             _background.DOFade(1f, 0.2f);
-            HoverEntered?.Invoke(this);
+            base.OnHoverEntered(target);
         }
 
-        public virtual void OnPointerExit(PointerEventData eventData)
+        protected override void OnHoverExited(ItemEntryView target)
         {
             _background.DOFade(0.5f, 0.2f);
-            HoverExited?.Invoke(this);
+            base.OnHoverExited(target);
         }
-
-        public virtual void OnPointerClick(PointerEventData eventData)
-        {
-            if (eventData.button == PointerEventData.InputButton.Left)
-            {
-                if (Input.GetKey(KeyCode.LeftShift))
-                    LeftShiftClicked?.Invoke(this);
-                else
-                    LeftClicked?.Invoke(this);
-
-                if (eventData.clickCount == 2 && Item != null) // or just clickCount > 1 ?
-                    DoubleClicked?.Invoke(this);
-            }
-            else if (eventData.button == PointerEventData.InputButton.Right)
-                RightClicked?.Invoke(this);
-        }
-
-        public virtual void OnBeginDrag(PointerEventData eventData)
+        
+        public override void OnBeginDrag(PointerEventData eventData)
         {
             if (eventData.button == PointerEventData.InputButton.Left)
             {
                 if (_entry.Item != null)
-                    BeginDrag?.Invoke(this);
-                else if (_entry.Item == null)
+                    OnBeginDrag(this);
+                else
                     eventData.pointerDrag = null; // prevents OnDrag & OnDrop from being called
             }
             else if (eventData.button == PointerEventData.InputButton.Right)
-                RightBeginDrag?.Invoke(this);
-        }
-
-        public virtual void OnDrag(PointerEventData eventData) { }
-
-        public virtual void OnDrop(PointerEventData eventData)
-        {
-            if (eventData.button == PointerEventData.InputButton.Left)
-                DroppedOn?.Invoke(this);
-            if (eventData.button == PointerEventData.InputButton.Right)
-                RightDroppedOn?.Invoke(this);
-        }
-
-        public virtual void OnEndDrag(PointerEventData eventData)
-        {
-            if (eventData.button == PointerEventData.InputButton.Left)
-                EndDrag?.Invoke(this);
-            else if (eventData.button == PointerEventData.InputButton.Right)
-                RightEndDrag?.Invoke(this);
+                OnRightBeginDrag(this);
         }
 
         #endregion

@@ -8,7 +8,7 @@ namespace InventorySystem
 {
     public class GarbageCan : MonoBehaviour, IPointerClickHandler, IDropHandler
     {
-        [SerializeField] private PanelSlider _animator;
+        [SerializeField] private PanelSlider _slider;
         [SerializeField] private string _richTextLinkID = "Item";
         private ItemEntryDragger _dragger;
         private ConfirmationDialog _confirmationDialog;
@@ -26,9 +26,9 @@ namespace InventorySystem
         private void OnCarryingChanged(bool isDragging)
         {
             if (isDragging)
-                _animator.Show(); // TODO: Add safety checks to not show if the item is not disposable.
+                _slider.Show(); // TODO: Add safety checks to not show if the item is not disposable.
             else
-                _animator.Hide();
+                _slider.Hide();
         }
 
         public void OnDrop(PointerEventData eventData)

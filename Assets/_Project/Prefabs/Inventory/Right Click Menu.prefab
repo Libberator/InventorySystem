@@ -1335,6 +1335,7 @@ GameObject:
   - component: {fileID: 7805329210526910593}
   - component: {fileID: 8290939230488622574}
   - component: {fileID: 6680733014907331158}
+  - component: {fileID: 6250016660218898880}
   m_Layer: 5
   m_Name: Right Click Menu
   m_TagString: Untagged
@@ -1425,6 +1426,19 @@ MonoBehaviour:
   _equip: {fileID: 6680733014557194837}
   _sell: {fileID: 6680733013392182590}
   _toss: {fileID: 6680733013604720529}
+--- !u!114 &6250016660218898880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6680733014907331144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78baaf72708b4983b2c6097ef9337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverCursor: 2
 --- !u!1 &6680733014991684107
 GameObject:
   m_ObjectHideFlags: 0
